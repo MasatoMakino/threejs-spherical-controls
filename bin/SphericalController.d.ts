@@ -164,6 +164,13 @@ export declare class SphericalController extends EventDispatcher {
      * @param toRotation      移動目標となる回転角度　単位ラジアン
      * @returns {number}    最短距離での目標となる回転角
      */
-    static getTweenRotation(fromRotation: number, toRotation: number): number;
+    static getTweenTheta(from: number, to: number): number;
+    /**
+     * ラジアンを-Math.PI ~ Math.PIの範囲に正規化する。
+     * @param {number} value
+     * @return {number}
+     * @constructor
+     */
+    private static PI2ToPI;
 }
 //# sourceMappingURL=SphericalController.d.ts.map

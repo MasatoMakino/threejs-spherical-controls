@@ -183,7 +183,7 @@ export class SphericalController extends EventDispatcher {
         this.tweenTheta = SphericalController.removeTween(this.tweenTheta);
         let to = value;
         if (normalize) {
-            to = SphericalController.getTweenRotation(this.pos.theta, value);
+            to = SphericalController.getTweenTheta(this.pos.theta, value);
         }
         this.tweenTheta = Tween.get(this.pos).to({ theta: to }, SphericalController.tweenDuration, SphericalController.tweenFunc);
         this.tweenTheta.addEventListener("change", this.setNeedUpdate);
@@ -343,27 +343,48 @@ export class SphericalController extends EventDispatcher {
      * @param toRotation      移動目標となる回転角度　単位ラジアン
      * @returns {number}    最短距離での目標となる回転角
      */
-    static getTweenRotation(fromRotation, toRotation) {
+    static getTweenTheta(from, to) {
         const PI2 = Math.PI * 2;
-        toRotation = toRotation % PI2;
-        const currentRotationY = fromRotation % PI2;
-        const numOfRotationY = (fromRotation - currentRotationY) / PI2; //回転方向の決定および回転数の保持
-        let nextRotationY_A = numOfRotationY * PI2 + toRotation;
-        let nextRotationY_B = nextRotationY_A;
-        if (nextRotationY_A > fromRotation) {
-            nextRotationY_B -= PI2;
+        to = this.PI2ToPI(to);
+        const currentRotationY = from % PI2;
+        const numOfRotationY = (from - currentRotationY) / PI2; //回転方向の決定および回転数の保持
+        let next_A = numOfRotationY * PI2 + to;
+        let next_B = next_A;
+        if (next_A > from) {
+            next_B -= PI2;
         }
         else {
-            nextRotationY_B += PI2;
+            next_B += PI2;
         }
-        if (Math.abs(nextRotationY_A - fromRotation) >
-            Math.abs(nextRotationY_B - fromRotation)) {
-            toRotation = nextRotationY_B;
+        if (Math.abs(next_A - from) > Math.abs(next_B - from)) {
+            to = next_B;
         }
         else {
-            toRotation = nextRotationY_A;
+            to = next_A;
         }
-        return toRotation;
+        return to;
+    }
+    /**
+     * ラジアンを-Math.PI ~ Math.PIの範囲に正規化する。
+     * @param {number} value
+     * @return {number}
+     * @constructor
+     */
+    static PI2ToPI(value) {
+        const PI = Math.PI;
+        const PI2 = PI * 2;
+        value = value % PI2;
+        if (Math.abs(value) < PI) {
+            return value;
+        }
+        const over = Math.abs(value) - PI;
+        if (value > 0) {
+            value = -PI + over;
+        }
+        else {
+            value = PI - over;
+        }
+        return value;
     }
 }
 SphericalController.tweenDuration = 1333;
