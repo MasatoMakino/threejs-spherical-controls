@@ -1,4 +1,13 @@
 import { Camera, Vector3, EventDispatcher, Mesh, Spherical } from "three";
+/**
+ * 球面座標系でカメラ位置をコントロールするクラス。
+ *
+ * カメラ位置はThetaおよびPhiで決定される。
+ * 0, 0の場合北極上にカメラが位置する。
+ * Theta : 0 ~ Math.PI
+ * Phi : 0 ~ Math.PI * 2
+ * の範囲で可動する。
+ */
 export declare class SphericalController extends EventDispatcher {
     private _camera;
     private _cameraTarget;

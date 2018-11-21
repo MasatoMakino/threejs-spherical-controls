@@ -2,6 +2,15 @@ var Tween = createjs.Tween;
 var Ease = createjs.Ease;
 import { Vector3, EventDispatcher, MeshBasicMaterial, Spherical } from "three";
 import { SphericalControllerEvent, SphericalControllerEventType } from "./SphericalControllerEvent";
+/**
+ * 球面座標系でカメラ位置をコントロールするクラス。
+ *
+ * カメラ位置はThetaおよびPhiで決定される。
+ * 0, 0の場合北極上にカメラが位置する。
+ * Theta : 0 ~ Math.PI
+ * Phi : 0 ~ Math.PI * 2
+ * の範囲で可動する。
+ */
 export class SphericalController extends EventDispatcher {
     /**
      * コンストラクタ
@@ -44,7 +53,6 @@ export class SphericalController extends EventDispatcher {
                 this._camera.position.set(pos.x, pos.y, pos.z);
             }
             this.dispatchEvent(new SphericalControllerEvent(SphericalControllerEventType.MOVED_CAMERA));
-            console.log(this._camera.position);
         };
         /**
          * tweenのコンプリートイベントハンドラ
@@ -139,11 +147,7 @@ export class SphericalController extends EventDispatcher {
      */
     loopMoveR(min, max, duration) {
         const stopTween = () => {
-            if (this.tweenR) {
-                this.tweenR.paused = true;
-                this.tweenR.removeAllEventListeners();
-                this.tweenR = null;
-            }
+            this.tweenR = SphericalController.removeTween(this.tweenR);
         };
         const loop = () => {
             stopTween();
@@ -181,13 +185,9 @@ export class SphericalController extends EventDispatcher {
      * @param value 単位はラジアン角
      */
     moveTheta(value) {
-        if (this.tweenTheta) {
-            this.tweenTheta.paused = true;
-            this.tweenTheta.removeAllEventListeners();
-            this.tweenTheta = null;
-        }
-        const toLong = SphericalController.getTweenRotation(this.pos.theta, value);
-        this.tweenTheta = Tween.get(this.pos).to({ theta: toLong }, SphericalController.tweenDuration, SphericalController.tweenFunc);
+        this.tweenTheta = SphericalController.removeTween(this.tweenTheta);
+        const toTheta = SphericalController.getTweenRotation(this.pos.theta, value);
+        this.tweenTheta = Tween.get(this.pos).to({ theta: toTheta }, SphericalController.tweenDuration, SphericalController.tweenFunc);
         this.tweenTheta.addEventListener("change", this.setNeedUpdate);
     }
     /**
@@ -196,11 +196,7 @@ export class SphericalController extends EventDispatcher {
      * @param value 単位はラジアン角
      */
     movePhi(value) {
-        if (this.tweenPhi) {
-            this.tweenPhi.paused = true;
-            this.tweenPhi.removeAllEventListeners();
-            this.tweenPhi = null;
-        }
+        this.tweenPhi = SphericalController.removeTween(this.tweenPhi);
         const toPhi = SphericalController.getTweenRotation(this.pos.phi, value);
         this.tweenPhi = Tween.get(this.pos).to({ phi: toPhi }, SphericalController.tweenDuration, SphericalController.tweenFunc);
         this.tweenPhi.addEventListener("change", this.setNeedUpdate);
@@ -241,11 +237,7 @@ export class SphericalController extends EventDispatcher {
      * @param value 移動先
      */
     moveCameraShift(value) {
-        if (this.tweenCameraShift) {
-            this.tweenCameraShift.paused = true;
-            this.tweenCameraShift.removeAllEventListeners();
-            this.tweenCameraShift = null;
-        }
+        this.tweenCameraShift = SphericalController.removeTween(this.tweenCameraShift);
         if (!this.cameraShift) {
             this.cameraShift = new Vector3();
         }

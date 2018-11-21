@@ -78,9 +78,10 @@ const initController = cameraTarget => {
 
   setInterval(() => {
     const to = new Spherical(
-      R + Math.random() * 50 - 25,
+      // R + Math.random() * 50 - 25,
+      R,
       Math.random() * Math.PI,
-      Math.random() * Math.PI * 2
+      Math.random() * Math.PI * 20
     );
     cameraController.move(to);
     console.log(to);

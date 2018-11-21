@@ -101,7 +101,6 @@ export class SphericalController extends EventDispatcher {
    */
   public move(pos: Spherical, targetPos?: Vector3): void {
     this.pauseTween();
-
     this.isMoving = true;
 
     this.tweenCameraSpherical = Tween.get(this.pos)
@@ -159,7 +158,6 @@ export class SphericalController extends EventDispatcher {
     this.dispatchEvent(
       new SphericalControllerEvent(SphericalControllerEventType.MOVED_CAMERA)
     );
-    console.log(this._camera.position);
   };
 
   /**
@@ -209,11 +207,7 @@ export class SphericalController extends EventDispatcher {
    */
   public loopMoveR(min: number, max: number, duration: number): void {
     const stopTween = () => {
-      if (this.tweenR) {
-        this.tweenR.paused = true;
-        this.tweenR.removeAllEventListeners();
-        this.tweenR = null;
-      }
+      this.tweenR = SphericalController.removeTween(this.tweenR);
     };
 
     const loop = () => {
@@ -264,16 +258,12 @@ export class SphericalController extends EventDispatcher {
    * @param value 単位はラジアン角
    */
   public moveTheta(value: number): void {
-    if (this.tweenTheta) {
-      this.tweenTheta.paused = true;
-      this.tweenTheta.removeAllEventListeners();
-      this.tweenTheta = null;
-    }
+    this.tweenTheta = SphericalController.removeTween(this.tweenTheta);
 
-    const toLong = SphericalController.getTweenRotation(this.pos.theta, value);
+    const toTheta = SphericalController.getTweenRotation(this.pos.theta, value);
 
     this.tweenTheta = Tween.get(this.pos).to(
-      { theta: toLong },
+      { theta: toTheta },
       SphericalController.tweenDuration,
       SphericalController.tweenFunc
     );
@@ -286,11 +276,7 @@ export class SphericalController extends EventDispatcher {
    * @param value 単位はラジアン角
    */
   public movePhi(value: number): void {
-    if (this.tweenPhi) {
-      this.tweenPhi.paused = true;
-      this.tweenPhi.removeAllEventListeners();
-      this.tweenPhi = null;
-    }
+    this.tweenPhi = SphericalController.removeTween(this.tweenPhi);
 
     const toPhi = SphericalController.getTweenRotation(this.pos.phi, value);
 
@@ -346,12 +332,9 @@ export class SphericalController extends EventDispatcher {
    * @param value 移動先
    */
   public moveCameraShift(value: Vector3): void {
-    if (this.tweenCameraShift) {
-      this.tweenCameraShift.paused = true;
-      this.tweenCameraShift.removeAllEventListeners();
-      this.tweenCameraShift = null;
-    }
-
+    this.tweenCameraShift = SphericalController.removeTween(
+      this.tweenCameraShift
+    );
     if (!this.cameraShift) {
       this.cameraShift = new Vector3();
     }
