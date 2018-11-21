@@ -4,8 +4,8 @@ import { Camera, Vector3, EventDispatcher, Mesh, Spherical } from "three";
  *
  * カメラ位置はThetaおよびPhiで決定される。
  * 0, 0の場合北極上にカメラが位置する。
- * Theta : 0 ~ Math.PI
- * Phi : 0 ~ Math.PI * 2
+ * Phi : -Math.PI/2 ~ Math.PI/2 (縦回転)
+ * Theta : -Math.PI ~ Math.PI (横回転)
  * の範囲で可動する。
  */
 export declare class SphericalController extends EventDispatcher {
@@ -13,7 +13,6 @@ export declare class SphericalController extends EventDispatcher {
     private _cameraTarget;
     private cameraShift;
     private tweenTarget;
-    private tweenCameraSpherical;
     private tweenR;
     private tweenTheta;
     private tweenPhi;
@@ -46,9 +45,9 @@ export declare class SphericalController extends EventDispatcher {
     /**
      * カメラを任意の位置に移動する
      * @param pos
-     * @param targetPos
+     * @param normalize 回転数の正規化を行うか否か。trueの場合は目的の角度まで最短の経路で回転する。falseの場合は指定された回転数、回転する。
      */
-    move(pos: Spherical, targetPos?: Vector3): void;
+    move(pos: Spherical, normalize?: boolean): void;
     /**
      * tweenによる更新フラグ処理
      * @param e
@@ -90,8 +89,9 @@ export declare class SphericalController extends EventDispatcher {
      * 経度のみを移動する
      * 横向回転を行う際のメソッド
      * @param value 単位はラジアン角
+     * @param normalize 回転数の正規化を行うか否か。trueの場合は目的の角度まで最短の経路で回転する。falseの場合は指定された回転数、回転する。
      */
-    moveTheta(value: number): void;
+    moveTheta(value: number, normalize?: boolean): void;
     /**
      * 緯度のみを移動する
      * 縦方向回転を行う際のメソッド
@@ -112,9 +112,6 @@ export declare class SphericalController extends EventDispatcher {
      * @param value 移動先
      */
     moveCameraShift(value: Vector3): void;
-    /**************
-     * 現状位置からの加算
-     **************/
     /**
      * 半径を加算する。
      * ズームインアウトを行う際のメソッド
@@ -143,6 +140,7 @@ export declare class SphericalController extends EventDispatcher {
      * @param overrideTween tweenのキャンセルを行うか、defaultはfalse。trueの場合tweenを停止して現状値からの加算を行う
      */
     addPhi(value: number, overrideTween?: boolean): void;
+    private limitPhi;
     /**
      * 全てのtweenインスタンスを停止、破棄する
      */

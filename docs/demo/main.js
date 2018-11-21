@@ -12,7 +12,7 @@ import {
   AxesHelper,
   Vector3
 } from "three";
-import { SphericalController } from "../../bin/SphericalController";
+import { SphericalController } from "../../bin/index";
 
 const W = 1920;
 const H = 1080;
@@ -73,17 +73,18 @@ let cameraController;
 const initController = cameraTarget => {
   const R = 105;
   cameraController = new SphericalController(camera, cameraTarget);
-  cameraController.initCameraPosition(new Spherical(R, 0, 0));
+  cameraController.initCameraPosition(
+    new Spherical(R, 0.0001, Math.PI * 2 * 12)
+  );
   cameraController.initCameraShift(new Vector3(20, 0, 0));
 
   setInterval(() => {
     const to = new Spherical(
-      // R + Math.random() * 50 - 25,
       R,
       Math.random() * Math.PI,
-      Math.random() * Math.PI * 20
+      Math.random() * Math.PI * 6 - Math.PI * 3
     );
-    cameraController.move(to);
+    cameraController.move(to, true);
     console.log(to);
   }, 3000);
 };

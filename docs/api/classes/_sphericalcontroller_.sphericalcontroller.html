@@ -76,8 +76,8 @@
 					</div>
 					<p>カメラ位置はThetaおよびPhiで決定される。
 						0, 0の場合北極上にカメラが位置する。
-						Theta : 0 ~ Math.PI
-						Phi : 0 ~ Math.PI * 2
+						Phi : -Math.PI/2 ~ Math.PI/2 (縦回転)
+						Theta : -Math.PI ~ Math.PI (横回転)
 					の範囲で可動する。</p>
 				</div>
 			</section>
@@ -116,7 +116,6 @@
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_sphericalcontroller_.sphericalcontroller.html#philimitmin" class="tsd-kind-icon">phi<wbr>Limit<wbr>Min</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_sphericalcontroller_.sphericalcontroller.html#pos" class="tsd-kind-icon">pos</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_sphericalcontroller_.sphericalcontroller.html#tweencamerashift" class="tsd-kind-icon">tween<wbr>Camera<wbr>Shift</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_sphericalcontroller_.sphericalcontroller.html#tweencameraspherical" class="tsd-kind-icon">tween<wbr>Camera<wbr>Spherical</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_sphericalcontroller_.sphericalcontroller.html#tweenphi" class="tsd-kind-icon">tween<wbr>Phi</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_sphericalcontroller_.sphericalcontroller.html#tweenr" class="tsd-kind-icon">tweenR</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_sphericalcontroller_.sphericalcontroller.html#tweentarget" class="tsd-kind-icon">tween<wbr>Target</a></li>
@@ -139,6 +138,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_sphericalcontroller_.sphericalcontroller.html#haseventlistener" class="tsd-kind-icon">has<wbr>Event<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_sphericalcontroller_.sphericalcontroller.html#initcameraposition" class="tsd-kind-icon">init<wbr>Camera<wbr>Position</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_sphericalcontroller_.sphericalcontroller.html#initcamerashift" class="tsd-kind-icon">init<wbr>Camera<wbr>Shift</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_sphericalcontroller_.sphericalcontroller.html#limitphi" class="tsd-kind-icon">limit<wbr>Phi</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_sphericalcontroller_.sphericalcontroller.html#loopmovephi" class="tsd-kind-icon">loop<wbr>Move<wbr>Phi</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_sphericalcontroller_.sphericalcontroller.html#loopmover" class="tsd-kind-icon">loop<wbr>MoveR</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_sphericalcontroller_.sphericalcontroller.html#move" class="tsd-kind-icon">move</a></li>
@@ -174,7 +174,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides EventDispatcher.__constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L54">SphericalController.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L53">SphericalController.ts:53</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -208,7 +208,7 @@
 					<div class="tsd-signature tsd-kind-icon">_camera<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Camera</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L26">SphericalController.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L26">SphericalController.ts:26</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -218,7 +218,7 @@
 					<div class="tsd-signature tsd-kind-icon">_camera<wbr>Target<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Mesh</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L27">SphericalController.ts:27</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L27">SphericalController.ts:27</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -228,7 +228,7 @@
 					<div class="tsd-signature tsd-kind-icon">camera<wbr>Shift<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Vector3</span><span class="tsd-signature-symbol"> =&nbsp;new Vector3()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L32">SphericalController.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L32">SphericalController.ts:32</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -238,7 +238,7 @@
 					<div class="tsd-signature tsd-kind-icon">is<wbr>Moving<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L44">SphericalController.ts:44</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L43">SphericalController.ts:43</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -248,27 +248,27 @@
 					<div class="tsd-signature tsd-kind-icon">is<wbr>Update<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L54">SphericalController.ts:54</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L53">SphericalController.ts:53</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="philimitmax" class="tsd-anchor"></a>
 					<h3>phi<wbr>Limit<wbr>Max</h3>
-					<div class="tsd-signature tsd-kind-icon">phi<wbr>Limit<wbr>Max<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<div class="tsd-signature tsd-kind-icon">phi<wbr>Limit<wbr>Max<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;Math.PI - 0.001</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L52">SphericalController.ts:52</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L51">SphericalController.ts:51</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="philimitmin" class="tsd-anchor"></a>
 					<h3>phi<wbr>Limit<wbr>Min</h3>
-					<div class="tsd-signature tsd-kind-icon">phi<wbr>Limit<wbr>Min<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<div class="tsd-signature tsd-kind-icon">phi<wbr>Limit<wbr>Min<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0.001</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L51">SphericalController.ts:51</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L50">SphericalController.ts:50</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -278,7 +278,7 @@
 					<div class="tsd-signature tsd-kind-icon">pos<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Spherical</span><span class="tsd-signature-symbol"> =&nbsp;new Spherical()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L50">SphericalController.ts:50</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L49">SphericalController.ts:49</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -288,17 +288,7 @@
 					<div class="tsd-signature tsd-kind-icon">tween<wbr>Camera<wbr>Shift<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Tween</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L42">SphericalController.ts:42</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="tweencameraspherical" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> tween<wbr>Camera<wbr>Spherical</h3>
-					<div class="tsd-signature tsd-kind-icon">tween<wbr>Camera<wbr>Spherical<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Tween</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L36">SphericalController.ts:36</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L41">SphericalController.ts:41</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -308,7 +298,7 @@
 					<div class="tsd-signature tsd-kind-icon">tween<wbr>Phi<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Tween</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L41">SphericalController.ts:41</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L40">SphericalController.ts:40</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -318,7 +308,7 @@
 					<div class="tsd-signature tsd-kind-icon">tweenR<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Tween</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L39">SphericalController.ts:39</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L38">SphericalController.ts:38</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -328,7 +318,7 @@
 					<div class="tsd-signature tsd-kind-icon">tween<wbr>Target<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Tween</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L35">SphericalController.ts:35</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L35">SphericalController.ts:35</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -338,7 +328,7 @@
 					<div class="tsd-signature tsd-kind-icon">tween<wbr>Theta<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Tween</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L40">SphericalController.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L39">SphericalController.ts:39</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -348,7 +338,7 @@
 					<div class="tsd-signature tsd-kind-icon">loop<wbr>Tween<wbr>Func<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;Ease.sineInOut</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L48">SphericalController.ts:48</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L47">SphericalController.ts:47</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -379,7 +369,7 @@
 					<div class="tsd-signature tsd-kind-icon">tween<wbr>Duration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1333</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L46">SphericalController.ts:46</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L45">SphericalController.ts:45</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -389,7 +379,7 @@
 					<div class="tsd-signature tsd-kind-icon">tween<wbr>Func<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;Ease.cubicOut</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L47">SphericalController.ts:47</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L46">SphericalController.ts:46</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -483,7 +473,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L409">SphericalController.ts:409</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L389">SphericalController.ts:389</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -521,7 +511,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L360">SphericalController.ts:360</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L339">SphericalController.ts:339</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -556,7 +546,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L376">SphericalController.ts:376</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L355">SphericalController.ts:355</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -590,7 +580,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L392">SphericalController.ts:392</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L371">SphericalController.ts:371</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -628,7 +618,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L168">SphericalController.ts:168</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L158">SphericalController.ts:158</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -752,7 +742,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L80">SphericalController.ts:80</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L79">SphericalController.ts:79</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -785,7 +775,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L92">SphericalController.ts:92</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L91">SphericalController.ts:91</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -805,6 +795,29 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="limitphi" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> limit<wbr>Phi</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">limit<wbr>Phi<span class="tsd-signature-symbol">(</span>phi<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L401">SphericalController.ts:401</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>phi: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="loopmovephi" class="tsd-anchor"></a>
 					<h3>loop<wbr>Move<wbr>Phi</h3>
@@ -815,7 +828,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L298">SphericalController.ts:298</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L283">SphericalController.ts:283</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -859,7 +872,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L208">SphericalController.ts:208</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L194">SphericalController.ts:194</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -891,13 +904,13 @@
 					<a name="move" class="tsd-anchor"></a>
 					<h3>move</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">move<span class="tsd-signature-symbol">(</span>pos<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Spherical</span>, targetPos<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Vector3</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">move<span class="tsd-signature-symbol">(</span>pos<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Spherical</span>, normalize<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L102">SphericalController.ts:102</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L101">SphericalController.ts:101</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -911,8 +924,9 @@
 									<h5>pos: <span class="tsd-signature-type">Spherical</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> targetPos: <span class="tsd-signature-type">Vector3</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> normalize: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
 									<div class="tsd-comment tsd-typography">
+										<p>回転数の正規化を行うか否か。trueの場合は目的の角度まで最短の経路で回転する。falseの場合は指定された回転数、回転する。</p>
 									</div>
 								</li>
 							</ul>
@@ -930,7 +944,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L334">SphericalController.ts:334</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L317">SphericalController.ts:317</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -961,7 +975,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L278">SphericalController.ts:278</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L264">SphericalController.ts:264</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -993,7 +1007,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L186">SphericalController.ts:186</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L176">SphericalController.ts:176</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1024,7 +1038,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L244">SphericalController.ts:244</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L226">SphericalController.ts:226</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1049,13 +1063,13 @@
 					<a name="movetheta" class="tsd-anchor"></a>
 					<h3>move<wbr>Theta</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">move<wbr>Theta<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">move<wbr>Theta<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, normalize<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L260">SphericalController.ts:260</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L243">SphericalController.ts:243</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1070,6 +1084,12 @@
 									<h5>value: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>単位はラジアン角</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> normalize: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>回転数の正規化を行うか否か。trueの場合は目的の角度まで最短の経路で回転する。falseの場合は指定された回転数、回転する。</p>
 									</div>
 								</li>
 							</ul>
@@ -1087,7 +1107,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L462">SphericalController.ts:462</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L443">SphericalController.ts:443</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1110,7 +1130,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L428">SphericalController.ts:428</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L412">SphericalController.ts:412</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1188,7 +1208,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L128">SphericalController.ts:128</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L117">SphericalController.ts:117</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1220,7 +1240,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L326">SphericalController.ts:326</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L309">SphericalController.ts:309</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1237,7 +1257,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L232">SphericalController.ts:232</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L218">SphericalController.ts:218</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1254,7 +1274,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L135">SphericalController.ts:135</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L124">SphericalController.ts:124</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1276,7 +1296,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L482">SphericalController.ts:482</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L463">SphericalController.ts:463</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1315,7 +1335,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/2b5c50d/src/SphericalController.ts#L451">SphericalController.ts:451</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/9f7b624/src/SphericalController.ts#L432">SphericalController.ts:432</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1390,9 +1410,6 @@
 								<a href="_sphericalcontroller_.sphericalcontroller.html#tweencamerashift" class="tsd-kind-icon">tween<wbr>Camera<wbr>Shift</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_sphericalcontroller_.sphericalcontroller.html#tweencameraspherical" class="tsd-kind-icon">tween<wbr>Camera<wbr>Spherical</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_sphericalcontroller_.sphericalcontroller.html#tweenphi" class="tsd-kind-icon">tween<wbr>Phi</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
@@ -1442,6 +1459,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_sphericalcontroller_.sphericalcontroller.html#initcamerashift" class="tsd-kind-icon">init<wbr>Camera<wbr>Shift</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_sphericalcontroller_.sphericalcontroller.html#limitphi" class="tsd-kind-icon">limit<wbr>Phi</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_sphericalcontroller_.sphericalcontroller.html#loopmovephi" class="tsd-kind-icon">loop<wbr>Move<wbr>Phi</a>
