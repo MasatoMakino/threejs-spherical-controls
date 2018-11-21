@@ -13,6 +13,15 @@ import {
   SphericalControllerEventType
 } from "./SphericalControllerEvent";
 
+/**
+ * 球面座標系でカメラ位置をコントロールするクラス。
+ *
+ * カメラ位置はThetaおよびPhiで決定される。
+ * 0, 0の場合北極上にカメラが位置する。
+ * Theta : 0 ~ Math.PI
+ * Phi : 0 ~ Math.PI * 2
+ * の範囲で可動する。
+ */
 export class SphericalController extends EventDispatcher {
   private _camera: Camera;
   private _cameraTarget: Mesh;
@@ -58,8 +67,7 @@ export class SphericalController extends EventDispatcher {
       opacity: 0.0,
       transparent: true
     });
-    this._camera.onBeforeRender = () => {
-      console.log("before");
+    this._cameraTarget.onBeforeRender = () => {
       this.updatePosition();
     };
   }
@@ -151,6 +159,7 @@ export class SphericalController extends EventDispatcher {
     this.dispatchEvent(
       new SphericalControllerEvent(SphericalControllerEventType.MOVED_CAMERA)
     );
+    console.log(this._camera.position);
   };
 
   /**

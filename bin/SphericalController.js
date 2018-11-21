@@ -44,6 +44,7 @@ export class SphericalController extends EventDispatcher {
                 this._camera.position.set(pos.x, pos.y, pos.z);
             }
             this.dispatchEvent(new SphericalControllerEvent(SphericalControllerEventType.MOVED_CAMERA));
+            console.log(this._camera.position);
         };
         /**
          * tweenのコンプリートイベントハンドラ
@@ -61,8 +62,7 @@ export class SphericalController extends EventDispatcher {
             opacity: 0.0,
             transparent: true
         });
-        this._camera.onBeforeRender = () => {
-            console.log("before");
+        this._cameraTarget.onBeforeRender = () => {
             this.updatePosition();
         };
     }

@@ -36,6 +36,7 @@
     "build": "npm run prettier:src && tsc && npm run babel && npm run doc",
     "prettier:src": "prettier --write './!(bin)/**/*.{js,ts,json}' ",
     "babel": "webpack --mode development --module-bind js=babel-loader ./docs/demo/main.js --output ./docs/demo/bundle.js",
+    "watch:babel": "npm run babel -- -w",
     "watch:server": "node task/browsersync.js development",
     "server": "node task/browsersync.js production",
     "doc": "npm run doc:generate && npm run doc:replaceNode",
