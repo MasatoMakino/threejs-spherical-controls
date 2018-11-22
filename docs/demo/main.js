@@ -39,12 +39,27 @@ const onDomContentsLoaded = () => {
   //平行光源オブジェクト(light)の設定
   const ambientLight = new AmbientLight(0xffffff, 1.0);
   scene.add(ambientLight);
+
+  testPI2();
+
   scene.add(new AxesHelper(25));
   initCube();
   const target = initTarget();
   initController(target);
 
   render();
+};
+
+const testPI2 = () => {
+  console.log(SphericalController.PI2ToPI(0) === 0);
+  console.log(SphericalController.PI2ToPI(Math.PI) === -Math.PI);
+  console.log(SphericalController.PI2ToPI(-Math.PI) === Math.PI);
+  console.log(SphericalController.PI2ToPI(Math.PI * 2) === 0);
+  console.log(SphericalController.PI2ToPI(Math.PI + 0.01) === -Math.PI + 0.01);
+  console.log(
+    Math.abs(SphericalController.PI2ToPI(Math.PI * 200 + 0.01) - 0.01) <
+      0.000001
+  );
 };
 
 const initCube = () => {
