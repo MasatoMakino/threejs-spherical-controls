@@ -18,7 +18,7 @@ import {
  *
  * カメラ位置はThetaおよびPhiで決定される。
  * 0, 0の場合北極上にカメラが位置する。
- * Phi : -Math.PI/2 ~ Math.PI/2 (縦回転)
+ * Phi : 0 ~ Math.PI (縦回転)
  * Theta : -Math.PI ~ Math.PI (横回転)
  * の範囲で可動する。
  */
@@ -461,31 +461,17 @@ export class SphericalController extends EventDispatcher {
    * @returns {number}    最短距離での目標となる回転角
    */
   public static getTweenTheta(from: number, to: number): number {
-    const PI2 = Math.PI * 2;
     to = this.PI2ToPI(to);
 
-    const currentRotationY: number = from % PI2;
-    const numOfRotationY: number = (from - currentRotationY) / PI2; //回転方向の決定および回転数の保持
-
-    let next_A: number = numOfRotationY * PI2 + to;
-    let next_B: number = next_A;
-    if (next_A > from) {
-      next_B -= PI2;
-    } else {
-      next_B += PI2;
-    }
-
-    if (Math.abs(next_A - from) > Math.abs(next_B - from)) {
-      to = next_B;
-    } else {
-      to = next_A;
-    }
-
-    return to;
+    let fromDif = this.PI2ToPI(from);
+    fromDif = this.PI2ToPI(to - fromDif);
+    // console.log(fromDif);
+    return from + fromDif;
   }
 
   /**
    * ラジアンを-Math.PI ~ Math.PIの範囲に正規化する。
+   * Math.PIもしくは-Math.PIを入力すると正負が反転する。
    * @param {number} value
    * @return {number}
    * @constructor

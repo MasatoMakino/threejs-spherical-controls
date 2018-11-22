@@ -4,7 +4,7 @@ import { Camera, Vector3, EventDispatcher, Mesh, Spherical } from "three";
  *
  * カメラ位置はThetaおよびPhiで決定される。
  * 0, 0の場合北極上にカメラが位置する。
- * Phi : -Math.PI/2 ~ Math.PI/2 (縦回転)
+ * Phi : 0 ~ Math.PI (縦回転)
  * Theta : -Math.PI ~ Math.PI (横回転)
  * の範囲で可動する。
  */
@@ -167,6 +167,7 @@ export declare class SphericalController extends EventDispatcher {
     static getTweenTheta(from: number, to: number): number;
     /**
      * ラジアンを-Math.PI ~ Math.PIの範囲に正規化する。
+     * Math.PIもしくは-Math.PIを入力すると正負が反転する。
      * @param {number} value
      * @return {number}
      * @constructor
