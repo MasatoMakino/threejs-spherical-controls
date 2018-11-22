@@ -10,6 +10,8 @@ import { SphericalControllerEvent, SphericalControllerEventType } from "./Spheri
  * Phi : 0 ~ Math.PI (縦回転)
  * Theta : -Math.PI ~ Math.PI (横回転)
  * の範囲で可動する。
+ *
+ * 北極南極を通過すると緯度も反転するため、このクラスでは南北90度以上の移動には対応していない。また、極点上空では座標が一意の値にならないため、Phi 0もしくはPIには対応していない。
  */
 export class SphericalController extends EventDispatcher {
     /**
@@ -25,11 +27,12 @@ export class SphericalController extends EventDispatcher {
         this.cameraShift = new Vector3();
         this.isMoving = false;
         this.pos = new Spherical();
-        this.phiLimitMin = 0.001;
-        this.phiLimitMax = Math.PI - 0.001;
+        this.phiLimitMin = SphericalController.EPS;
+        this.phiLimitMax = Math.PI - SphericalController.EPS;
         this.isUpdate = false;
         /**
          * tweenによる更新フラグ処理
+         * イベントハンドラーで処理できるように関数とする。
          * @param e
          */
         this.setNeedUpdate = (e) => {
@@ -100,7 +103,10 @@ export class SphericalController extends EventDispatcher {
     /**
      * カメラを任意の位置に移動する
      * @param pos
-     * @param normalize 回転数の正規化を行うか否か。trueの場合は目的の角度まで最短の経路で回転する。falseの場合は指定された回転数、回転する。
+     * @param normalize
+     *   回転数の正規化を行うか否か。
+     *   trueの場合は目的の角度まで最短の経路で回転する。
+     *   falseの場合は指定された回転数、回転する。
      */
     move(pos, normalize = true) {
         this.pauseTween();
@@ -364,3 +370,4 @@ export class SphericalController extends EventDispatcher {
 SphericalController.tweenDuration = 1333;
 SphericalController.tweenFunc = Ease.cubicOut;
 SphericalController.loopTweenFunc = Ease.sineInOut;
+SphericalController.EPS = 0.000001;

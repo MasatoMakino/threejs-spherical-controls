@@ -7,6 +7,8 @@ import { Camera, Vector3, EventDispatcher, Mesh, Spherical } from "three";
  * Phi : 0 ~ Math.PI (縦回転)
  * Theta : -Math.PI ~ Math.PI (横回転)
  * の範囲で可動する。
+ *
+ * 北極南極を通過すると緯度も反転するため、このクラスでは南北90度以上の移動には対応していない。また、極点上空では座標が一意の値にならないため、Phi 0もしくはPIには対応していない。
  */
 export declare class SphericalController extends EventDispatcher {
     private _camera;
@@ -22,6 +24,7 @@ export declare class SphericalController extends EventDispatcher {
     private static tweenFunc;
     private static loopTweenFunc;
     private pos;
+    private static readonly EPS;
     phiLimitMin: number;
     phiLimitMax: number;
     protected isUpdate: boolean;
@@ -45,11 +48,15 @@ export declare class SphericalController extends EventDispatcher {
     /**
      * カメラを任意の位置に移動する
      * @param pos
-     * @param normalize 回転数の正規化を行うか否か。trueの場合は目的の角度まで最短の経路で回転する。falseの場合は指定された回転数、回転する。
+     * @param normalize
+     *   回転数の正規化を行うか否か。
+     *   trueの場合は目的の角度まで最短の経路で回転する。
+     *   falseの場合は指定された回転数、回転する。
      */
     move(pos: Spherical, normalize?: boolean): void;
     /**
      * tweenによる更新フラグ処理
+     * イベントハンドラーで処理できるように関数とする。
      * @param e
      */
     private setNeedUpdate;
