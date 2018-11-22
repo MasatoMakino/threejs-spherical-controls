@@ -456,8 +456,8 @@ export class SphericalController extends EventDispatcher {
    * 任意の点までの回転アニメーションに必要になる
    * 回転方向を算出する処理。
    *
-   * @param fromRotation　   現状の回転角度　単位ラジアン
-   * @param toRotation      移動目標となる回転角度　単位ラジアン
+   * @param from
+   * @param to
    * @returns {number}    最短距離での目標となる回転角
    */
   public static getTweenTheta(from: number, to: number): number {
@@ -490,22 +490,7 @@ export class SphericalController extends EventDispatcher {
    * @return {number}
    * @constructor
    */
-  private static PI2ToPI(value: number) {
-    const PI = Math.PI;
-    const PI2 = PI * 2;
-    value = value % PI2;
-
-    if (Math.abs(value) < PI) {
-      return value;
-    }
-
-    const over = Math.abs(value) - PI;
-
-    if (value > 0) {
-      value = -PI + over;
-    } else {
-      value = PI - over;
-    }
-    return value;
+  public static PI2ToPI(value: number) {
+    return Math.atan2(Math.sin(value), Math.cos(value));
   }
 }
