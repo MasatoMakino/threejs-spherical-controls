@@ -44,9 +44,9 @@ export class SphericalController extends EventDispatcher {
 
   private isMoving: boolean = false;
 
-  private static tweenDuration: number = 1333;
-  private static tweenFunc = Ease.cubicOut;
-  private static loopTweenFunc = Ease.sineInOut;
+  public duration: number = 1333;
+  public easing = Ease.cubicOut;
+  public loopEasing = Ease.sineInOut;
 
   private pos: Spherical = new Spherical();
   private static readonly EPS = 0.000001;
@@ -186,8 +186,8 @@ export class SphericalController extends EventDispatcher {
 
     this.tweenR = Tween.get(this.pos).to(
       { radius: value },
-      SphericalController.tweenDuration,
-      SphericalController.tweenFunc
+      this.duration,
+      this.easing
     );
     this.tweenR.addEventListener("change", this.setNeedUpdate);
   }
@@ -207,8 +207,8 @@ export class SphericalController extends EventDispatcher {
     const loop = () => {
       stopTween();
       this.tweenR = Tween.get(this.pos, { loop: -1 })
-        .to({ radius: max }, duration, SphericalController.loopTweenFunc)
-        .to({ radius: min }, duration, SphericalController.loopTweenFunc);
+        .to({ radius: max }, duration, this.loopEasing)
+        .to({ radius: min }, duration, this.loopEasing);
       this.tweenR.addEventListener("change", this.setNeedUpdate);
     };
 
@@ -218,7 +218,7 @@ export class SphericalController extends EventDispatcher {
     );
 
     this.tweenR = Tween.get(this.pos)
-      .to({ radius: min }, firstDuration, SphericalController.loopTweenFunc)
+      .to({ radius: min }, firstDuration, this.loopEasing)
       .call(loop);
     this.tweenR.addEventListener("change", this.setNeedUpdate);
   }
@@ -236,8 +236,8 @@ export class SphericalController extends EventDispatcher {
 
     this.tweenTarget = Tween.get(this._cameraTarget.position).to(
       { x: value.x, y: value.y, z: value.z },
-      SphericalController.tweenDuration,
-      SphericalController.tweenFunc
+      this.duration,
+      this.easing
     );
     this.tweenTarget.addEventListener("change", this.setNeedUpdate);
   }
@@ -258,8 +258,8 @@ export class SphericalController extends EventDispatcher {
 
     this.tweenTheta = Tween.get(this.pos).to(
       { theta: to },
-      SphericalController.tweenDuration,
-      SphericalController.tweenFunc
+      this.duration,
+      this.easing
     );
     this.tweenTheta.addEventListener("change", this.setNeedUpdate);
   }
@@ -275,8 +275,8 @@ export class SphericalController extends EventDispatcher {
 
     this.tweenPhi = Tween.get(this.pos).to(
       { phi: to },
-      SphericalController.tweenDuration,
-      SphericalController.tweenFunc
+      this.duration,
+      this.easing
     );
     this.tweenPhi.addEventListener("change", this.setNeedUpdate);
   }
@@ -299,8 +299,8 @@ export class SphericalController extends EventDispatcher {
     const loop = () => {
       stopTween();
       this.tweenPhi = Tween.get(this.pos, { loop: -1 })
-        .to({ phi: toMax }, duration, SphericalController.loopTweenFunc)
-        .to({ phi: toMin }, duration, SphericalController.loopTweenFunc);
+        .to({ phi: toMax }, duration, this.loopEasing)
+        .to({ phi: toMin }, duration, this.loopEasing);
       this.tweenPhi.addEventListener("change", this.setNeedUpdate);
     };
 
@@ -309,7 +309,7 @@ export class SphericalController extends EventDispatcher {
       duration * ((this.pos.phi - toMin) / (toMax - toMin))
     );
     this.tweenPhi = Tween.get(this.pos)
-      .to({ phi: toMin }, firstDuration, SphericalController.loopTweenFunc)
+      .to({ phi: toMin }, firstDuration, this.loopEasing)
       .call(loop);
     this.tweenPhi.addEventListener("change", this.setNeedUpdate);
   }
@@ -332,8 +332,8 @@ export class SphericalController extends EventDispatcher {
 
     this.tweenCameraShift = Tween.get(this.cameraShift).to(
       { x: value.x, y: value.y, z: value.z },
-      SphericalController.tweenDuration,
-      SphericalController.tweenFunc
+      this.duration,
+      this.easing
     );
     this.tweenCameraShift.addEventListener("change", this.setNeedUpdate);
   }
