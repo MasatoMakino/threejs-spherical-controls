@@ -20,13 +20,13 @@ export declare class SphericalController extends EventDispatcher {
     private tweenPhi;
     private tweenCameraShift;
     private isMoving;
-    private static tweenDuration;
-    private static tweenFunc;
-    private static loopTweenFunc;
+    duration: number;
+    easing: (amount: number) => number;
+    loopEasing: (amount: number) => number;
     private pos;
     private static readonly EPS;
-    phiLimitMin: number;
-    phiLimitMax: number;
+    phiMin: number;
+    phiMax: number;
     protected isUpdate: boolean;
     /**
      * コンストラクタ
@@ -70,9 +70,6 @@ export declare class SphericalController extends EventDispatcher {
      * @param _target
      */
     changeTarget(_target: Mesh): void;
-    /**************
-     * 特定パラメーターのみ移動
-     **************/
     /**
      * 半径のみを移動する
      * @param value 単位はラジアン角
@@ -127,7 +124,7 @@ export declare class SphericalController extends EventDispatcher {
      */
     addR(value: number, overrideTween?: boolean): void;
     /**
-     * カメラターゲットの位置を移動する。
+     * カメラターゲットの座標を加算する。
      * 水平、垂直移動などに使用
      * @param pos
      * @param overrideTween

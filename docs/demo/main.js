@@ -92,6 +92,7 @@ const initController = cameraTarget => {
     new Spherical(R, 0.0001, Math.PI * 2 * 12)
   );
   cameraController.initCameraShift(new Vector3(20, 0, 0));
+  cameraController.duration = 1666;
 
   setInterval(() => {
     const to = new Spherical(
@@ -103,7 +104,7 @@ const initController = cameraTarget => {
     );
     cameraController.move(to, true);
     console.log(to);
-  }, 1500);
+  }, 2000);
 };
 
 const render = () => {

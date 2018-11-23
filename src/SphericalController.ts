@@ -173,10 +173,6 @@ export class SphericalController extends EventDispatcher {
     // tweenが終了したらthis._cameraTargetを差し替え。
   }
 
-  /**************
-   * 特定パラメーターのみ移動
-   **************/
-
   /**
    * 半径のみを移動する
    * @param value 単位はラジアン角
@@ -355,7 +351,7 @@ export class SphericalController extends EventDispatcher {
   }
 
   /**
-   * カメラターゲットの位置を移動する。
+   * カメラターゲットの座標を加算する。
    * 水平、垂直移動などに使用
    * @param pos
    * @param overrideTween

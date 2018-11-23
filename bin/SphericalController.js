@@ -26,9 +26,12 @@ export class SphericalController extends EventDispatcher {
         // 値を指定するとそのぶん_cameraTargetが中央からオフセットされる。
         this.cameraShift = new Vector3();
         this.isMoving = false;
+        this.duration = 1333;
+        this.easing = Ease.cubicOut;
+        this.loopEasing = Ease.sineInOut;
         this.pos = new Spherical();
-        this.phiLimitMin = SphericalController.EPS;
-        this.phiLimitMax = Math.PI - SphericalController.EPS;
+        this.phiMin = SphericalController.EPS;
+        this.phiMax = Math.PI - SphericalController.EPS;
         this.isUpdate = false;
         /**
          * tweenによる更新フラグ処理
@@ -87,6 +90,7 @@ export class SphericalController extends EventDispatcher {
      */
     initCameraPosition(pos, targetPos) {
         this.pos = pos;
+        this.pos.phi = this.limitPhi(this.pos.phi);
         if (targetPos) {
             this._cameraTarget.position.set(targetPos.x, targetPos.y, targetPos.z);
         }
@@ -130,16 +134,13 @@ export class SphericalController extends EventDispatcher {
         // 座標はworld座標に変換して統一。
         // tweenが終了したらthis._cameraTargetを差し替え。
     }
-    /**************
-     * 特定パラメーターのみ移動
-     **************/
     /**
      * 半径のみを移動する
      * @param value 単位はラジアン角
      */
     moveR(value) {
         this.tweenR = SphericalController.removeTween(this.tweenR);
-        this.tweenR = Tween.get(this.pos).to({ radius: value }, SphericalController.tweenDuration, SphericalController.tweenFunc);
+        this.tweenR = Tween.get(this.pos).to({ radius: value }, this.duration, this.easing);
         this.tweenR.addEventListener("change", this.setNeedUpdate);
     }
     /**
@@ -156,14 +157,14 @@ export class SphericalController extends EventDispatcher {
         const loop = () => {
             stopTween();
             this.tweenR = Tween.get(this.pos, { loop: -1 })
-                .to({ radius: max }, duration, SphericalController.loopTweenFunc)
-                .to({ radius: min }, duration, SphericalController.loopTweenFunc);
+                .to({ radius: max }, duration, this.loopEasing)
+                .to({ radius: min }, duration, this.loopEasing);
             this.tweenR.addEventListener("change", this.setNeedUpdate);
         };
         stopTween();
         const firstDuration = Math.abs(duration * ((this.pos.radius - min) / (max - min)));
         this.tweenR = Tween.get(this.pos)
-            .to({ radius: min }, firstDuration, SphericalController.loopTweenFunc)
+            .to({ radius: min }, firstDuration, this.loopEasing)
             .call(loop);
         this.tweenR.addEventListener("change", this.setNeedUpdate);
     }
@@ -176,7 +177,7 @@ export class SphericalController extends EventDispatcher {
      */
     moveTarget(value) {
         this.tweenTarget = SphericalController.removeTween(this.tweenTarget);
-        this.tweenTarget = Tween.get(this._cameraTarget.position).to({ x: value.x, y: value.y, z: value.z }, SphericalController.tweenDuration, SphericalController.tweenFunc);
+        this.tweenTarget = Tween.get(this._cameraTarget.position).to({ x: value.x, y: value.y, z: value.z }, this.duration, this.easing);
         this.tweenTarget.addEventListener("change", this.setNeedUpdate);
     }
     /**
@@ -191,7 +192,7 @@ export class SphericalController extends EventDispatcher {
         if (normalize) {
             to = SphericalController.getTweenTheta(this.pos.theta, value);
         }
-        this.tweenTheta = Tween.get(this.pos).to({ theta: to }, SphericalController.tweenDuration, SphericalController.tweenFunc);
+        this.tweenTheta = Tween.get(this.pos).to({ theta: to }, this.duration, this.easing);
         this.tweenTheta.addEventListener("change", this.setNeedUpdate);
     }
     /**
@@ -202,7 +203,7 @@ export class SphericalController extends EventDispatcher {
     movePhi(value) {
         this.tweenPhi = SphericalController.removeTween(this.tweenPhi);
         const to = this.limitPhi(value);
-        this.tweenPhi = Tween.get(this.pos).to({ phi: to }, SphericalController.tweenDuration, SphericalController.tweenFunc);
+        this.tweenPhi = Tween.get(this.pos).to({ phi: to }, this.duration, this.easing);
         this.tweenPhi.addEventListener("change", this.setNeedUpdate);
     }
     /**
@@ -221,14 +222,14 @@ export class SphericalController extends EventDispatcher {
         const loop = () => {
             stopTween();
             this.tweenPhi = Tween.get(this.pos, { loop: -1 })
-                .to({ phi: toMax }, duration, SphericalController.loopTweenFunc)
-                .to({ phi: toMin }, duration, SphericalController.loopTweenFunc);
+                .to({ phi: toMax }, duration, this.loopEasing)
+                .to({ phi: toMin }, duration, this.loopEasing);
             this.tweenPhi.addEventListener("change", this.setNeedUpdate);
         };
         stopTween();
         const firstDuration = Math.abs(duration * ((this.pos.phi - toMin) / (toMax - toMin)));
         this.tweenPhi = Tween.get(this.pos)
-            .to({ phi: toMin }, firstDuration, SphericalController.loopTweenFunc)
+            .to({ phi: toMin }, firstDuration, this.loopEasing)
             .call(loop);
         this.tweenPhi.addEventListener("change", this.setNeedUpdate);
     }
@@ -244,7 +245,7 @@ export class SphericalController extends EventDispatcher {
         if (!this.cameraShift) {
             this.cameraShift = new Vector3();
         }
-        this.tweenCameraShift = Tween.get(this.cameraShift).to({ x: value.x, y: value.y, z: value.z }, SphericalController.tweenDuration, SphericalController.tweenFunc);
+        this.tweenCameraShift = Tween.get(this.cameraShift).to({ x: value.x, y: value.y, z: value.z }, this.duration, this.easing);
         this.tweenCameraShift.addEventListener("change", this.setNeedUpdate);
     }
     /**
@@ -263,7 +264,7 @@ export class SphericalController extends EventDispatcher {
         this.setNeedUpdate(null);
     }
     /**
-     * カメラターゲットの位置を移動する。
+     * カメラターゲットの座標を加算する。
      * 水平、垂直移動などに使用
      * @param pos
      * @param overrideTween
@@ -290,7 +291,6 @@ export class SphericalController extends EventDispatcher {
             this.pauseTween();
         }
         this.pos.theta += value;
-        this.pos.makeSafe();
         this.setNeedUpdate(null);
     }
     /**
@@ -310,10 +310,10 @@ export class SphericalController extends EventDispatcher {
         this.setNeedUpdate(null);
     }
     limitPhi(phi) {
-        if (this.phiLimitMax == null)
+        if (this.phiMax == null || this.phiMin == null)
             return phi;
-        phi = Math.min(phi, this.phiLimitMax);
-        phi = Math.max(phi, this.phiLimitMin);
+        phi = Math.min(phi, this.phiMax);
+        phi = Math.max(phi, this.phiMin);
         return phi;
     }
     /**
@@ -367,7 +367,4 @@ export class SphericalController extends EventDispatcher {
         return Math.atan2(Math.sin(value), Math.cos(value));
     }
 }
-SphericalController.tweenDuration = 1333;
-SphericalController.tweenFunc = Ease.cubicOut;
-SphericalController.loopTweenFunc = Ease.sineInOut;
 SphericalController.EPS = 0.000001;

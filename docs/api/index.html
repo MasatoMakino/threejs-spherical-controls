@@ -66,6 +66,35 @@
 			<div class="tsd-panel tsd-typography">
 				<h1 id="threejs-spherical-controls">threejs-spherical-controls</h1>
 				<p>Spherical camera controller for Three.js</p>
+				<p><a href="https://codeclimate.com/github/MasatoMakino/threejs-spherical-controls/maintainability"><img src="https://api.codeclimate.com/v1/badges/2f9b5a94f146fec74465/maintainability" alt="Maintainability"></a>
+				<a href="LICENSE"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat" alt="MIT License"></a></p>
+				<p><a href="https://github.com/MasatoMakino/threejs-spherical-controls">Github repository</a></p>
+				<h2 id="demo">Demo</h2>
+				<p><a href="https://masatomakino.github.io/threejs-spherical-controls/demo/">Demo Page</a></p>
+				<h2 id="getting-started">Getting Started</h2>
+				<h3 id="install">Install</h3>
+				<p>threejs-spherical-controls depend on <a href="https://threejs.org/">three.js</a> and <a href="https://github.com/CreateJS/TweenJS">CreateJS / TweenJS</a></p>
+				<pre><code class="language-bash">npm install three tweenjs --save-dev</code></pre>
+				<p>and</p>
+				<pre><code class="language-bash">npm install https://github.com/MasatoMakino/threejs-spherical-controls.git --save-dev</code></pre>
+				<h3 id="import">Import</h3>
+				<p>threejs-spherical-controls is composed of ES6 modules and TypeScript d.ts files.</p>
+				<p>At first, import classes.</p>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { SphericalController } <span class="hljs-keyword">from</span> <span class="hljs-string">"threejs-spherical-controls"</span>;</code></pre>
+				<h3 id="set-up-controller">Set up controller</h3>
+				<pre><code class="language-js"><span class="hljs-keyword">const</span> cameraTarget = <span class="hljs-keyword">new</span> Mesh(<span class="hljs-keyword">new</span> SphereGeometry(<span class="hljs-number">1</span>));
+scene.add(cameraTarget);
+
+<span class="hljs-keyword">const</span> cameraController = <span class="hljs-keyword">new</span> SphericalController(camera, cameraTarget);
+cameraController.initCameraPosition(
+  <span class="hljs-keyword">new</span> Spherical(radius, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>) <span class="hljs-comment">// =&gt; North Pole</span>
+);
+cameraController.move(
+  <span class="hljs-keyword">new</span> Spherical(radius, <span class="hljs-built_in">Math</span>.PI, <span class="hljs-number">0</span>) <span class="hljs-comment">// =&gt; South Pole</span>
+);</code></pre>
+				<p><a href="https://masatomakino.github.io/threejs-spherical-controls/api/">API documents</a></p>
+				<h2 id="license">License</h2>
+				<p>threejs-spherical-controls is <a href="LICENSE">MIT licensed</a>.</p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
