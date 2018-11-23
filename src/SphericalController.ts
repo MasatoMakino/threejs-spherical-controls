@@ -50,8 +50,8 @@ export class SphericalController extends EventDispatcher {
 
   private pos: Spherical = new Spherical();
   private static readonly EPS = 0.000001;
-  public phiLimitMin: number = SphericalController.EPS;
-  public phiLimitMax: number = Math.PI - SphericalController.EPS;
+  public phiMin: number = SphericalController.EPS;
+  public phiMax: number = Math.PI - SphericalController.EPS;
 
   protected isUpdate: boolean = false;
 
@@ -406,10 +406,10 @@ export class SphericalController extends EventDispatcher {
   }
 
   private limitPhi(phi: number): number {
-    if (this.phiLimitMax == null) return phi;
+    if (this.phiMax == null || this.phiMin == null) return phi;
 
-    phi = Math.min(phi, this.phiLimitMax);
-    phi = Math.max(phi, this.phiLimitMin);
+    phi = Math.min(phi, this.phiMax);
+    phi = Math.max(phi, this.phiMin);
     return phi;
   }
 
