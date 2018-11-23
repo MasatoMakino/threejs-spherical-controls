@@ -81,6 +81,7 @@ export class SphericalController extends EventDispatcher {
    */
   public initCameraPosition(pos: Spherical, targetPos?: Vector3): void {
     this.pos = pos;
+    this.pos.phi = this.limitPhi(this.pos.phi);
     if (targetPos) {
       this._cameraTarget.position.set(targetPos.x, targetPos.y, targetPos.z);
     }
@@ -382,7 +383,6 @@ export class SphericalController extends EventDispatcher {
     }
 
     this.pos.theta += value;
-    this.pos.makeSafe();
 
     this.setNeedUpdate(null);
   }
