@@ -652,7 +652,7 @@
     "@types/glob" "*"
     "@types/node" "*"
 
-"@types/three@^0.93.5":
+"@types/three@^0.93.10":
   version "0.93.10"
   resolved "https://registry.yarnpkg.com/@types/three/-/three-0.93.10.tgz#80b97c28530966393c90ab83a6ad11bb74d87a93"
   integrity sha512-FW0I4X3Z05E2m6w5UvAZeJN2aEu8oWPorXIQaxAW1d0BetJHbfjp87lKTh7VUxx4oLjh9hWCt/hEX6vJp7lfmA==

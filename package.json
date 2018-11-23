@@ -1,6 +1,6 @@
 {
   "name": "threejs-spherical-controls",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "./bin/index.js",
   "types": "./bin/index.d.ts",
   "repository": "https://MasatoMakino@github.com/MasatoMakino/threejs-spherical-controls.git",
@@ -9,14 +9,13 @@
   "keywords": [
     "threejs"
   ],
-  "dependencies": {
-    "@types/three": "^0.93.5",
-    "@types/tweenjs": "^1.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
     "@types/jest": "^23.3.7",
+    "@types/three": "^0.93.10",
+    "@types/tweenjs": "^1.0.0",
     "babel-loader": "^8.0.4",
     "browser-sync": "^2.26.3",
     "husky": "^1.2.0",
