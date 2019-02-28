@@ -32,6 +32,8 @@ export class SphericalController extends EventDispatcher {
         this.pos = new Spherical();
         this.phiMin = SphericalController.EPS;
         this.phiMax = Math.PI - SphericalController.EPS;
+        this.thetaMin = null;
+        this.thetaMax = null;
         this.isUpdate = false;
         /**
          * tweenによる更新フラグ処理
@@ -91,6 +93,7 @@ export class SphericalController extends EventDispatcher {
     initCameraPosition(pos, targetPos) {
         this.pos = pos;
         this.pos.phi = this.limitPhi(this.pos.phi);
+        this.pos.theta = this.limitTheta(this.pos.theta);
         if (targetPos) {
             this._cameraTarget.position.set(targetPos.x, targetPos.y, targetPos.z);
         }
@@ -192,6 +195,7 @@ export class SphericalController extends EventDispatcher {
         if (normalize) {
             to = SphericalController.getTweenTheta(this.pos.theta, value);
         }
+        to = this.limitTheta(to);
         this.tweenTheta = Tween.get(this.pos).to({ theta: to }, this.duration, this.easing);
         this.tweenTheta.addEventListener("change", this.setNeedUpdate);
     }
@@ -291,6 +295,7 @@ export class SphericalController extends EventDispatcher {
             this.pauseTween();
         }
         this.pos.theta += value;
+        this.pos.theta = this.limitTheta(this.pos.theta);
         this.setNeedUpdate(null);
     }
     /**
@@ -315,6 +320,13 @@ export class SphericalController extends EventDispatcher {
         phi = Math.min(phi, this.phiMax);
         phi = Math.max(phi, this.phiMin);
         return phi;
+    }
+    limitTheta(theta) {
+        if (this.thetaMin == null || this.thetaMax == null)
+            return theta;
+        theta = Math.min(theta, this.thetaMax);
+        theta = Math.max(theta, this.thetaMin);
+        return theta;
     }
     /**
      * 全てのtweenインスタンスを停止、破棄する
@@ -353,7 +365,6 @@ export class SphericalController extends EventDispatcher {
         to = this.PI2ToPI(to);
         let fromDif = this.PI2ToPI(from);
         fromDif = this.PI2ToPI(to - fromDif);
-        // console.log(fromDif);
         return from + fromDif;
     }
     /**

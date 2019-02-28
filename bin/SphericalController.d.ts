@@ -27,6 +27,8 @@ export declare class SphericalController extends EventDispatcher {
     private static readonly EPS;
     phiMin: number;
     phiMax: number;
+    thetaMin: number;
+    thetaMax: number;
     protected isUpdate: boolean;
     /**
      * コンストラクタ
@@ -145,6 +147,7 @@ export declare class SphericalController extends EventDispatcher {
      */
     addPhi(value: number, overrideTween?: boolean): void;
     private limitPhi;
+    private limitTheta;
     /**
      * 全てのtweenインスタンスを停止、破棄する
      */

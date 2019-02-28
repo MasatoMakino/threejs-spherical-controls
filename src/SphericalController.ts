@@ -52,6 +52,8 @@ export class SphericalController extends EventDispatcher {
   private static readonly EPS = 0.000001;
   public phiMin: number = SphericalController.EPS;
   public phiMax: number = Math.PI - SphericalController.EPS;
+  public thetaMin: number = null;
+  public thetaMax: number = null;
 
   protected isUpdate: boolean = false;
 
@@ -82,6 +84,7 @@ export class SphericalController extends EventDispatcher {
   public initCameraPosition(pos: Spherical, targetPos?: Vector3): void {
     this.pos = pos;
     this.pos.phi = this.limitPhi(this.pos.phi);
+    this.pos.theta = this.limitTheta(this.pos.theta);
     if (targetPos) {
       this._cameraTarget.position.set(targetPos.x, targetPos.y, targetPos.z);
     }
@@ -251,6 +254,7 @@ export class SphericalController extends EventDispatcher {
     if (normalize) {
       to = SphericalController.getTweenTheta(this.pos.theta, value);
     }
+    to = this.limitTheta(to);
 
     this.tweenTheta = Tween.get(this.pos).to(
       { theta: to },
@@ -379,6 +383,7 @@ export class SphericalController extends EventDispatcher {
     }
 
     this.pos.theta += value;
+    this.pos.theta = this.limitTheta(this.pos.theta);
 
     this.setNeedUpdate(null);
   }
@@ -407,6 +412,14 @@ export class SphericalController extends EventDispatcher {
     phi = Math.min(phi, this.phiMax);
     phi = Math.max(phi, this.phiMin);
     return phi;
+  }
+
+  private limitTheta(theta: number): number {
+    if (this.thetaMin == null || this.thetaMax == null) return theta;
+
+    theta = Math.min(theta, this.thetaMax);
+    theta = Math.max(theta, this.thetaMin);
+    return theta;
   }
 
   /**
@@ -468,7 +481,6 @@ export class SphericalController extends EventDispatcher {
 
     let fromDif = this.PI2ToPI(from);
     fromDif = this.PI2ToPI(to - fromDif);
-    // console.log(fromDif);
     return from + fromDif;
   }
 
