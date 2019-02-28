@@ -112,7 +112,10 @@ export declare class SphericalController extends EventDispatcher {
      * @param {number} duration　往復の片道にかかる時間
      */
     loopMovePhi(min: number, max: number, duration: number): void;
+    private getFirstDuration;
     stopLoopMovePhi(): void;
+    loopMoveTheta(min: number, max: number, duration: number): void;
+    stopLoopMoveTheta(): void;
     /**
      * カメラシフトを移動する
      * @param value 移動先

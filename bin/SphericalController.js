@@ -218,27 +218,47 @@ export class SphericalController extends EventDispatcher {
      * @param {number} duration　往復の片道にかかる時間
      */
     loopMovePhi(min, max, duration) {
-        const stopTween = () => {
-            this.tweenPhi = SphericalController.removeTween(this.tweenPhi);
-        };
         const toMin = this.limitPhi(min);
         const toMax = this.limitPhi(max);
         const loop = () => {
-            stopTween();
+            this.stopLoopMovePhi();
             this.tweenPhi = Tween.get(this.pos, { loop: -1 })
                 .to({ phi: toMax }, duration, this.loopEasing)
                 .to({ phi: toMin }, duration, this.loopEasing);
             this.tweenPhi.addEventListener("change", this.setNeedUpdate);
         };
-        stopTween();
-        const firstDuration = Math.abs(duration * ((this.pos.phi - toMin) / (toMax - toMin)));
+        this.stopLoopMovePhi();
+        const firstDuration = this.getFirstDuration(duration, this.pos.phi, toMax, toMin);
         this.tweenPhi = Tween.get(this.pos)
             .to({ phi: toMin }, firstDuration, this.loopEasing)
             .call(loop);
         this.tweenPhi.addEventListener("change", this.setNeedUpdate);
     }
+    getFirstDuration(duration, current, max, min) {
+        return Math.abs(duration * ((current - min) / (max - min)));
+    }
     stopLoopMovePhi() {
         this.tweenPhi = SphericalController.removeTween(this.tweenPhi);
+    }
+    loopMoveTheta(min, max, duration) {
+        const toMin = this.limitTheta(min);
+        const toMax = this.limitTheta(max);
+        const loop = () => {
+            this.stopLoopMoveTheta();
+            this.tweenTheta = Tween.get(this.pos, { loop: -1 })
+                .to({ theta: toMax }, duration, this.loopEasing)
+                .to({ theta: toMin }, duration, this.loopEasing);
+            this.tweenTheta.addEventListener("change", this.setNeedUpdate);
+        };
+        this.stopLoopMoveTheta();
+        const firstDuration = this.getFirstDuration(duration, this.pos.theta, toMax, toMin);
+        this.tweenTheta = Tween.get(this.pos)
+            .to({ theta: toMin }, firstDuration, this.loopEasing)
+            .call(loop);
+        this.tweenTheta.addEventListener("change", this.setNeedUpdate);
+    }
+    stopLoopMoveTheta() {
+        this.tweenTheta = SphericalController.removeTween(this.tweenTheta);
     }
     /**
      * カメラシフトを移動する
