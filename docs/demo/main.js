@@ -102,7 +102,10 @@ const initController = cameraTarget => {
       // (Math.PI / 180) * 0,
       // (Math.PI / 180) * 350
     );
-    cameraController.move(to, true);
+    cameraController.move(to, {
+      duration: 3000,
+      easing: createjs.Ease.cubicOut
+    });
     console.log(to);
   }, 2000);
 };

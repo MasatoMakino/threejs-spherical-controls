@@ -103,18 +103,16 @@ export class SphericalController extends EventDispatcher {
   /**
    * カメラを任意の位置に移動する
    * @param pos
-   * @param normalize
-   *   回転数の正規化を行うか否か。
-   *   trueの場合は目的の角度まで最短の経路で回転する。
-   *   falseの場合は指定された回転数、回転する。
+   * @param option
    */
-  public move(pos: Spherical, normalize: boolean = true): void {
+  public move(pos: Spherical, option?: EasingOption): void {
+    option = EasingOption.init(option, this);
     this.pauseTween();
     this.isMoving = true;
 
-    this.moveR(pos.radius);
-    this.movePhi(pos.phi);
-    this.moveTheta(pos.theta, normalize);
+    this.moveR(pos.radius, option);
+    this.movePhi(pos.phi, option);
+    this.moveTheta(pos.theta, option);
     if (this.tweenPhi) {
       this.tweenPhi.addEventListener("complete", this.onCompleteMove);
     }
@@ -179,14 +177,16 @@ export class SphericalController extends EventDispatcher {
   /**
    * 半径のみを移動する
    * @param value 単位はラジアン角
+   * @param option
    */
-  public moveR(value: number): void {
+  public moveR(value: number, option?: EasingOption): void {
+    option = EasingOption.init(option, this);
     this.tweenR = SphericalController.removeTween(this.tweenR);
 
     this.tweenR = Tween.get(this.pos).to(
       { radius: value },
-      this.duration,
-      this.easing
+      option.duration,
+      option.easing
     );
     this.tweenR.addEventListener("change", this.setNeedUpdate);
   }
@@ -196,9 +196,11 @@ export class SphericalController extends EventDispatcher {
    * ゆらゆらとズームインアウトさせるための処理
    * @param {number} min
    * @param {number} max
-   * @param {number} duration　往復の片道にかかる時間
+   * @param option
    */
-  public loopMoveR(min: number, max: number, duration: number): void {
+  public loopMoveR(min: number, max: number, option?: EasingOption): void {
+    option = EasingOption.init(option, this, true);
+
     const stopTween = () => {
       this.tweenR = SphericalController.removeTween(this.tweenR);
     };
@@ -206,18 +208,18 @@ export class SphericalController extends EventDispatcher {
     const loop = () => {
       stopTween();
       this.tweenR = Tween.get(this.pos, { loop: -1 })
-        .to({ radius: max }, duration, this.loopEasing)
-        .to({ radius: min }, duration, this.loopEasing);
+        .to({ radius: max }, option.duration, option.easing)
+        .to({ radius: min }, option.duration, option.easing);
       this.tweenR.addEventListener("change", this.setNeedUpdate);
     };
 
     stopTween();
     const firstDuration = Math.abs(
-      duration * ((this.pos.radius - min) / (max - min))
+      option.duration * ((this.pos.radius - min) / (max - min))
     );
 
     this.tweenR = Tween.get(this.pos)
-      .to({ radius: min }, firstDuration, this.loopEasing)
+      .to({ radius: min }, firstDuration, option.easing)
       .call(loop);
     this.tweenR.addEventListener("change", this.setNeedUpdate);
   }
@@ -229,14 +231,16 @@ export class SphericalController extends EventDispatcher {
   /**
    * カメラターゲットのみを移動する
    * @param value 単位はラジアン角
+   * @param option
    */
-  public moveTarget(value: Vector3): void {
+  public moveTarget(value: Vector3, option?: EasingOption): void {
+    option = EasingOption.init(option, this);
     this.tweenTarget = SphericalController.removeTween(this.tweenTarget);
 
     this.tweenTarget = Tween.get(this._cameraTarget.position).to(
       { x: value.x, y: value.y, z: value.z },
-      this.duration,
-      this.easing
+      option.duration,
+      option.easing
     );
     this.tweenTarget.addEventListener("change", this.setNeedUpdate);
   }
@@ -245,21 +249,22 @@ export class SphericalController extends EventDispatcher {
    * 経度のみを移動する
    * 横向回転を行う際のメソッド
    * @param value 単位はラジアン角
-   * @param normalize 回転数の正規化を行うか否か。trueの場合は目的の角度まで最短の経路で回転する。falseの場合は指定された回転数、回転する。
+   * @param option
    */
-  public moveTheta(value: number, normalize: boolean = true): void {
+  public moveTheta(value: number, option?: EasingOption): void {
+    option = EasingOption.init(option, this);
     this.tweenTheta = SphericalController.removeTween(this.tweenTheta);
 
     let to = value;
-    if (normalize) {
+    if (option.normalize) {
       to = SphericalController.getTweenTheta(this.pos.theta, value);
     }
     to = this.limitTheta(to);
 
     this.tweenTheta = Tween.get(this.pos).to(
       { theta: to },
-      this.duration,
-      this.easing
+      option.duration,
+      option.easing
     );
     this.tweenTheta.addEventListener("change", this.setNeedUpdate);
   }
@@ -268,15 +273,18 @@ export class SphericalController extends EventDispatcher {
    * 緯度のみを移動する
    * 縦方向回転を行う際のメソッド
    * @param value 単位はラジアン角
+   * @param option
    */
-  public movePhi(value: number): void {
+  public movePhi(value: number, option?: EasingOption): void {
+    option = EasingOption.init(option, this);
+
     this.tweenPhi = SphericalController.removeTween(this.tweenPhi);
     const to = this.limitPhi(value);
 
     this.tweenPhi = Tween.get(this.pos).to(
       { phi: to },
-      this.duration,
-      this.easing
+      option.duration,
+      option.easing
     );
     this.tweenPhi.addEventListener("change", this.setNeedUpdate);
   }
@@ -286,28 +294,30 @@ export class SphericalController extends EventDispatcher {
    * 縦方向にゆらゆらと回転させるための処理
    * @param {number} min　単位はラジアン角
    * @param {number} max　単位はラジアン角
-   * @param {number} duration　往復の片道にかかる時間
+   * @param option
    */
-  public loopMovePhi(min: number, max: number, duration: number): void {
+  public loopMovePhi(min: number, max: number, option?: EasingOption): void {
+    option = EasingOption.init(option, this, true);
+
     const toMin = this.limitPhi(min);
     const toMax = this.limitPhi(max);
     const loop = () => {
       this.stopLoopMovePhi();
       this.tweenPhi = Tween.get(this.pos, { loop: -1 })
-        .to({ phi: toMax }, duration, this.loopEasing)
-        .to({ phi: toMin }, duration, this.loopEasing);
+        .to({ phi: toMax }, option.duration, option.easing)
+        .to({ phi: toMin }, option.duration, option.easing);
       this.tweenPhi.addEventListener("change", this.setNeedUpdate);
     };
 
     this.stopLoopMovePhi();
     const firstDuration = this.getFirstDuration(
-      duration,
+      option.duration,
       this.pos.phi,
       toMax,
       toMin
     );
     this.tweenPhi = Tween.get(this.pos)
-      .to({ phi: toMin }, firstDuration, this.loopEasing)
+      .to({ phi: toMin }, firstDuration, option.easing)
       .call(loop);
     this.tweenPhi.addEventListener("change", this.setNeedUpdate);
   }
@@ -325,26 +335,28 @@ export class SphericalController extends EventDispatcher {
     this.tweenPhi = SphericalController.removeTween(this.tweenPhi);
   }
 
-  public loopMoveTheta(min: number, max: number, duration: number): void {
+  public loopMoveTheta(min: number, max: number, option?: EasingOption): void {
+    option = EasingOption.init(option, this, true);
+
     const toMin = this.limitTheta(min);
     const toMax = this.limitTheta(max);
     const loop = () => {
       this.stopLoopMoveTheta();
       this.tweenTheta = Tween.get(this.pos, { loop: -1 })
-        .to({ theta: toMax }, duration, this.loopEasing)
-        .to({ theta: toMin }, duration, this.loopEasing);
+        .to({ theta: toMax }, option.duration, option.easing)
+        .to({ theta: toMin }, option.duration, option.easing);
       this.tweenTheta.addEventListener("change", this.setNeedUpdate);
     };
 
     this.stopLoopMoveTheta();
     const firstDuration = this.getFirstDuration(
-      duration,
+      option.duration,
       this.pos.theta,
       toMax,
       toMin
     );
     this.tweenTheta = Tween.get(this.pos)
-      .to({ theta: toMin }, firstDuration, this.loopEasing)
+      .to({ theta: toMin }, firstDuration, option.easing)
       .call(loop);
     this.tweenTheta.addEventListener("change", this.setNeedUpdate);
   }
@@ -356,8 +368,11 @@ export class SphericalController extends EventDispatcher {
   /**
    * カメラシフトを移動する
    * @param value 移動先
+   * @param option
    */
-  public moveCameraShift(value: Vector3): void {
+  public moveCameraShift(value: Vector3, option?: EasingOption): void {
+    option = EasingOption.init(option, this);
+
     this.tweenCameraShift = SphericalController.removeTween(
       this.tweenCameraShift
     );
@@ -367,8 +382,8 @@ export class SphericalController extends EventDispatcher {
 
     this.tweenCameraShift = Tween.get(this.cameraShift).to(
       { x: value.x, y: value.y, z: value.z },
-      this.duration,
-      this.easing
+      option.duration,
+      option.easing
     );
     this.tweenCameraShift.addEventListener("change", this.setNeedUpdate);
   }
@@ -528,5 +543,38 @@ export class SphericalController extends EventDispatcher {
    */
   public static PI2ToPI(value: number) {
     return Math.atan2(Math.sin(value), Math.cos(value));
+  }
+}
+
+/**
+ * イージングオプション
+ * move関数で一度限りのアニメーション設定するためのオプション。
+ */
+export class EasingOption {
+  duration?: number;
+  easing?: Function;
+  normalize?: boolean; //回転数の正規化を行うか否か。trueの場合は目的の角度まで最短の経路で回転する。falseの場合は指定された回転数、回転する。
+
+  static init(
+    option: EasingOption,
+    controller: SphericalController,
+    isLoop: boolean = false
+  ): EasingOption {
+    if (option == null) {
+      option = new EasingOption();
+    }
+    if (option.duration == null) {
+      option.duration = controller.duration;
+    }
+    if (option.easing == null) {
+      option.easing = controller.easing;
+      if (isLoop) {
+        option.easing = controller.loopEasing;
+      }
+    }
+    if (option.normalize === null || option.normalize === undefined) {
+      option.normalize = true;
+    }
+    return option;
   }
 }

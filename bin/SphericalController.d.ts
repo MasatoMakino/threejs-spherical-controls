@@ -50,12 +50,9 @@ export declare class SphericalController extends EventDispatcher {
     /**
      * カメラを任意の位置に移動する
      * @param pos
-     * @param normalize
-     *   回転数の正規化を行うか否か。
-     *   trueの場合は目的の角度まで最短の経路で回転する。
-     *   falseの場合は指定された回転数、回転する。
+     * @param option
      */
-    move(pos: Spherical, normalize?: boolean): void;
+    move(pos: Spherical, option?: EasingOption): void;
     /**
      * tweenによる更新フラグ処理
      * イベントハンドラーで処理できるように関数とする。
@@ -75,52 +72,56 @@ export declare class SphericalController extends EventDispatcher {
     /**
      * 半径のみを移動する
      * @param value 単位はラジアン角
+     * @param option
      */
-    moveR(value: number): void;
+    moveR(value: number, option?: EasingOption): void;
     /**
      * カメラ半径のみをループで移動させる。
      * ゆらゆらとズームインアウトさせるための処理
      * @param {number} min
      * @param {number} max
-     * @param {number} duration　往復の片道にかかる時間
+     * @param option
      */
-    loopMoveR(min: number, max: number, duration: number): void;
+    loopMoveR(min: number, max: number, option?: EasingOption): void;
     stopLoopMoveR(): void;
     /**
      * カメラターゲットのみを移動する
      * @param value 単位はラジアン角
+     * @param option
      */
-    moveTarget(value: Vector3): void;
+    moveTarget(value: Vector3, option?: EasingOption): void;
     /**
      * 経度のみを移動する
      * 横向回転を行う際のメソッド
      * @param value 単位はラジアン角
-     * @param normalize 回転数の正規化を行うか否か。trueの場合は目的の角度まで最短の経路で回転する。falseの場合は指定された回転数、回転する。
+     * @param option
      */
-    moveTheta(value: number, normalize?: boolean): void;
+    moveTheta(value: number, option?: EasingOption): void;
     /**
      * 緯度のみを移動する
      * 縦方向回転を行う際のメソッド
      * @param value 単位はラジアン角
+     * @param option
      */
-    movePhi(value: number): void;
+    movePhi(value: number, option?: EasingOption): void;
     /**
      * 緯度のみをループで移動させる。
      * 縦方向にゆらゆらと回転させるための処理
      * @param {number} min　単位はラジアン角
      * @param {number} max　単位はラジアン角
-     * @param {number} duration　往復の片道にかかる時間
+     * @param option
      */
-    loopMovePhi(min: number, max: number, duration: number): void;
+    loopMovePhi(min: number, max: number, option?: EasingOption): void;
     private getFirstDuration;
     stopLoopMovePhi(): void;
-    loopMoveTheta(min: number, max: number, duration: number): void;
+    loopMoveTheta(min: number, max: number, option?: EasingOption): void;
     stopLoopMoveTheta(): void;
     /**
      * カメラシフトを移動する
      * @param value 移動先
+     * @param option
      */
-    moveCameraShift(value: Vector3): void;
+    moveCameraShift(value: Vector3, option?: EasingOption): void;
     /**
      * 半径を加算する。
      * ズームインアウトを行う際のメソッド
@@ -183,5 +184,15 @@ export declare class SphericalController extends EventDispatcher {
      * @constructor
      */
     static PI2ToPI(value: number): number;
+}
+/**
+ * イージングオプション
+ * move関数で一度限りのアニメーション設定するためのオプション。
+ */
+export declare class EasingOption {
+    duration?: number;
+    easing?: Function;
+    normalize?: boolean;
+    static init(option: EasingOption, controller: SphericalController, isLoop?: boolean): EasingOption;
 }
 //# sourceMappingURL=SphericalController.d.ts.map
