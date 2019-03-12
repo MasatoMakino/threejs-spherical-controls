@@ -1,7 +1,8 @@
 var Tween = createjs.Tween;
 var Ease = createjs.Ease;
-import { Vector3, EventDispatcher, MeshBasicMaterial, Spherical } from "three";
+import { EventDispatcher, MeshBasicMaterial, Spherical, Vector3 } from "three";
 import { SphericalControllerEvent, SphericalControllerEventType } from "./SphericalControllerEvent";
+import { TargetParam } from "./SphericalControllerEvent";
 /**
  * 球面座標系でカメラ位置をコントロールするクラス。
  *
@@ -65,15 +66,6 @@ export class SphericalController extends EventDispatcher {
             }
             this.dispatchEvent(new SphericalControllerEvent(SphericalControllerEventType.MOVED_CAMERA));
         };
-        /**
-         * tweenのコンプリートイベントハンドラ
-         * カメラ移動が終了したことを示すイベントを発行する。
-         */
-        this.onCompleteMove = () => {
-            this.isMoving = false;
-            this.dispatchEvent(new SphericalControllerEvent(SphericalControllerEventType.MOVED_CAMERA));
-            this.dispatchEvent(new SphericalControllerEvent(SphericalControllerEventType.MOVED_CAMERA_COMPLETE));
-        };
         this._camera = camera;
         this._cameraTarget = target;
         this._cameraTarget.material = new MeshBasicMaterial({
@@ -119,9 +111,6 @@ export class SphericalController extends EventDispatcher {
         this.moveR(pos.radius, option);
         this.movePhi(pos.phi, option);
         this.moveTheta(pos.theta, option);
-        if (this.tweenPhi) {
-            this.tweenPhi.addEventListener("complete", this.onCompleteMove);
-        }
     }
     /**
      * カメラターゲットの変更
@@ -145,6 +134,9 @@ export class SphericalController extends EventDispatcher {
         this.tweenR = SphericalController.removeTween(this.tweenR);
         this.tweenR = Tween.get(this.pos).to({ radius: value }, option.duration, option.easing);
         this.tweenR.addEventListener("change", this.setNeedUpdate);
+        this.tweenR.addEventListener("complete", e => {
+            this.dispatchEvent(new SphericalControllerEvent(SphericalControllerEventType.MOVED_CAMERA_COMPLETE, TargetParam.R));
+        });
     }
     /**
      * カメラ半径のみをループで移動させる。
@@ -202,6 +194,9 @@ export class SphericalController extends EventDispatcher {
         to = this.limitTheta(to);
         this.tweenTheta = Tween.get(this.pos).to({ theta: to }, option.duration, option.easing);
         this.tweenTheta.addEventListener("change", this.setNeedUpdate);
+        this.tweenTheta.addEventListener("complete", e => {
+            this.dispatchEvent(new SphericalControllerEvent(SphericalControllerEventType.MOVED_CAMERA_COMPLETE, TargetParam.THETA));
+        });
     }
     /**
      * 緯度のみを移動する
@@ -215,6 +210,9 @@ export class SphericalController extends EventDispatcher {
         const to = this.limitPhi(value);
         this.tweenPhi = Tween.get(this.pos).to({ phi: to }, option.duration, option.easing);
         this.tweenPhi.addEventListener("change", this.setNeedUpdate);
+        this.tweenPhi.addEventListener("complete", e => {
+            this.dispatchEvent(new SphericalControllerEvent(SphericalControllerEventType.MOVED_CAMERA_COMPLETE, TargetParam.PHI));
+        });
     }
     /**
      * 緯度のみをループで移動させる。

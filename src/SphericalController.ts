@@ -2,16 +2,17 @@ import Tween = createjs.Tween;
 import Ease = createjs.Ease;
 import {
   Camera,
-  Vector3,
   EventDispatcher,
   Mesh,
   MeshBasicMaterial,
-  Spherical
+  Spherical,
+  Vector3
 } from "three";
 import {
   SphericalControllerEvent,
   SphericalControllerEventType
 } from "./SphericalControllerEvent";
+import { TargetParam } from "./SphericalControllerEvent";
 
 /**
  * 球面座標系でカメラ位置をコントロールするクラス。
@@ -113,9 +114,6 @@ export class SphericalController extends EventDispatcher {
     this.moveR(pos.radius, option);
     this.movePhi(pos.phi, option);
     this.moveTheta(pos.theta, option);
-    if (this.tweenPhi) {
-      this.tweenPhi.addEventListener("complete", this.onCompleteMove);
-    }
   }
 
   /**
@@ -189,6 +187,14 @@ export class SphericalController extends EventDispatcher {
       option.easing
     );
     this.tweenR.addEventListener("change", this.setNeedUpdate);
+    this.tweenR.addEventListener("complete", e => {
+      this.dispatchEvent(
+        new SphericalControllerEvent(
+          SphericalControllerEventType.MOVED_CAMERA_COMPLETE,
+          TargetParam.R
+        )
+      );
+    });
   }
 
   /**
@@ -267,6 +273,14 @@ export class SphericalController extends EventDispatcher {
       option.easing
     );
     this.tweenTheta.addEventListener("change", this.setNeedUpdate);
+    this.tweenTheta.addEventListener("complete", e => {
+      this.dispatchEvent(
+        new SphericalControllerEvent(
+          SphericalControllerEventType.MOVED_CAMERA_COMPLETE,
+          TargetParam.THETA
+        )
+      );
+    });
   }
 
   /**
@@ -287,6 +301,14 @@ export class SphericalController extends EventDispatcher {
       option.easing
     );
     this.tweenPhi.addEventListener("change", this.setNeedUpdate);
+    this.tweenPhi.addEventListener("complete", e => {
+      this.dispatchEvent(
+        new SphericalControllerEvent(
+          SphericalControllerEventType.MOVED_CAMERA_COMPLETE,
+          TargetParam.PHI
+        )
+      );
+    });
   }
 
   /**
@@ -501,22 +523,6 @@ export class SphericalController extends EventDispatcher {
     tween.removeAllEventListeners();
     return null;
   }
-
-  /**
-   * tweenのコンプリートイベントハンドラ
-   * カメラ移動が終了したことを示すイベントを発行する。
-   */
-  private onCompleteMove = () => {
-    this.isMoving = false;
-    this.dispatchEvent(
-      new SphericalControllerEvent(SphericalControllerEventType.MOVED_CAMERA)
-    );
-    this.dispatchEvent(
-      new SphericalControllerEvent(
-        SphericalControllerEventType.MOVED_CAMERA_COMPLETE
-      )
-    );
-  };
 
   /**
    * 任意の点までの回転アニメーションに必要になる

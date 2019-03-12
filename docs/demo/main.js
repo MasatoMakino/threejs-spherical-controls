@@ -13,6 +13,7 @@ import {
   Vector3
 } from "three";
 import { SphericalController } from "../../bin/index";
+import { SphericalControllerEventType } from "../../bin/index";
 
 const W = 1920;
 const H = 1080;
@@ -94,6 +95,12 @@ const initController = cameraTarget => {
   cameraController.initCameraShift(new Vector3(20, 0, 0));
   cameraController.duration = 1666;
 
+  cameraController.addEventListener(
+    SphericalControllerEventType.MOVED_CAMERA_COMPLETE,
+    e => {
+      console.log(e);
+    }
+  );
   setInterval(() => {
     const to = new Spherical(
       R,
@@ -103,7 +110,7 @@ const initController = cameraTarget => {
       // (Math.PI / 180) * 350
     );
     cameraController.move(to, {
-      duration: 3000,
+      duration: 1500,
       easing: createjs.Ease.cubicOut
     });
     console.log(to);

@@ -1,4 +1,4 @@
-import { Camera, Vector3, EventDispatcher, Mesh, Spherical } from "three";
+import { Camera, EventDispatcher, Mesh, Spherical, Vector3 } from "three";
 /**
  * 球面座標系でカメラ位置をコントロールするクラス。
  *
@@ -162,11 +162,6 @@ export declare class SphericalController extends EventDispatcher {
      * @return {null}
      */
     private static removeTween;
-    /**
-     * tweenのコンプリートイベントハンドラ
-     * カメラ移動が終了したことを示すイベントを発行する。
-     */
-    private onCompleteMove;
     /**
      * 任意の点までの回転アニメーションに必要になる
      * 回転方向を算出する処理。
