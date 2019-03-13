@@ -19,7 +19,6 @@ export declare class SphericalController extends EventDispatcher {
     private tweenTheta;
     private tweenPhi;
     private tweenCameraShift;
-    private isMoving;
     duration: number;
     easing: (amount: number) => number;
     loopEasing: (amount: number) => number;
@@ -156,6 +155,10 @@ export declare class SphericalController extends EventDispatcher {
      * 全てのtweenインスタンスを停止、破棄する
      */
     private pauseTween;
+    /**
+     * 現在アクティブなTweenが存在するか確認する。
+     */
+    isPlaying(): boolean;
     /**
      * 指定されたtweenを停止する。
      * @param {createjs.Tween | null} tween

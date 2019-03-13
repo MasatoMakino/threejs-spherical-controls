@@ -115,6 +115,10 @@ const initController = cameraTarget => {
     });
     console.log(to);
   }, 2000);
+
+  setInterval(() => {
+    console.log(cameraController.isPlaying());
+  }, 100);
 };
 
 const render = () => {

@@ -43,8 +43,6 @@ export class SphericalController extends EventDispatcher {
   private tweenPhi!: Tween | null;
   private tweenCameraShift!: Tween | null;
 
-  private isMoving: boolean = false;
-
   public duration: number = 1333;
   public easing = Ease.cubicOut;
   public loopEasing = Ease.sineInOut;
@@ -109,8 +107,6 @@ export class SphericalController extends EventDispatcher {
   public move(pos: Spherical, option?: EasingOption): void {
     option = EasingOption.init(option, this);
     this.pauseTween();
-    this.isMoving = true;
-
     this.moveR(pos.radius, option);
     this.movePhi(pos.phi, option);
     this.moveTheta(pos.theta, option);
@@ -417,8 +413,8 @@ export class SphericalController extends EventDispatcher {
    * @param overrideTween tweenのキャンセルを行うか、defaultはfalse。trueの場合tweenを停止して現状値からの加算を行う
    */
   public addR(value: number, overrideTween: boolean = false): void {
-    if (!overrideTween && this.isMoving) return;
-    if (overrideTween && this.isMoving) {
+    if (!overrideTween && this.isPlaying()) return;
+    if (overrideTween && this.isPlaying()) {
       this.pauseTween();
     }
 
@@ -433,8 +429,8 @@ export class SphericalController extends EventDispatcher {
    * @param overrideTween
    */
   public addTargetPosition(pos: Vector3, overrideTween: boolean = false): void {
-    if (!overrideTween && this.isMoving) return;
-    if (overrideTween && this.isMoving) {
+    if (!overrideTween && this.isPlaying()) return;
+    if (overrideTween && this.isPlaying()) {
       this.pauseTween();
     }
 
@@ -449,8 +445,8 @@ export class SphericalController extends EventDispatcher {
    * @param overrideTween tweenのキャンセルを行うか、defaultはfalse。trueの場合tweenを停止して現状値からの加算を行う
    */
   public addTheta(value: number, overrideTween: boolean = false): void {
-    if (!overrideTween && this.isMoving) return;
-    if (overrideTween && this.isMoving) {
+    if (!overrideTween && this.isPlaying()) return;
+    if (overrideTween && this.isPlaying()) {
       this.pauseTween();
     }
 
@@ -467,8 +463,8 @@ export class SphericalController extends EventDispatcher {
    * @param overrideTween tweenのキャンセルを行うか、defaultはfalse。trueの場合tweenを停止して現状値からの加算を行う
    */
   public addPhi(value: number, overrideTween: boolean = false): void {
-    if (!overrideTween && this.isMoving) return;
-    if (overrideTween && this.isMoving) {
+    if (!overrideTween && this.isPlaying()) return;
+    if (overrideTween && this.isPlaying()) {
       this.pauseTween();
     }
 
@@ -508,8 +504,18 @@ export class SphericalController extends EventDispatcher {
     this.tweenCameraShift = SphericalController.removeTween(
       this.tweenCameraShift
     );
+  }
 
-    this.isMoving = false;
+  /**
+   * 現在アクティブなTweenが存在するか確認する。
+   */
+  public isPlaying(): boolean {
+    if (this.tweenR && !this.tweenR.paused) return true;
+    if (this.tweenTheta && !this.tweenTheta.paused) return true;
+    if (this.tweenPhi && !this.tweenPhi.paused) return true;
+    if (this.tweenCameraShift && !this.tweenCameraShift.paused) return true;
+    if (this.tweenTarget && !this.tweenTarget.paused) return true;
+    return false;
   }
 
   /**
@@ -519,7 +525,7 @@ export class SphericalController extends EventDispatcher {
    */
   private static removeTween(tween: Tween | null): null {
     if (!tween) return null;
-    tween.paused = true;
+    tween.pause();
     tween.removeAllEventListeners();
     return null;
   }
