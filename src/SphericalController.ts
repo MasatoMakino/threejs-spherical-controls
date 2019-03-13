@@ -106,7 +106,7 @@ export class SphericalController extends EventDispatcher {
    */
   public move(pos: Spherical, option?: EasingOption): void {
     option = EasingOption.init(option, this);
-    this.pauseTween();
+    this.stop();
     this.moveR(pos.radius, option);
     this.movePhi(pos.phi, option);
     this.moveTheta(pos.theta, option);
@@ -415,7 +415,7 @@ export class SphericalController extends EventDispatcher {
   public addR(value: number, overrideTween: boolean = false): void {
     if (!overrideTween && this.isPlaying()) return;
     if (overrideTween && this.isPlaying()) {
-      this.pauseTween();
+      this.stop();
     }
 
     this.pos.radius += value;
@@ -431,7 +431,7 @@ export class SphericalController extends EventDispatcher {
   public addTargetPosition(pos: Vector3, overrideTween: boolean = false): void {
     if (!overrideTween && this.isPlaying()) return;
     if (overrideTween && this.isPlaying()) {
-      this.pauseTween();
+      this.stop();
     }
 
     this._cameraTarget.position.add(pos);
@@ -447,7 +447,7 @@ export class SphericalController extends EventDispatcher {
   public addTheta(value: number, overrideTween: boolean = false): void {
     if (!overrideTween && this.isPlaying()) return;
     if (overrideTween && this.isPlaying()) {
-      this.pauseTween();
+      this.stop();
     }
 
     this.pos.theta += value;
@@ -465,7 +465,7 @@ export class SphericalController extends EventDispatcher {
   public addPhi(value: number, overrideTween: boolean = false): void {
     if (!overrideTween && this.isPlaying()) return;
     if (overrideTween && this.isPlaying()) {
-      this.pauseTween();
+      this.stop();
     }
 
     this.pos.phi += value;
@@ -493,17 +493,16 @@ export class SphericalController extends EventDispatcher {
   /**
    * 全てのtweenインスタンスを停止、破棄する
    */
-  public pauseTween(): void {
-    //全体同時移動用Tween
-    this.tweenTarget = SphericalController.removeTween(this.tweenTarget);
+  public stop(): void {
+    Tween.removeTweens(this._cameraTarget);
+    Tween.removeTweens(this.cameraShift);
+    Tween.removeTweens(this.pos);
 
-    //特定プロパティ用Tween
-    this.tweenR = SphericalController.removeTween(this.tweenR);
-    this.tweenTheta = SphericalController.removeTween(this.tweenTheta);
-    this.tweenPhi = SphericalController.removeTween(this.tweenPhi);
-    this.tweenCameraShift = SphericalController.removeTween(
-      this.tweenCameraShift
-    );
+    if (this.tweenTarget) this.tweenTarget.removeAllEventListeners();
+    if (this.tweenR) this.tweenR.removeAllEventListeners();
+    if (this.tweenTheta) this.tweenTheta.removeAllEventListeners();
+    if (this.tweenPhi) this.tweenPhi.removeAllEventListeners();
+    if (this.tweenCameraShift) this.tweenCameraShift.removeAllEventListeners();
   }
 
   /**

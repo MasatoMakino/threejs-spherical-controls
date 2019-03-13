@@ -105,7 +105,7 @@ export class SphericalController extends EventDispatcher {
      */
     move(pos, option) {
         option = EasingOption.init(option, this);
-        this.pauseTween();
+        this.stop();
         this.moveR(pos.radius, option);
         this.movePhi(pos.phi, option);
         this.moveTheta(pos.theta, option);
@@ -288,7 +288,7 @@ export class SphericalController extends EventDispatcher {
         if (!overrideTween && this.isPlaying())
             return;
         if (overrideTween && this.isPlaying()) {
-            this.pauseTween();
+            this.stop();
         }
         this.pos.radius += value;
         this.setNeedUpdate(null);
@@ -303,7 +303,7 @@ export class SphericalController extends EventDispatcher {
         if (!overrideTween && this.isPlaying())
             return;
         if (overrideTween && this.isPlaying()) {
-            this.pauseTween();
+            this.stop();
         }
         this._cameraTarget.position.add(pos);
         this.setNeedUpdate(null);
@@ -318,7 +318,7 @@ export class SphericalController extends EventDispatcher {
         if (!overrideTween && this.isPlaying())
             return;
         if (overrideTween && this.isPlaying()) {
-            this.pauseTween();
+            this.stop();
         }
         this.pos.theta += value;
         this.pos.theta = this.limitTheta(this.pos.theta);
@@ -334,7 +334,7 @@ export class SphericalController extends EventDispatcher {
         if (!overrideTween && this.isPlaying())
             return;
         if (overrideTween && this.isPlaying()) {
-            this.pauseTween();
+            this.stop();
         }
         this.pos.phi += value;
         this.pos.phi = this.limitPhi(this.pos.phi);
@@ -357,14 +357,20 @@ export class SphericalController extends EventDispatcher {
     /**
      * 全てのtweenインスタンスを停止、破棄する
      */
-    pauseTween() {
-        //全体同時移動用Tween
-        this.tweenTarget = SphericalController.removeTween(this.tweenTarget);
-        //特定プロパティ用Tween
-        this.tweenR = SphericalController.removeTween(this.tweenR);
-        this.tweenTheta = SphericalController.removeTween(this.tweenTheta);
-        this.tweenPhi = SphericalController.removeTween(this.tweenPhi);
-        this.tweenCameraShift = SphericalController.removeTween(this.tweenCameraShift);
+    stop() {
+        Tween.removeTweens(this._cameraTarget);
+        Tween.removeTweens(this.cameraShift);
+        Tween.removeTweens(this.pos);
+        if (this.tweenTarget)
+            this.tweenTarget.removeAllEventListeners();
+        if (this.tweenR)
+            this.tweenR.removeAllEventListeners();
+        if (this.tweenTheta)
+            this.tweenTheta.removeAllEventListeners();
+        if (this.tweenPhi)
+            this.tweenPhi.removeAllEventListeners();
+        if (this.tweenCameraShift)
+            this.tweenCameraShift.removeAllEventListeners();
     }
     /**
      * 現在アクティブなTweenが存在するか確認する。
@@ -390,7 +396,7 @@ export class SphericalController extends EventDispatcher {
     static removeTween(tween) {
         if (!tween)
             return null;
-        tween.pause();
+        tween.paused = true;
         tween.removeAllEventListeners();
         return null;
     }
