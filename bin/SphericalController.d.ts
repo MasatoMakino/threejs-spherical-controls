@@ -154,7 +154,7 @@ export declare class SphericalController extends EventDispatcher {
     /**
      * 全てのtweenインスタンスを停止、破棄する
      */
-    private pauseTween;
+    pauseTween(): void;
     /**
      * 現在アクティブなTweenが存在するか確認する。
      */

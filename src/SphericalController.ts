@@ -493,7 +493,7 @@ export class SphericalController extends EventDispatcher {
   /**
    * 全てのtweenインスタンスを停止、破棄する
    */
-  private pauseTween(): void {
+  public pauseTween(): void {
     //全体同時移動用Tween
     this.tweenTarget = SphericalController.removeTween(this.tweenTarget);
 
