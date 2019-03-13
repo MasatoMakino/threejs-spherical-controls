@@ -525,7 +525,7 @@ export class SphericalController extends EventDispatcher {
    */
   private static removeTween(tween: Tween | null): null {
     if (!tween) return null;
-    tween.pause();
+    tween.paused = true;
     tween.removeAllEventListeners();
     return null;
   }
