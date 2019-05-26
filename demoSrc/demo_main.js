@@ -11,9 +11,9 @@ import {
   Spherical,
   AxesHelper,
   Vector3
-} from "three";
-import { SphericalController } from "../../bin/index";
-import { SphericalControllerEventType } from "../../bin/index";
+} from "three/src/Three";
+import { SphericalController } from "../bin/index";
+import { SphericalControllerEventType } from "../bin/index";
 
 const W = 1920;
 const H = 1080;

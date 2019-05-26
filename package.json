@@ -9,7 +9,9 @@
   "keywords": [
     "threejs"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "glob": "^7.1.4"
+  },
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
@@ -18,26 +20,21 @@
     "babel-loader": "^8.0.6",
     "gulp": "^4.0.2",
     "gulptask-dev-server": "https://github.com/MasatoMakino/gulptask-dev-server.git",
+    "gulptask-tsc": "https://github.com/MasatoMakino/gulptask-tsc.git",
     "gulptask-tsdoc": "https://github.com/MasatoMakino/gulptask-tsdoc.git",
+    "gulptask-webpack": "https://github.com/MasatoMakino/gulptask-webpack.git",
     "husky": "^2.3.0",
     "jest": "^24.8.0",
     "prettier": "^1.17.1",
     "three": "^0.104.0",
     "ts-jest": "^24.0.2",
-    "tweenjs": "^1.0.2",
-    "typescript": "^3.4.5",
-    "webpack": "^4.32.2",
-    "webpack-cli": "^3.3.2"
+    "tweenjs": "^1.0.2"
   },
   "scripts": {
     "test": "jest --coverage",
-    "build": "npm run prettier:src && tsc && npm run babel && npm run doc",
+    "start:dev": "gulp start_dev",
+    "build": "npm run prettier:src && gulp build && npm run doc:card",
     "prettier:src": "prettier --write './!(bin|docs|coverage)/**/*.{js,ts,json}' ",
-    "babel": "webpack --mode development --module-bind js=babel-loader ./docs/demo/main.js --output ./docs/demo/bundle.js",
-    "watch:babel": "npm run babel -- -w",
-    "watch:server": "gulp start_dev",
-    "doc": "npm run doc:gulp && npm run doc:card",
-    "doc:gulp": "gulp doc",
     "doc:card": "repoimg -n MasatoMakino/threejs-spherical-controls -o ./docs/card.png"
   },
   "husky": {
