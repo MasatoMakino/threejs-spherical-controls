@@ -2,7 +2,7 @@
 
 const { series } = require("gulp");
 
-// const doc = require("gulptask-tsdoc")();
+const doc = require("gulptask-tsdoc")();
 const server = require("gulptask-dev-server")("./docs/demo");
 // const { bundleDevelopment, watchBundle } = require("gulptask-webpack")(
 //   "./webpack.config.js"
@@ -17,3 +17,4 @@ const server = require("gulptask-dev-server")("./docs/demo");
 
 exports.start_dev = series(/*watchTasks,*/ server);
 // exports.build = series(tsc, bundleDevelopment, doc);
+exports.doc = doc;

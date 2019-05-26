@@ -18,14 +18,13 @@
     "babel-loader": "^8.0.6",
     "gulp": "^4.0.2",
     "gulptask-dev-server": "https://github.com/MasatoMakino/gulptask-dev-server.git",
+    "gulptask-tsdoc": "https://github.com/MasatoMakino/gulptask-tsdoc.git",
     "husky": "^2.3.0",
     "jest": "^24.8.0",
     "prettier": "^1.17.1",
-    "replace-in-file": "^4.1.0",
     "three": "^0.104.0",
     "ts-jest": "^24.0.2",
     "tweenjs": "^1.0.2",
-    "typedoc": "^0.14.2",
     "typescript": "^3.4.5",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2"
@@ -37,9 +36,8 @@
     "babel": "webpack --mode development --module-bind js=babel-loader ./docs/demo/main.js --output ./docs/demo/bundle.js",
     "watch:babel": "npm run babel -- -w",
     "watch:server": "gulp start_dev",
-    "doc": "npm run doc:generate && npm run doc:replaceNode && npm run doc:card",
-    "doc:generate": "typedoc --tsconfig tsdocconfig.json src",
-    "doc:replaceNode": "node ./task/replaceAPI.js",
+    "doc": "npm run doc:gulp && npm run doc:card",
+    "doc:gulp": "gulp doc",
     "doc:card": "repoimg -n MasatoMakino/threejs-spherical-controls -o ./docs/card.png"
   },
   "husky": {
