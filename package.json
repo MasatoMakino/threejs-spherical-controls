@@ -32,7 +32,7 @@
   "scripts": {
     "test": "jest --coverage",
     "build": "npm run prettier:src && tsc && npm run babel && npm run doc",
-    "prettier:src": "prettier --write './!(bin)/**/*.{js,ts,json}' ",
+    "prettier:src": "prettier --write './!(bin|docs|coverage)/**/*.{js,ts,json}' ",
     "babel": "webpack --mode development --module-bind js=babel-loader ./docs/demo/main.js --output ./docs/demo/bundle.js",
     "watch:babel": "npm run babel -- -w",
     "watch:server": "gulp start_dev",
