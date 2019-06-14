@@ -9,13 +9,11 @@
   "keywords": [
     "threejs"
   ],
-  "dependencies": {
-    "glob": "^7.1.4"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
-    "@types/jest": "^24.0.13",
+    "@types/jest": "^24.0.14",
     "@types/tweenjs": "^1.0.0",
     "babel-loader": "^8.0.6",
     "gulp": "^4.0.2",
@@ -23,10 +21,10 @@
     "gulptask-tsc": "https://github.com/MasatoMakino/gulptask-tsc.git",
     "gulptask-tsdoc": "https://github.com/MasatoMakino/gulptask-tsdoc.git",
     "gulptask-webpack": "https://github.com/MasatoMakino/gulptask-webpack.git",
-    "husky": "^2.3.0",
+    "husky": "^2.4.1",
     "jest": "^24.8.0",
-    "prettier": "^1.17.1",
-    "three": "^0.104.0",
+    "prettier": "^1.18.2",
+    "three": "^0.105.2",
     "ts-jest": "^24.0.2",
     "tweenjs": "^1.0.2"
   },
