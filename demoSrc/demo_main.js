@@ -49,8 +49,11 @@ const onDomContentsLoaded = () => {
   scene.add(new AxesHelper(25));
   initCube();
   const target = initTarget();
-  initController(target);
 
+  const R = 105;
+  const controller = initController(target, R);
+  checkRotationComplete(controller, R);
+  checkPlaying(controller);
   render();
 };
 
@@ -91,8 +94,7 @@ const initTarget = () => {
 };
 
 let cameraController;
-const initController = cameraTarget => {
-  const R = 105;
+const initController = (cameraTarget, R) => {
   cameraController = new SphericalController(camera, cameraTarget);
   cameraController.initCameraPosition(
     new Spherical(R, 0.0001, Math.PI * 2 * 12)
@@ -106,6 +108,11 @@ const initController = cameraTarget => {
       console.log("Complete : ", e);
     }
   );
+
+  return cameraController;
+};
+
+const checkRotationComplete = (controller, R) => {
   setInterval(() => {
     const to = new Spherical(
       R,
@@ -119,9 +126,11 @@ const initController = cameraTarget => {
     });
     console.log("Start : ", to);
   }, 2000);
+};
 
+const checkPlaying = controller => {
   setInterval(() => {
-    console.log(cameraController.isPlaying());
+    console.log(controller.isPlaying());
   }, 100);
 };
 
