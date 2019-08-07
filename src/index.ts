@@ -1,5 +1,3 @@
-export { SphericalController } from "./SphericalController";
-export {
-  SphericalControllerEvent,
-  SphericalControllerEventType
-} from "./SphericalControllerEvent";
+export * from "./SphericalController";
+export * from "./SphericalControllerEvent";
+export * from "./EasingOption";
