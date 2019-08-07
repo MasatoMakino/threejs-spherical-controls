@@ -312,7 +312,7 @@ export class SphericalController extends EventDispatcher {
     };
 
     this.stopLoopMovePhi();
-    const firstDuration = this.getFirstDuration(
+    const firstDuration = SphericalController.getFirstDuration(
       option.duration,
       this.pos.phi,
       toMax,
@@ -324,7 +324,7 @@ export class SphericalController extends EventDispatcher {
     this.tweenPhi.addEventListener("change", this.setNeedUpdate);
   }
 
-  private getFirstDuration(
+  private static getFirstDuration(
     duration: number,
     current: number,
     max: number,
@@ -347,7 +347,7 @@ export class SphericalController extends EventDispatcher {
     };
 
     this.stopLoopMoveTheta();
-    const firstDuration = this.getFirstDuration(
+    const firstDuration = SphericalController.getFirstDuration(
       option.duration,
       this.pos.theta,
       toMax,

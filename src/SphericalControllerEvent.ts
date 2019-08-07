@@ -15,5 +15,7 @@ export enum SphericalControllerEventType {
 export enum TargetParam {
   R = "radius",
   PHI = "phi",
-  THETA = "theta"
+  THETA = "theta",
+  CAMERA_TARGET ="cameraTarget",
+  CAMERA_SHIFT ="CameraShift"
 }
