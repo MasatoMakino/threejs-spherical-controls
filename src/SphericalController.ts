@@ -184,13 +184,17 @@ export class SphericalController extends EventDispatcher {
     );
     this.tweenR.addEventListener("change", this.setNeedUpdate);
     this.tweenR.addEventListener("complete", e => {
-      this.dispatchEvent(
-        new SphericalControllerEvent(
-          SphericalControllerEventType.MOVED_CAMERA_COMPLETE,
-          TargetParam.R
-        )
-      );
+      this.onCompleteCameraTween(TargetParam.R);
     });
+  }
+
+  private onCompleteCameraTween(paramType: TargetParam): void {
+    this.dispatchEvent(
+      new SphericalControllerEvent(
+        SphericalControllerEventType.MOVED_CAMERA_COMPLETE,
+        paramType
+      )
+    );
   }
 
   /**
@@ -270,12 +274,7 @@ export class SphericalController extends EventDispatcher {
     );
     this.tweenTheta.addEventListener("change", this.setNeedUpdate);
     this.tweenTheta.addEventListener("complete", e => {
-      this.dispatchEvent(
-        new SphericalControllerEvent(
-          SphericalControllerEventType.MOVED_CAMERA_COMPLETE,
-          TargetParam.THETA
-        )
-      );
+      this.onCompleteCameraTween(TargetParam.THETA);
     });
   }
 
@@ -298,12 +297,7 @@ export class SphericalController extends EventDispatcher {
     );
     this.tweenPhi.addEventListener("change", this.setNeedUpdate);
     this.tweenPhi.addEventListener("complete", e => {
-      this.dispatchEvent(
-        new SphericalControllerEvent(
-          SphericalControllerEventType.MOVED_CAMERA_COMPLETE,
-          TargetParam.PHI
-        )
-      );
+      this.onCompleteCameraTween(TargetParam.PHI);
     });
   }
 
