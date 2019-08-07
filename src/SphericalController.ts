@@ -475,19 +475,18 @@ export class SphericalController extends EventDispatcher {
   }
 
   private limitPhi(phi: number): number {
-    if (this.phiMax == null || this.phiMin == null) return phi;
-
-    phi = Math.min(phi, this.phiMax);
-    phi = Math.max(phi, this.phiMin);
-    return phi;
+    return SphericalController.limit(phi, this.phiMax, this.phiMin);
   }
 
   private limitTheta(theta: number): number {
-    if (this.thetaMin == null || this.thetaMax == null) return theta;
+    return SphericalController.limit(theta, this.thetaMax, this.thetaMin);
+  }
 
-    theta = Math.min(theta, this.thetaMax);
-    theta = Math.max(theta, this.thetaMin);
-    return theta;
+  private static limit(value: number, max: number, min: number): number {
+    if (min == null || max == null) return value;
+    value = Math.min(value, max);
+    value = Math.max(value, min);
+    return value;
   }
 
   /**
