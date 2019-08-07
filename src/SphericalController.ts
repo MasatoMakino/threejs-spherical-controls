@@ -508,11 +508,17 @@ export class SphericalController extends EventDispatcher {
    * 現在アクティブなTweenが存在するか確認する。
    */
   public isPlaying(): boolean {
-    if (this.tweenR && !this.tweenR.paused) return true;
-    if (this.tweenTheta && !this.tweenTheta.paused) return true;
-    if (this.tweenPhi && !this.tweenPhi.paused) return true;
-    if (this.tweenCameraShift && !this.tweenCameraShift.paused) return true;
-    if (this.tweenTarget && !this.tweenTarget.paused) return true;
+    const tweens = [
+      this.tweenR,
+      this.tweenTheta,
+      this.tweenPhi,
+      this.tweenCameraShift,
+      this.tweenTarget
+    ];
+
+    for (let tween of tweens) {
+      if (tween && !tween.paused) return true;
+    }
     return false;
   }
 
