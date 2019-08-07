@@ -349,10 +349,6 @@ export class SphericalController extends EventDispatcher {
     return Math.abs(duration * ((current - min) / (max - min)));
   }
 
-  public stopLoopMovePhi(): void {
-    this.tweenPhi = SphericalController.removeTween(this.tweenPhi);
-  }
-
   public loopMoveTheta(min: number, max: number, option?: EasingOption): void {
     option = EasingOption.init(option, this, true);
 
@@ -377,6 +373,10 @@ export class SphericalController extends EventDispatcher {
       .to({ theta: toMin }, firstDuration, option.easing)
       .call(loop);
     this.tweenTheta.addEventListener("change", this.setNeedUpdate);
+  }
+
+  public stopLoopMovePhi(): void {
+    this.tweenPhi = SphericalController.removeTween(this.tweenPhi);
   }
 
   public stopLoopMoveTheta(): void {
