@@ -15,7 +15,8 @@ import {
 import {
   SphericalController,
   SphericalControllerUtil,
-  SphericalControllerEventType
+  SphericalControllerEventType,
+  TargetParam
 } from "../bin";
 
 const W = 1280;

@@ -15,6 +15,7 @@ import {
 } from "./SphericalControllerEvent";
 import { EasingOption } from "./EasingOption";
 import { SphericalControllerUtil } from "./SphericalControllerUtil";
+import { CameraPositionLimiter } from "./CameraPositionLimiter";
 
 /**
  * 球面座標系でカメラ位置をコントロールするクラス。
@@ -49,12 +50,8 @@ export class SphericalController extends EventDispatcher {
   public easing = Ease.cubicOut;
   public loopEasing = Ease.sineInOut;
 
+  public limiter: CameraPositionLimiter = new CameraPositionLimiter();
   private pos: Spherical = new Spherical();
-  private static readonly EPS = 0.000001;
-  public phiMin: number = SphericalController.EPS;
-  public phiMax: number = Math.PI - SphericalController.EPS;
-  public thetaMin: number = null;
-  public thetaMax: number = null;
 
   protected isUpdate: boolean = false;
 
@@ -84,8 +81,9 @@ export class SphericalController extends EventDispatcher {
    */
   public initCameraPosition(pos: Spherical, targetPos?: Vector3): void {
     this.pos = pos;
-    this.pos.phi = this.limitPhi(this.pos.phi);
-    this.pos.theta = this.limitTheta(this.pos.theta);
+    const lmt = this.limiter;
+    this.pos.phi = lmt.clampPosition(TargetParam.PHI, this.pos);
+    this.pos.theta = lmt.clampPosition(TargetParam.THETA, this.pos);
     if (targetPos) {
       this._cameraTarget.position.set(targetPos.x, targetPos.y, targetPos.z);
     }
@@ -259,7 +257,7 @@ export class SphericalController extends EventDispatcher {
     if (option.normalize) {
       to = SphericalControllerUtil.getTweenTheta(this.pos.theta, value);
     }
-    to = this.limitTheta(to);
+    to = this.limiter.clampWithType(TargetParam.THETA, to);
 
     this.tweenTheta = this.getTweenPosition(TargetParam.THETA, to, option);
   }
@@ -289,8 +287,7 @@ export class SphericalController extends EventDispatcher {
     option = EasingOption.init(option, this);
 
     this.tweenPhi = SphericalControllerUtil.removeTween(this.tweenPhi);
-    const to = this.limitPhi(value);
-
+    const to = this.limiter.clampWithType(TargetParam.PHI, value);
     this.tweenPhi = this.getTweenPosition(TargetParam.PHI, to, option);
   }
 
@@ -304,8 +301,8 @@ export class SphericalController extends EventDispatcher {
   public loopMovePhi(min: number, max: number, option?: EasingOption): void {
     option = EasingOption.init(option, this, true);
 
-    const toMin = this.limitPhi(min);
-    const toMax = this.limitPhi(max);
+    const toMin = this.limiter.clampWithType(TargetParam.PHI, min);
+    const toMax = this.limiter.clampWithType(TargetParam.PHI, max);
     const loop = () => {
       this.stopLoopMovePhi();
       this.tweenPhi = Tween.get(this.pos, { loop: -1 })
@@ -339,8 +336,8 @@ export class SphericalController extends EventDispatcher {
   public loopMoveTheta(min: number, max: number, option?: EasingOption): void {
     option = EasingOption.init(option, this, true);
 
-    const toMin = this.limitTheta(min);
-    const toMax = this.limitTheta(max);
+    const toMin = this.limiter.clampWithType(TargetParam.THETA, min);
+    const toMax = this.limiter.clampWithType(TargetParam.THETA, max);
     const loop = () => {
       this.stopLoopMoveTheta();
       this.tweenTheta = Tween.get(this.pos, { loop: -1 })
@@ -438,7 +435,7 @@ export class SphericalController extends EventDispatcher {
     }
 
     this.pos.theta += value;
-    this.pos.theta = this.limitTheta(this.pos.theta);
+    this.pos.theta = this.limiter.clampPosition(TargetParam.THETA, this.pos);
 
     this.setNeedUpdate(null);
   }
@@ -456,17 +453,9 @@ export class SphericalController extends EventDispatcher {
     }
 
     this.pos.phi += value;
-    this.pos.phi = this.limitPhi(this.pos.phi);
+    this.pos.phi = this.limiter.clampPosition(TargetParam.PHI, this.pos);
 
     this.setNeedUpdate(null);
-  }
-
-  private limitPhi(phi: number): number {
-    return SphericalControllerUtil.clamp(phi, this.phiMax, this.phiMin);
-  }
-
-  private limitTheta(theta: number): number {
-    return SphericalControllerUtil.clamp(theta, this.thetaMax, this.thetaMin);
   }
 
   /**

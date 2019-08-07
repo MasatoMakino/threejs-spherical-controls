@@ -1,13 +1,6 @@
 import Tween = createjs.Tween;
 
 export class SphericalControllerUtil {
-  public static clamp(value: number, max: number, min: number): number {
-    if (min == null || max == null) return value;
-    value = Math.min(value, max);
-    value = Math.max(value, min);
-    return value;
-  }
-
   /**
    * 指定されたtweenを停止する。
    * @param {createjs.Tween | null} tween
