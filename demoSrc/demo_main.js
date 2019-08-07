@@ -12,8 +12,7 @@ import {
   AxesHelper,
   Vector3
 } from "three/src/Three";
-import { SphericalController } from "../bin/index";
-import { SphericalControllerEventType } from "../bin/index";
+import { SphericalController, SphericalControllerUtil, SphericalControllerEventType } from "../bin";
 
 const W = 1920;
 const H = 1080;
@@ -52,13 +51,13 @@ const onDomContentsLoaded = () => {
 };
 
 const testPI2 = () => {
-  console.log(SphericalController.PI2ToPI(0) === 0);
-  console.log(SphericalController.PI2ToPI(Math.PI) === Math.PI);
-  console.log(SphericalController.PI2ToPI(-Math.PI) === -Math.PI);
-  console.log(SphericalController.PI2ToPI(Math.PI * 2));
-  console.log(SphericalController.PI2ToPI(Math.PI + 0.01) === -Math.PI + 0.01);
+  console.log(SphericalControllerUtil.PI2ToPI(0) === 0);
+  console.log(SphericalControllerUtil.PI2ToPI(Math.PI) === Math.PI);
+  console.log(SphericalControllerUtil.PI2ToPI(-Math.PI) === -Math.PI);
+  console.log(SphericalControllerUtil.PI2ToPI(Math.PI * 2));
+  console.log(SphericalControllerUtil.PI2ToPI(Math.PI + 0.01) === -Math.PI + 0.01);
   console.log(
-    Math.abs(SphericalController.PI2ToPI(Math.PI * 200 + 0.01) - 0.01) <
+    Math.abs(SphericalControllerUtil.PI2ToPI(Math.PI * 200 + 0.01) - 0.01) <
       0.000001
   );
 };
@@ -98,7 +97,7 @@ const initController = cameraTarget => {
   cameraController.addEventListener(
     SphericalControllerEventType.MOVED_CAMERA_COMPLETE,
     e => {
-      console.log(e);
+      console.log("Complete : ", e);
     }
   );
   setInterval(() => {
@@ -106,14 +105,12 @@ const initController = cameraTarget => {
       R,
       Math.random() * Math.PI,
       Math.random() * Math.PI * 6 - Math.PI * 3
-      // (Math.PI / 180) * 0,
-      // (Math.PI / 180) * 350
     );
     cameraController.move(to, {
       duration: 1500,
       easing: createjs.Ease.cubicOut
     });
-    console.log(to);
+    console.log("Start : ", to);
   }, 2000);
 
   setInterval(() => {

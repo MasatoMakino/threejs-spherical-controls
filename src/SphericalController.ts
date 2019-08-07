@@ -14,6 +14,7 @@ import {
   TargetParam
 } from "./SphericalControllerEvent";
 import { EasingOption } from "./EasingOption";
+import { SphericalControllerUtil } from "./SphericalControllerUtil";
 
 /**
  * 球面座標系でカメラ位置をコントロールするクラス。
@@ -176,7 +177,7 @@ export class SphericalController extends EventDispatcher {
    */
   public moveR(value: number, option?: EasingOption): void {
     option = EasingOption.init(option, this);
-    this.tweenR = SphericalController.removeTween(this.tweenR);
+    this.tweenR = SphericalControllerUtil.removeTween(this.tweenR);
 
     this.tweenR = Tween.get(this.pos).to(
       { radius: value },
@@ -209,7 +210,7 @@ export class SphericalController extends EventDispatcher {
     option = EasingOption.init(option, this, true);
 
     const stopTween = () => {
-      this.tweenR = SphericalController.removeTween(this.tweenR);
+      this.tweenR = SphericalControllerUtil.removeTween(this.tweenR);
     };
 
     const loop = () => {
@@ -232,7 +233,7 @@ export class SphericalController extends EventDispatcher {
   }
 
   public stopLoopMoveR(): void {
-    this.tweenR = SphericalController.removeTween(this.tweenR);
+    this.tweenR = SphericalControllerUtil.removeTween(this.tweenR);
   }
 
   /**
@@ -242,7 +243,7 @@ export class SphericalController extends EventDispatcher {
    */
   public moveTarget(value: Vector3, option?: EasingOption): void {
     option = EasingOption.init(option, this);
-    this.tweenTarget = SphericalController.removeTween(this.tweenTarget);
+    this.tweenTarget = SphericalControllerUtil.removeTween(this.tweenTarget);
 
     this.tweenTarget = Tween.get(this._cameraTarget.position).to(
       { x: value.x, y: value.y, z: value.z },
@@ -260,11 +261,11 @@ export class SphericalController extends EventDispatcher {
    */
   public moveTheta(value: number, option?: EasingOption): void {
     option = EasingOption.init(option, this);
-    this.tweenTheta = SphericalController.removeTween(this.tweenTheta);
+    this.tweenTheta = SphericalControllerUtil.removeTween(this.tweenTheta);
 
     let to = value;
     if (option.normalize) {
-      to = SphericalController.getTweenTheta(this.pos.theta, value);
+      to = SphericalControllerUtil.getTweenTheta(this.pos.theta, value);
     }
     to = this.limitTheta(to);
 
@@ -288,7 +289,7 @@ export class SphericalController extends EventDispatcher {
   public movePhi(value: number, option?: EasingOption): void {
     option = EasingOption.init(option, this);
 
-    this.tweenPhi = SphericalController.removeTween(this.tweenPhi);
+    this.tweenPhi = SphericalControllerUtil.removeTween(this.tweenPhi);
     const to = this.limitPhi(value);
 
     this.tweenPhi = Tween.get(this.pos).to(
@@ -371,11 +372,11 @@ export class SphericalController extends EventDispatcher {
   }
 
   public stopLoopMovePhi(): void {
-    this.tweenPhi = SphericalController.removeTween(this.tweenPhi);
+    this.tweenPhi = SphericalControllerUtil.removeTween(this.tweenPhi);
   }
 
   public stopLoopMoveTheta(): void {
-    this.tweenTheta = SphericalController.removeTween(this.tweenTheta);
+    this.tweenTheta = SphericalControllerUtil.removeTween(this.tweenTheta);
   }
 
   /**
@@ -386,7 +387,7 @@ export class SphericalController extends EventDispatcher {
   public moveCameraShift(value: Vector3, option?: EasingOption): void {
     option = EasingOption.init(option, this);
 
-    this.tweenCameraShift = SphericalController.removeTween(
+    this.tweenCameraShift = SphericalControllerUtil.removeTween(
       this.tweenCameraShift
     );
     if (!this.cameraShift) {
@@ -470,18 +471,11 @@ export class SphericalController extends EventDispatcher {
   }
 
   private limitPhi(phi: number): number {
-    return SphericalController.limit(phi, this.phiMax, this.phiMin);
+    return SphericalControllerUtil.clamp(phi, this.phiMax, this.phiMin);
   }
 
   private limitTheta(theta: number): number {
-    return SphericalController.limit(theta, this.thetaMax, this.thetaMin);
-  }
-
-  private static limit(value: number, max: number, min: number): number {
-    if (min == null || max == null) return value;
-    value = Math.min(value, max);
-    value = Math.max(value, min);
-    return value;
+    return SphericalControllerUtil.clamp(theta, this.thetaMax, this.thetaMin);
   }
 
   /**
@@ -492,67 +486,30 @@ export class SphericalController extends EventDispatcher {
     Tween.removeTweens(this.cameraShift);
     Tween.removeTweens(this.pos);
 
-    if (this.tweenTarget) this.tweenTarget.removeAllEventListeners();
-    if (this.tweenR) this.tweenR.removeAllEventListeners();
-    if (this.tweenTheta) this.tweenTheta.removeAllEventListeners();
-    if (this.tweenPhi) this.tweenPhi.removeAllEventListeners();
-    if (this.tweenCameraShift) this.tweenCameraShift.removeAllEventListeners();
+    const tweenArray = this.getTweenArray();
+    for (let tween of tweenArray) {
+      if (tween) tween.removeAllEventListeners();
+    }
   }
 
   /**
    * 現在アクティブなTweenが存在するか確認する。
    */
   public isPlaying(): boolean {
-    const tweens = [
+    const tweenArray = this.getTweenArray();
+    for (let tween of tweenArray) {
+      if (tween && !tween.paused) return true;
+    }
+    return false;
+  }
+
+  private getTweenArray(): Tween[] {
+    return [
       this.tweenR,
       this.tweenTheta,
       this.tweenPhi,
       this.tweenCameraShift,
       this.tweenTarget
     ];
-
-    for (let tween of tweens) {
-      if (tween && !tween.paused) return true;
-    }
-    return false;
-  }
-
-  /**
-   * 指定されたtweenを停止する。
-   * @param {createjs.Tween | null} tween
-   * @return {null}
-   */
-  private static removeTween(tween: Tween | null): null {
-    if (!tween) return null;
-    tween.paused = true;
-    tween.removeAllEventListeners();
-    return null;
-  }
-
-  /**
-   * 任意の点までの回転アニメーションに必要になる
-   * 回転方向を算出する処理。
-   *
-   * @param from
-   * @param to
-   * @returns {number}    最短距離での目標となる回転角
-   */
-  public static getTweenTheta(from: number, to: number): number {
-    to = this.PI2ToPI(to);
-
-    let fromDif = this.PI2ToPI(from);
-    fromDif = this.PI2ToPI(to - fromDif);
-    return from + fromDif;
-  }
-
-  /**
-   * ラジアンを-Math.PI ~ Math.PIの範囲に正規化する。
-   * Math.PIもしくは-Math.PIを入力すると正負が反転する。
-   * @param {number} value
-   * @return {number}
-   * @constructor
-   */
-  public static PI2ToPI(value: number) {
-    return Math.atan2(Math.sin(value), Math.cos(value));
   }
 }
