@@ -13,7 +13,7 @@ export enum SphericalControllerEventType {
 }
 
 export enum TargetParam {
-  R = "TargetParam_R",
-  PHI = "TargetParam_Phi",
-  THETA = "TargetParam_Theta"
+  R = "radius",
+  PHI = "phi",
+  THETA = "theta"
 }

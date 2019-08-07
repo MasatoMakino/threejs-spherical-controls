@@ -179,15 +179,7 @@ export class SphericalController extends EventDispatcher {
     option = EasingOption.init(option, this);
     this.tweenR = SphericalControllerUtil.removeTween(this.tweenR);
 
-    this.tweenR = Tween.get(this.pos).to(
-      { radius: value },
-      option.duration,
-      option.easing
-    );
-    this.tweenR.addEventListener("change", this.setNeedUpdate);
-    this.tweenR.addEventListener("complete", e => {
-      this.onCompleteCameraTween(TargetParam.R);
-    });
+    this.tweenR = this.getTweenPosition(TargetParam.R, value, option);
   }
 
   private onCompleteCameraTween(paramType: TargetParam): void {
@@ -269,15 +261,22 @@ export class SphericalController extends EventDispatcher {
     }
     to = this.limitTheta(to);
 
-    this.tweenTheta = Tween.get(this.pos).to(
-      { theta: to },
-      option.duration,
-      option.easing
-    );
-    this.tweenTheta.addEventListener("change", this.setNeedUpdate);
-    this.tweenTheta.addEventListener("complete", e => {
-      this.onCompleteCameraTween(TargetParam.THETA);
+    this.tweenTheta = this.getTweenPosition(TargetParam.THETA, to, option);
+  }
+
+  private getTweenPosition(
+    targetParam: TargetParam,
+    to: number,
+    option: EasingOption
+  ): Tween {
+    const toObj = {};
+    toObj[targetParam] = to;
+    const tween = Tween.get(this.pos).to(toObj, option.duration, option.easing);
+    tween.addEventListener("change", this.setNeedUpdate);
+    tween.addEventListener("complete", e => {
+      this.onCompleteCameraTween(targetParam);
     });
+    return tween;
   }
 
   /**
@@ -292,15 +291,7 @@ export class SphericalController extends EventDispatcher {
     this.tweenPhi = SphericalControllerUtil.removeTween(this.tweenPhi);
     const to = this.limitPhi(value);
 
-    this.tweenPhi = Tween.get(this.pos).to(
-      { phi: to },
-      option.duration,
-      option.easing
-    );
-    this.tweenPhi.addEventListener("change", this.setNeedUpdate);
-    this.tweenPhi.addEventListener("complete", e => {
-      this.onCompleteCameraTween(TargetParam.PHI);
-    });
+    this.tweenPhi = this.getTweenPosition(TargetParam.PHI, to, option);
   }
 
   /**

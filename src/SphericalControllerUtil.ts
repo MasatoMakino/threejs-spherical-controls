@@ -8,6 +8,8 @@ export class SphericalControllerUtil {
     return value;
   }
 
+
+
   /**
    * 指定されたtweenを停止する。
    * @param {createjs.Tween | null} tween

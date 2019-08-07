@@ -12,10 +12,14 @@ import {
   AxesHelper,
   Vector3
 } from "three/src/Three";
-import { SphericalController, SphericalControllerUtil, SphericalControllerEventType } from "../bin";
+import {
+  SphericalController,
+  SphericalControllerUtil,
+  SphericalControllerEventType
+} from "../bin";
 
-const W = 1920;
-const H = 1080;
+const W = 1280;
+const H = 800;
 let renderer;
 let scene;
 let camera;
@@ -55,7 +59,9 @@ const testPI2 = () => {
   console.log(SphericalControllerUtil.PI2ToPI(Math.PI) === Math.PI);
   console.log(SphericalControllerUtil.PI2ToPI(-Math.PI) === -Math.PI);
   console.log(SphericalControllerUtil.PI2ToPI(Math.PI * 2));
-  console.log(SphericalControllerUtil.PI2ToPI(Math.PI + 0.01) === -Math.PI + 0.01);
+  console.log(
+    SphericalControllerUtil.PI2ToPI(Math.PI + 0.01) === -Math.PI + 0.01
+  );
   console.log(
     Math.abs(SphericalControllerUtil.PI2ToPI(Math.PI * 200 + 0.01) - 0.01) <
       0.000001
@@ -103,6 +109,7 @@ const initController = cameraTarget => {
   setInterval(() => {
     const to = new Spherical(
       R,
+      // Math.random() * 70 + 35,
       Math.random() * Math.PI,
       Math.random() * Math.PI * 6 - Math.PI * 3
     );
