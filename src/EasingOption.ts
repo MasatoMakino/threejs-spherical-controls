@@ -18,18 +18,17 @@ export class EasingOption {
     if (option == null) {
       option = new EasingOption();
     }
-    if (option.duration == null) {
-      option.duration = controller.duration;
-    }
-    if (option.easing == null) {
-      option.easing = controller.easing;
-      if (isLoop) {
-        option.easing = controller.loopEasing;
-      }
-    }
-    if (option.normalize === null || option.normalize === undefined) {
-      option.normalize = true;
-    }
+
+    option.duration = this.supplememt(option.duration, controller.duration);
+    const defaultEase = isLoop ? controller.loopEasing : controller.easing;
+    option.easing = this.supplememt(option.easing, defaultEase);
+    option.normalize = this.supplememt(option.normalize, true);
+
     return option;
+  }
+
+  private static supplememt(target, defaultValue): any {
+    if (target == null) return defaultValue;
+    return target;
   }
 }
