@@ -95,7 +95,7 @@ const initRandomGUI = (gui, controller) => {
   const prop = {
     toggleRandomMove: () => {
       if (id != null) {
-        controller.stop();
+        controller.tweens.stop();
         clearInterval(id);
         id = null;
       } else {
