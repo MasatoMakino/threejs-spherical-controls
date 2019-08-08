@@ -25,4 +25,20 @@ export class SphericalControllerUtil {
   public static PI2ToPI(value: number) {
     return Math.atan2(Math.sin(value), Math.cos(value));
   }
+
+  /**
+   * loopアニメーションの初回振幅のdurationを算出する
+   * @param duration
+   * @param current
+   * @param max
+   * @param min
+   */
+  public static getFirstDuration(
+    duration: number,
+    current: number,
+    max: number,
+    min: number
+  ): number {
+    return Math.abs(duration * ((current - min) / (max - min)));
+  }
 }

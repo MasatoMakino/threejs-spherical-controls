@@ -107,7 +107,7 @@ export class SphericalController extends EventDispatcher {
    */
   public move(pos: Spherical, option?: EasingOption): void {
     option = EasingOption.init(option, this);
-    this.stop();
+    this.tweens.stop();
     this.moveR(pos.radius, option);
     this.movePhi(pos.phi, option);
     this.moveTheta(pos.theta, option);
@@ -256,7 +256,7 @@ export class SphericalController extends EventDispatcher {
       this.tweens.overrideTween(type, tween);
     };
 
-    const firstDuration = SphericalController.getFirstDuration(
+    const firstDuration = SphericalControllerUtil.getFirstDuration(
       option.duration,
       this.pos[type],
       toMax,
@@ -268,15 +268,6 @@ export class SphericalController extends EventDispatcher {
       .call(loop);
     tween.addEventListener("change", this.dispatchUpdateEvent);
     this.tweens.overrideTween(type, tween);
-  }
-
-  public static getFirstDuration(
-    duration: number,
-    current: number,
-    max: number,
-    min: number
-  ): number {
-    return Math.abs(duration * ((current - min) / (max - min)));
   }
 
   /**
@@ -308,7 +299,7 @@ export class SphericalController extends EventDispatcher {
   public addTargetPosition(pos: Vector3, overrideTween: boolean = false): void {
     if (!overrideTween && this.tweens.isPlaying()) return;
     if (overrideTween && this.tweens.isPlaying()) {
-      this.stop();
+      this.tweens.stop();
     }
 
     this._cameraTarget.position.add(pos);
@@ -328,21 +319,11 @@ export class SphericalController extends EventDispatcher {
   ): void {
     if (!overrideTween && this.tweens.isPlaying()) return;
     if (overrideTween && this.tweens.isPlaying()) {
-      this.stop();
+      this.tweens.stop();
     }
 
     this.pos[type] += value;
     this.pos[type] = this.limiter.clampPosition(type, this.pos);
     this.dispatchUpdateEvent();
-  }
-
-  /**
-   * 全てのtweenインスタンスを停止する。
-   */
-  public stop(): void {
-    const tweenArray = this.tweens.getTweenArray();
-    for (let tween of tweenArray) {
-      if (tween) tween.removeAllEventListeners();
-    }
   }
 }
