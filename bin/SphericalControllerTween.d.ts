@@ -21,5 +21,9 @@ export declare class SphericalControllerTween {
      * 現在アクティブなTweenが存在するか確認する。
      */
     isPlaying(): boolean;
+    /**
+     * 全てのtweenインスタンスを停止する。
+     */
+    stop(): void;
 }
 //# sourceMappingURL=SphericalControllerTween.d.ts.map

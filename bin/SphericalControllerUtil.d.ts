@@ -16,5 +16,13 @@ export declare class SphericalControllerUtil {
      * @constructor
      */
     static PI2ToPI(value: number): number;
+    /**
+     * loopアニメーションの初回振幅のdurationを算出する
+     * @param duration
+     * @param current
+     * @param max
+     * @param min
+     */
+    static getFirstDuration(duration: number, current: number, max: number, min: number): number;
 }
 //# sourceMappingURL=SphericalControllerUtil.d.ts.map

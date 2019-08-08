@@ -72,4 +72,14 @@ export class SphericalControllerTween {
         }
         return false;
     }
+    /**
+     * 全てのtweenインスタンスを停止する。
+     */
+    stop() {
+        const tweenArray = this.getTweenArray();
+        for (let tween of tweenArray) {
+            if (tween)
+                tween.removeAllEventListeners();
+        }
+    }
 }

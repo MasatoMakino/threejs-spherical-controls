@@ -89,7 +89,6 @@ export declare class SphericalController extends EventDispatcher {
      * @param option このアニメーションに対する1回限りの設定を行う。
      */
     loop(type: SphericalParamType, min: number, max: number, option?: EasingOption): void;
-    static getFirstDuration(duration: number, current: number, max: number, min: number): number;
     /**
      * カメラシフトを移動する
      * @param value 移動先
@@ -110,9 +109,5 @@ export declare class SphericalController extends EventDispatcher {
      * @param overrideTween
      */
     addPosition(type: SphericalParamType, value: number, overrideTween?: boolean): void;
-    /**
-     * 全てのtweenインスタンスを停止する。
-     */
-    stop(): void;
 }
 //# sourceMappingURL=SphericalController.d.ts.map

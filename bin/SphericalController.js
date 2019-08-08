@@ -76,7 +76,7 @@ export class SphericalController extends EventDispatcher {
      */
     move(pos, option) {
         option = EasingOption.init(option, this);
-        this.stop();
+        this.tweens.stop();
         this.moveR(pos.radius, option);
         this.movePhi(pos.phi, option);
         this.moveTheta(pos.theta, option);
@@ -183,15 +183,12 @@ export class SphericalController extends EventDispatcher {
             tween.addEventListener("change", this.dispatchUpdateEvent);
             this.tweens.overrideTween(type, tween);
         };
-        const firstDuration = SphericalController.getFirstDuration(option.duration, this.pos[type], toMax, toMin);
+        const firstDuration = SphericalControllerUtil.getFirstDuration(option.duration, this.pos[type], toMax, toMin);
         const tween = Tween.get(this.pos)
             .to(toObjMin, firstDuration, option.easing)
             .call(loop);
         tween.addEventListener("change", this.dispatchUpdateEvent);
         this.tweens.overrideTween(type, tween);
-    }
-    static getFirstDuration(duration, current, max, min) {
-        return Math.abs(duration * ((current - min) / (max - min)));
     }
     /**
      * カメラシフトを移動する
@@ -217,7 +214,7 @@ export class SphericalController extends EventDispatcher {
         if (!overrideTween && this.tweens.isPlaying())
             return;
         if (overrideTween && this.tweens.isPlaying()) {
-            this.stop();
+            this.tweens.stop();
         }
         this._cameraTarget.position.add(pos);
         this.dispatchUpdateEvent();
@@ -232,20 +229,10 @@ export class SphericalController extends EventDispatcher {
         if (!overrideTween && this.tweens.isPlaying())
             return;
         if (overrideTween && this.tweens.isPlaying()) {
-            this.stop();
+            this.tweens.stop();
         }
         this.pos[type] += value;
         this.pos[type] = this.limiter.clampPosition(type, this.pos);
         this.dispatchUpdateEvent();
-    }
-    /**
-     * 全てのtweenインスタンスを停止する。
-     */
-    stop() {
-        const tweenArray = this.tweens.getTweenArray();
-        for (let tween of tweenArray) {
-            if (tween)
-                tween.removeAllEventListeners();
-        }
     }
 }
