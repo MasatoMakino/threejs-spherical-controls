@@ -1,18 +1,4 @@
-import Tween = createjs.Tween;
-
 export class SphericalControllerUtil {
-  /**
-   * 指定されたtweenを停止する。
-   * @param {createjs.Tween | null} tween
-   * @return {null}
-   */
-  public static removeTween(tween: Tween | null): null {
-    if (!tween) return null;
-    tween.paused = true;
-    tween.removeAllEventListeners();
-    return null;
-  }
-
   /**
    * 任意の点までの回転アニメーションに必要になる
    * 回転方向を算出する処理。

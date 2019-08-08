@@ -1,5 +1,4 @@
 import Tween = createjs.Tween;
-import Ease = createjs.Ease;
 import {
   Camera,
   EventDispatcher,
@@ -16,6 +15,7 @@ import {
 import { EasingOption } from "./EasingOption";
 import { SphericalControllerUtil } from "./SphericalControllerUtil";
 import { CameraPositionLimiter } from "./CameraPositionLimiter";
+import { SphericalControllerTween } from "./SphericalControllerTween";
 
 /**
  * 球面座標系でカメラ位置をコントロールするクラス。
@@ -37,18 +37,7 @@ export class SphericalController extends EventDispatcher {
   // 値を指定するとそのぶん_cameraTargetが中央からオフセットされる。
   private cameraShift: Vector3 = new Vector3();
 
-  //全体移動用tween
-  private tweenTarget!: Tween | null;
-
-  //特定パラメーター移動用tween
-  private tweenR!: Tween | null;
-  private tweenTheta!: Tween | null;
-  private tweenPhi!: Tween | null;
-  private tweenCameraShift!: Tween | null;
-
-  public duration: number = 1333;
-  public easing = Ease.cubicOut;
-  public loopEasing = Ease.sineInOut;
+  public tweens: SphericalControllerTween = new SphericalControllerTween();
 
   public limiter: CameraPositionLimiter = new CameraPositionLimiter();
   private pos: Spherical = new Spherical();
@@ -175,17 +164,9 @@ export class SphericalController extends EventDispatcher {
    */
   public moveR(value: number, option?: EasingOption): void {
     option = EasingOption.init(option, this);
-    this.tweenR = SphericalControllerUtil.removeTween(this.tweenR);
-
-    this.tweenR = this.getTweenPosition(TargetParam.R, value, option);
-  }
-
-  private onCompleteCameraTween(paramType: TargetParam): void {
-    this.dispatchEvent(
-      new SphericalControllerEvent(
-        SphericalControllerEventType.MOVED_CAMERA_COMPLETE,
-        paramType
-      )
+    this.tweens.overrideTween(
+      TargetParam.R,
+      this.getTweenPosition(TargetParam.R, value, option)
     );
   }
 
@@ -199,31 +180,27 @@ export class SphericalController extends EventDispatcher {
   public loopMoveR(min: number, max: number, option?: EasingOption): void {
     option = EasingOption.init(option, this, true);
 
-    const stopTween = () => {
-      this.tweenR = SphericalControllerUtil.removeTween(this.tweenR);
-    };
-
     const loop = () => {
-      stopTween();
-      this.tweenR = Tween.get(this.pos, { loop: -1 })
+      const tween = Tween.get(this.pos, { loop: -1 })
         .to({ radius: max }, option.duration, option.easing)
         .to({ radius: min }, option.duration, option.easing);
-      this.tweenR.addEventListener("change", this.setNeedUpdate);
+      tween.addEventListener("change", this.setNeedUpdate);
+      this.tweens.overrideTween(TargetParam.R, tween);
     };
 
-    stopTween();
     const firstDuration = Math.abs(
       option.duration * ((this.pos.radius - min) / (max - min))
     );
 
-    this.tweenR = Tween.get(this.pos)
+    const tween = Tween.get(this.pos)
       .to({ radius: min }, firstDuration, option.easing)
       .call(loop);
-    this.tweenR.addEventListener("change", this.setNeedUpdate);
+    tween.addEventListener("change", this.setNeedUpdate);
+    this.tweens.overrideTween(TargetParam.R, tween);
   }
 
   public stopLoopMoveR(): void {
-    this.tweenR = SphericalControllerUtil.removeTween(this.tweenR);
+    this.tweens.stopTween(TargetParam.R);
   }
 
   /**
@@ -233,14 +210,14 @@ export class SphericalController extends EventDispatcher {
    */
   public moveTarget(value: Vector3, option?: EasingOption): void {
     option = EasingOption.init(option, this);
-    this.tweenTarget = SphericalControllerUtil.removeTween(this.tweenTarget);
 
-    this.tweenTarget = Tween.get(this._cameraTarget.position).to(
+    const tween = Tween.get(this._cameraTarget.position).to(
       { x: value.x, y: value.y, z: value.z },
       option.duration,
       option.easing
     );
-    this.tweenTarget.addEventListener("change", this.setNeedUpdate);
+    tween.addEventListener("change", this.setNeedUpdate);
+    this.tweens.overrideTween(TargetParam.CAMERA_TARGET, tween);
   }
 
   /**
@@ -251,7 +228,6 @@ export class SphericalController extends EventDispatcher {
    */
   public moveTheta(value: number, option?: EasingOption): void {
     option = EasingOption.init(option, this);
-    this.tweenTheta = SphericalControllerUtil.removeTween(this.tweenTheta);
 
     let to = value;
     if (option.normalize) {
@@ -259,7 +235,8 @@ export class SphericalController extends EventDispatcher {
     }
     to = this.limiter.clampWithType(TargetParam.THETA, to);
 
-    this.tweenTheta = this.getTweenPosition(TargetParam.THETA, to, option);
+    const tween = this.getTweenPosition(TargetParam.THETA, to, option);
+    this.tweens.overrideTween(TargetParam.THETA, tween);
   }
 
   private getTweenPosition(
@@ -269,12 +246,22 @@ export class SphericalController extends EventDispatcher {
   ): Tween {
     const toObj = {};
     toObj[targetParam] = to;
+
     const tween = Tween.get(this.pos).to(toObj, option.duration, option.easing);
     tween.addEventListener("change", this.setNeedUpdate);
     tween.addEventListener("complete", e => {
       this.onCompleteCameraTween(targetParam);
     });
     return tween;
+  }
+
+  private onCompleteCameraTween(paramType: TargetParam): void {
+    this.dispatchEvent(
+      new SphericalControllerEvent(
+        SphericalControllerEventType.MOVED_CAMERA_COMPLETE,
+        paramType
+      )
+    );
   }
 
   /**
@@ -286,9 +273,9 @@ export class SphericalController extends EventDispatcher {
   public movePhi(value: number, option?: EasingOption): void {
     option = EasingOption.init(option, this);
 
-    this.tweenPhi = SphericalControllerUtil.removeTween(this.tweenPhi);
     const to = this.limiter.clampWithType(TargetParam.PHI, value);
-    this.tweenPhi = this.getTweenPosition(TargetParam.PHI, to, option);
+    const tween = this.getTweenPosition(TargetParam.PHI, to, option);
+    this.tweens.overrideTween(TargetParam.PHI, tween);
   }
 
   /**
@@ -304,24 +291,24 @@ export class SphericalController extends EventDispatcher {
     const toMin = this.limiter.clampWithType(TargetParam.PHI, min);
     const toMax = this.limiter.clampWithType(TargetParam.PHI, max);
     const loop = () => {
-      this.stopLoopMovePhi();
-      this.tweenPhi = Tween.get(this.pos, { loop: -1 })
+      const tween = Tween.get(this.pos, { loop: -1 })
         .to({ phi: toMax }, option.duration, option.easing)
         .to({ phi: toMin }, option.duration, option.easing);
-      this.tweenPhi.addEventListener("change", this.setNeedUpdate);
+      tween.addEventListener("change", this.setNeedUpdate);
+      this.tweens.overrideTween(TargetParam.PHI, tween);
     };
 
-    this.stopLoopMovePhi();
     const firstDuration = SphericalController.getFirstDuration(
       option.duration,
       this.pos.phi,
       toMax,
       toMin
     );
-    this.tweenPhi = Tween.get(this.pos)
+    const tween = Tween.get(this.pos)
       .to({ phi: toMin }, firstDuration, option.easing)
       .call(loop);
-    this.tweenPhi.addEventListener("change", this.setNeedUpdate);
+    tween.addEventListener("change", this.setNeedUpdate);
+    this.tweens.overrideTween(TargetParam.PHI, tween);
   }
 
   private static getFirstDuration(
@@ -339,32 +326,32 @@ export class SphericalController extends EventDispatcher {
     const toMin = this.limiter.clampWithType(TargetParam.THETA, min);
     const toMax = this.limiter.clampWithType(TargetParam.THETA, max);
     const loop = () => {
-      this.stopLoopMoveTheta();
-      this.tweenTheta = Tween.get(this.pos, { loop: -1 })
+      const tween = Tween.get(this.pos, { loop: -1 })
         .to({ theta: toMax }, option.duration, option.easing)
         .to({ theta: toMin }, option.duration, option.easing);
-      this.tweenTheta.addEventListener("change", this.setNeedUpdate);
+      tween.addEventListener("change", this.setNeedUpdate);
+      this.tweens.overrideTween(TargetParam.THETA, tween);
     };
 
-    this.stopLoopMoveTheta();
     const firstDuration = SphericalController.getFirstDuration(
       option.duration,
       this.pos.theta,
       toMax,
       toMin
     );
-    this.tweenTheta = Tween.get(this.pos)
+    const tween = Tween.get(this.pos)
       .to({ theta: toMin }, firstDuration, option.easing)
       .call(loop);
-    this.tweenTheta.addEventListener("change", this.setNeedUpdate);
+    tween.addEventListener("change", this.setNeedUpdate);
+    this.tweens.overrideTween(TargetParam.THETA, tween);
   }
 
   public stopLoopMovePhi(): void {
-    this.tweenPhi = SphericalControllerUtil.removeTween(this.tweenPhi);
+    this.tweens.stopTween(TargetParam.PHI);
   }
 
   public stopLoopMoveTheta(): void {
-    this.tweenTheta = SphericalControllerUtil.removeTween(this.tweenTheta);
+    this.tweens.stopTween(TargetParam.THETA);
   }
 
   /**
@@ -374,20 +361,17 @@ export class SphericalController extends EventDispatcher {
    */
   public moveCameraShift(value: Vector3, option?: EasingOption): void {
     option = EasingOption.init(option, this);
-
-    this.tweenCameraShift = SphericalControllerUtil.removeTween(
-      this.tweenCameraShift
-    );
     if (!this.cameraShift) {
       this.cameraShift = new Vector3();
     }
 
-    this.tweenCameraShift = Tween.get(this.cameraShift).to(
+    const tween = Tween.get(this.cameraShift).to(
       { x: value.x, y: value.y, z: value.z },
       option.duration,
       option.easing
     );
-    this.tweenCameraShift.addEventListener("change", this.setNeedUpdate);
+    tween.addEventListener("change", this.setNeedUpdate);
+    this.tweens.overrideTween(TargetParam.CAMERA_SHIFT, tween);
   }
 
   /**
@@ -397,8 +381,8 @@ export class SphericalController extends EventDispatcher {
    * @param overrideTween tweenのキャンセルを行うか、defaultはfalse。trueの場合tweenを停止して現状値からの加算を行う
    */
   public addR(value: number, overrideTween: boolean = false): void {
-    if (!overrideTween && this.isPlaying()) return;
-    if (overrideTween && this.isPlaying()) {
+    if (!overrideTween && this.tweens.isPlaying()) return;
+    if (overrideTween && this.tweens.isPlaying()) {
       this.stop();
     }
 
@@ -413,8 +397,8 @@ export class SphericalController extends EventDispatcher {
    * @param overrideTween
    */
   public addTargetPosition(pos: Vector3, overrideTween: boolean = false): void {
-    if (!overrideTween && this.isPlaying()) return;
-    if (overrideTween && this.isPlaying()) {
+    if (!overrideTween && this.tweens.isPlaying()) return;
+    if (overrideTween && this.tweens.isPlaying()) {
       this.stop();
     }
 
@@ -429,14 +413,13 @@ export class SphericalController extends EventDispatcher {
    * @param overrideTween tweenのキャンセルを行うか、defaultはfalse。trueの場合tweenを停止して現状値からの加算を行う
    */
   public addTheta(value: number, overrideTween: boolean = false): void {
-    if (!overrideTween && this.isPlaying()) return;
-    if (overrideTween && this.isPlaying()) {
+    if (!overrideTween && this.tweens.isPlaying()) return;
+    if (overrideTween && this.tweens.isPlaying()) {
       this.stop();
     }
 
     this.pos.theta += value;
     this.pos.theta = this.limiter.clampPosition(TargetParam.THETA, this.pos);
-
     this.setNeedUpdate(null);
   }
 
@@ -447,14 +430,13 @@ export class SphericalController extends EventDispatcher {
    * @param overrideTween tweenのキャンセルを行うか、defaultはfalse。trueの場合tweenを停止して現状値からの加算を行う
    */
   public addPhi(value: number, overrideTween: boolean = false): void {
-    if (!overrideTween && this.isPlaying()) return;
-    if (overrideTween && this.isPlaying()) {
+    if (!overrideTween && this.tweens.isPlaying()) return;
+    if (overrideTween && this.tweens.isPlaying()) {
       this.stop();
     }
 
     this.pos.phi += value;
     this.pos.phi = this.limiter.clampPosition(TargetParam.PHI, this.pos);
-
     this.setNeedUpdate(null);
   }
 
@@ -466,30 +448,9 @@ export class SphericalController extends EventDispatcher {
     Tween.removeTweens(this.cameraShift);
     Tween.removeTweens(this.pos);
 
-    const tweenArray = this.getTweenArray();
+    const tweenArray = this.tweens.getTweenArray();
     for (let tween of tweenArray) {
       if (tween) tween.removeAllEventListeners();
     }
-  }
-
-  /**
-   * 現在アクティブなTweenが存在するか確認する。
-   */
-  public isPlaying(): boolean {
-    const tweenArray = this.getTweenArray();
-    for (let tween of tweenArray) {
-      if (tween && !tween.paused) return true;
-    }
-    return false;
-  }
-
-  private getTweenArray(): Tween[] {
-    return [
-      this.tweenR,
-      this.tweenTheta,
-      this.tweenPhi,
-      this.tweenCameraShift,
-      this.tweenTarget
-    ];
   }
 }

@@ -131,7 +131,7 @@ const checkRotationComplete = (controller, R) => {
 
 const checkPlaying = controller => {
   setInterval(() => {
-    console.log(controller.isPlaying());
+    console.log(controller.tweens.isPlaying());
   }, 100);
 };
 

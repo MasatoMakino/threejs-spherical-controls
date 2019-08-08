@@ -16,6 +16,6 @@ export enum TargetParam {
   R = "radius",
   PHI = "phi",
   THETA = "theta",
-  CAMERA_TARGET ="cameraTarget",
-  CAMERA_SHIFT ="CameraShift"
+  CAMERA_TARGET = "cameraTarget",
+  CAMERA_SHIFT = "CameraShift"
 }

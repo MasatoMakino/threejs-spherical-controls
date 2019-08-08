@@ -1,7 +1,7 @@
-import { SphericalController } from "../src/SphericalController";
+import { SphericalControllerUtil } from "../bin";
 
 describe("", () => {
   test("", () => {
-    expect(SphericalController.PI2ToPI(0)).toBe(0);
+    expect(SphericalControllerUtil.PI2ToPI(0)).toBe(0);
   });
 });

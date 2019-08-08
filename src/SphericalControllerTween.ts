@@ -20,7 +20,7 @@ export class SphericalControllerTween {
 
   stopTween(type: TargetParam): void {
     const tween = this.getTween(type);
-    if (!tween) return null;
+    if (!tween) return;
     tween.paused = true;
     tween.removeAllEventListeners();
     this.setTween(type, null);
@@ -41,7 +41,7 @@ export class SphericalControllerTween {
     }
   }
 
-  setTween(type: TargetParam, tween: any): void {
+  setTween(type: TargetParam, tween: Tween | null): void {
     switch (type) {
       case TargetParam.R:
         this._tweenR = tween;
@@ -61,6 +61,11 @@ export class SphericalControllerTween {
     }
   }
 
+  overrideTween(type: TargetParam, tween: Tween | null): void {
+    this.stopTween(type);
+    this.setTween(type, tween);
+  }
+
   public getTweenArray(): Tween[] {
     return [
       this._tweenR,
@@ -69,5 +74,16 @@ export class SphericalControllerTween {
       this._tweenCameraShift,
       this._tweenTarget
     ];
+  }
+
+  /**
+   * 現在アクティブなTweenが存在するか確認する。
+   */
+  public isPlaying(): boolean {
+    const tweenArray = this.getTweenArray();
+    for (let tween of tweenArray) {
+      if (tween && !tween.paused) return true;
+    }
+    return false;
   }
 }
