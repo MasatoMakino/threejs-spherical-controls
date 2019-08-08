@@ -12,7 +12,6 @@ export class CameraPositionUpdater {
         this.setNeedUpdate = (e) => {
             this.isUpdate = true;
             this.updateEvent = e;
-            console.log(e);
         };
         /**
          * カメラ位置および注視点の更新処理
@@ -25,7 +24,6 @@ export class CameraPositionUpdater {
             let cameraTargetPos = new Vector3();
             let cameraPos = this._camera.position;
             cameraPos.setFromSpherical(e.position);
-            console.log(e.cameraTarget);
             cameraPos.add(e.cameraTarget.getWorldPosition(cameraTargetPos));
             this._camera.position.set(cameraPos.x, cameraPos.y, cameraPos.z);
             this._camera.lookAt(e.cameraTarget.getWorldPosition(cameraTargetPos));

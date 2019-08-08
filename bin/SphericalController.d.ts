@@ -1,4 +1,5 @@
 import { Camera, EventDispatcher, Mesh, Spherical, Vector3 } from "three";
+import { SphericalParamType } from "./SphericalControllerEvent";
 import { EasingOption } from "./EasingOption";
 import { CameraPositionLimiter } from "./CameraPositionLimiter";
 import { SphericalControllerTween } from "./SphericalControllerTween";
@@ -78,41 +79,23 @@ export declare class SphericalController extends EventDispatcher {
      * @param option
      */
     movePhi(value: number, option?: EasingOption): void;
+    stopLoop(type: SphericalParamType): void;
     /**
-     * 緯度のみをループで移動させる。
-     * 縦方向にゆらゆらと回転させるための処理
-     * @param {number} min　単位はラジアン角
-     * @param {number} max　単位はラジアン角
-     * @param option
+     * カメラ位置をループで移動させる。
+     * ゆらゆらと動かすための処理。
+     * @param type どのプロパティを操作するか。
+     * @param min
+     * @param max
+     * @param option このアニメーションに対する1回限りの設定を行う。
      */
-    loopMovePhi(min: number, max: number, option?: EasingOption): void;
-    loopMoveTheta(min: number, max: number, option?: EasingOption): void;
-    /**
-     * カメラ半径のみをループで移動させる。
-     * ゆらゆらとズームインアウトさせるための処理
-     * @param {number} min
-     * @param {number} max
-     * @param option
-     */
-    loopMoveR(min: number, max: number, option?: EasingOption): void;
-    stopLoopMoveR(): void;
-    stopLoopMovePhi(): void;
-    stopLoopMoveTheta(): void;
-    private loop;
-    private static getFirstDuration;
+    loop(type: SphericalParamType, min: number, max: number, option?: EasingOption): void;
+    static getFirstDuration(duration: number, current: number, max: number, min: number): number;
     /**
      * カメラシフトを移動する
      * @param value 移動先
      * @param option
      */
     moveCameraShift(value: Vector3, option?: EasingOption): void;
-    /**
-     * 半径を加算する。
-     * ズームインアウトを行う際のメソッド
-     * @param value
-     * @param overrideTween tweenのキャンセルを行うか、defaultはfalse。trueの場合tweenを停止して現状値からの加算を行う
-     */
-    addR(value: number, overrideTween?: boolean): void;
     /**
      * カメラターゲットの座標を加算する。
      * 水平、垂直移動などに使用
@@ -121,28 +104,14 @@ export declare class SphericalController extends EventDispatcher {
      */
     addTargetPosition(pos: Vector3, overrideTween?: boolean): void;
     /**
-     * 経度を加算する。
-     * 横方向回転を行う際のメソッド
-     * @param value 単位はラジアン角
-     * @param overrideTween tweenのキャンセルを行うか、defaultはfalse。trueの場合tweenを停止して現状値からの加算を行う
-     */
-    addTheta(value: number, overrideTween?: boolean): void;
-    /**
-     * 緯度を加算する
-     * 縦方向回転を行う際のメソッド
-     * @param value 単位はラジアン角
-     * @param overrideTween tweenのキャンセルを行うか、defaultはfalse。trueの場合tweenを停止して現状値からの加算を行う
-     */
-    addPhi(value: number, overrideTween?: boolean): void;
-    /**
      * カメラのSpherical座標に加算する。
      * @param targetParam
      * @param value
      * @param overrideTween
      */
-    private addPosition;
+    addPosition(type: SphericalParamType, value: number, overrideTween?: boolean): void;
     /**
-     * 全てのtweenインスタンスを停止、破棄する
+     * 全てのtweenインスタンスを停止する。
      */
     stop(): void;
 }

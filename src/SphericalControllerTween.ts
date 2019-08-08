@@ -1,6 +1,7 @@
 import Tween = createjs.Tween;
 import Ease = createjs.Ease;
 import { TargetParam } from "./SphericalControllerEvent";
+import { SphericalParamType } from "./SphericalControllerEvent";
 
 export class SphericalControllerTween {
   //カメラターゲット移動用tween
@@ -18,7 +19,7 @@ export class SphericalControllerTween {
 
   constructor() {}
 
-  stopTween(type: TargetParam): void {
+  stopTween(type: TargetParam | SphericalParamType): void {
     const tween = this.getTween(type);
     if (!tween) return;
     tween.paused = true;
@@ -26,13 +27,13 @@ export class SphericalControllerTween {
     this.setTween(type, null);
   }
 
-  getTween(type: TargetParam): Tween {
+  getTween(type: TargetParam | SphericalParamType): Tween {
     switch (type) {
-      case TargetParam.R:
+      case SphericalParamType.R:
         return this._tweenR;
-      case TargetParam.PHI:
+      case SphericalParamType.PHI:
         return this._tweenPhi;
-      case TargetParam.THETA:
+      case SphericalParamType.THETA:
         return this._tweenTheta;
       case TargetParam.CAMERA_SHIFT:
         return this._tweenCameraShift;
@@ -41,15 +42,15 @@ export class SphericalControllerTween {
     }
   }
 
-  setTween(type: TargetParam, tween: Tween | null): void {
+  setTween(type: TargetParam | SphericalParamType, tween: Tween | null): void {
     switch (type) {
-      case TargetParam.R:
+      case SphericalParamType.R:
         this._tweenR = tween;
         break;
-      case TargetParam.PHI:
+      case SphericalParamType.PHI:
         this._tweenPhi = tween;
         break;
-      case TargetParam.THETA:
+      case SphericalParamType.THETA:
         this._tweenTheta = tween;
         break;
       case TargetParam.CAMERA_SHIFT:
@@ -61,7 +62,10 @@ export class SphericalControllerTween {
     }
   }
 
-  overrideTween(type: TargetParam, tween: Tween | null): void {
+  overrideTween(
+    type: TargetParam | SphericalParamType,
+    tween: Tween | null
+  ): void {
     this.stopTween(type);
     this.setTween(type, tween);
   }

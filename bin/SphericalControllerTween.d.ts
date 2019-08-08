@@ -1,6 +1,7 @@
 /// <reference types="tweenjs" />
 import Tween = createjs.Tween;
 import { TargetParam } from "./SphericalControllerEvent";
+import { SphericalParamType } from "./SphericalControllerEvent";
 export declare class SphericalControllerTween {
     private _tweenTarget;
     private _tweenR;
@@ -11,10 +12,10 @@ export declare class SphericalControllerTween {
     easing: (amount: number) => number;
     loopEasing: (amount: number) => number;
     constructor();
-    stopTween(type: TargetParam): void;
-    getTween(type: TargetParam): Tween;
-    setTween(type: TargetParam, tween: Tween | null): void;
-    overrideTween(type: TargetParam, tween: Tween | null): void;
+    stopTween(type: TargetParam | SphericalParamType): void;
+    getTween(type: TargetParam | SphericalParamType): Tween;
+    setTween(type: TargetParam | SphericalParamType, tween: Tween | null): void;
+    overrideTween(type: TargetParam | SphericalParamType, tween: Tween | null): void;
     getTweenArray(): Tween[];
     /**
      * 現在アクティブなTweenが存在するか確認する。

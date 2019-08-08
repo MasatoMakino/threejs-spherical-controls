@@ -1,5 +1,6 @@
 var Ease = createjs.Ease;
 import { TargetParam } from "./SphericalControllerEvent";
+import { SphericalParamType } from "./SphericalControllerEvent";
 export class SphericalControllerTween {
     constructor() {
         this.duration = 1333;
@@ -16,11 +17,11 @@ export class SphericalControllerTween {
     }
     getTween(type) {
         switch (type) {
-            case TargetParam.R:
+            case SphericalParamType.R:
                 return this._tweenR;
-            case TargetParam.PHI:
+            case SphericalParamType.PHI:
                 return this._tweenPhi;
-            case TargetParam.THETA:
+            case SphericalParamType.THETA:
                 return this._tweenTheta;
             case TargetParam.CAMERA_SHIFT:
                 return this._tweenCameraShift;
@@ -30,13 +31,13 @@ export class SphericalControllerTween {
     }
     setTween(type, tween) {
         switch (type) {
-            case TargetParam.R:
+            case SphericalParamType.R:
                 this._tweenR = tween;
                 break;
-            case TargetParam.PHI:
+            case SphericalParamType.PHI:
                 this._tweenPhi = tween;
                 break;
-            case TargetParam.THETA:
+            case SphericalParamType.THETA:
                 this._tweenTheta = tween;
                 break;
             case TargetParam.CAMERA_SHIFT:

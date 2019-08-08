@@ -4,7 +4,8 @@ import { Common } from "./Common";
 import {
   SphericalController,
   SphericalControllerEventType,
-  SphericalControllerUtil
+  SphericalControllerUtil,
+  SphericalParamType
 } from "../bin";
 
 const W = 1280;
@@ -127,22 +128,22 @@ const initAddGUI = (gui, controller) => {
   const moveAngle = 0.1;
   const prop = {
     addR: () => {
-      controller.addR(5);
+      controller.addPosition(SphericalParamType.R, 5);
     },
     subR: () => {
-      controller.addR(-5);
+      controller.addPosition(SphericalParamType.R, -5);
     },
     addPhi: () => {
-      controller.addPhi(moveAngle);
+      controller.addPosition(SphericalParamType.PHI, moveAngle);
     },
     subPhi: () => {
-      controller.addPhi(-moveAngle);
+      controller.addPosition(SphericalParamType.PHI, -moveAngle);
     },
     addTheta: () => {
-      controller.addTheta(moveAngle);
+      controller.addPosition(SphericalParamType.THETA, moveAngle);
     },
     subTheta: () => {
-      controller.addTheta(-moveAngle);
+      controller.addPosition(SphericalParamType.THETA, -moveAngle);
     }
   };
 
@@ -169,25 +170,30 @@ const initLoopGUI = (gui, controller) => {
   const prop = {
     loopR: () => {
       if (flags.isLoopR) {
-        controller.stopLoopMoveR();
+        controller.stopLoop(SphericalParamType.R);
       } else {
-        controller.loopMoveR(30, 150, option);
+        controller.loop(SphericalParamType.R, 30, 150, option);
       }
       flags.isLoopR = !flags.isLoopR;
     },
     loopPhi: () => {
       if (flags.isLoopPhi) {
-        controller.stopLoopMovePhi();
+        controller.stopLoop(SphericalParamType.PHI);
       } else {
-        controller.loopMovePhi(0, Math.PI, option);
+        controller.loop(SphericalParamType.PHI, 0, Math.PI, option);
       }
       flags.isLoopPhi = !flags.isLoopPhi;
     },
     loopTheta: () => {
       if (flags.isLoopTheta) {
-        controller.stopLoopMoveTheta();
+        controller.stopLoop(SphericalParamType.THETA);
       } else {
-        controller.loopMoveTheta(-Math.PI / 4, Math.PI / 4, option);
+        controller.loop(
+          SphericalParamType.THETA,
+          -Math.PI / 4,
+          Math.PI / 4,
+          option
+        );
       }
       flags.isLoopTheta = !flags.isLoopTheta;
     }

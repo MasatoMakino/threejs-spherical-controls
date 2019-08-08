@@ -1,7 +1,12 @@
+import extend = createjs.extend;
+
 export class SphericalControllerEvent {
   public type: SphericalControllerEventType;
-  public targetParam: TargetParam;
-  constructor(type: SphericalControllerEventType, targetParam?: TargetParam) {
+  public targetParam: TargetParam | SphericalParamType;
+  constructor(
+    type: SphericalControllerEventType,
+    targetParam?: TargetParam | SphericalParamType
+  ) {
     this.type = type;
     this.targetParam = targetParam;
   }
@@ -13,9 +18,12 @@ export enum SphericalControllerEventType {
 }
 
 export enum TargetParam {
-  R = "radius",
-  PHI = "phi",
-  THETA = "theta",
   CAMERA_TARGET = "cameraTarget",
   CAMERA_SHIFT = "CameraShift"
+}
+
+export enum SphericalParamType {
+  R = "radius",
+  PHI = "phi",
+  THETA = "theta"
 }

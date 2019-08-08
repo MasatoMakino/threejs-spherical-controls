@@ -1,5 +1,5 @@
-import { TargetParam } from "./SphericalControllerEvent";
 import { Spherical } from "three";
+import { SphericalParamType } from "./SphericalControllerEvent";
 export declare class CameraPositionLimiter {
     private static readonly EPS;
     phiMin: number;
@@ -7,9 +7,9 @@ export declare class CameraPositionLimiter {
     thetaMin: number;
     thetaMax: number;
     constructor();
-    setLimit(type: TargetParam, max: number, min: number): void;
-    clampWithType(type: TargetParam, val: number): number;
-    clampPosition(type: TargetParam, pos: Spherical): number;
+    setLimit(type: SphericalParamType, max: number, min: number): void;
+    clampWithType(type: SphericalParamType, val: number): number;
+    clampPosition(type: SphericalParamType, pos: Spherical): number;
     static clamp(value: number, max: number, min: number): number;
 }
 //# sourceMappingURL=CameraPositionLimiter.d.ts.map

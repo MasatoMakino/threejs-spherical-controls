@@ -1,6 +1,7 @@
 var Tween = createjs.Tween;
 import { EventDispatcher, MeshBasicMaterial, Spherical, Vector3 } from "three";
 import { SphericalControllerEvent, SphericalControllerEventType, TargetParam } from "./SphericalControllerEvent";
+import { SphericalParamType } from "./SphericalControllerEvent";
 import { EasingOption } from "./EasingOption";
 import { SphericalControllerUtil } from "./SphericalControllerUtil";
 import { CameraPositionLimiter } from "./CameraPositionLimiter";
@@ -53,8 +54,8 @@ export class SphericalController extends EventDispatcher {
     initCameraPosition(pos, targetPos) {
         this.pos = pos;
         const lmt = this.limiter;
-        this.pos.phi = lmt.clampPosition(TargetParam.PHI, this.pos);
-        this.pos.theta = lmt.clampPosition(TargetParam.THETA, this.pos);
+        this.pos.phi = lmt.clampPosition(SphericalParamType.PHI, this.pos);
+        this.pos.theta = lmt.clampPosition(SphericalParamType.THETA, this.pos);
         if (targetPos) {
             this._cameraTarget.position.set(targetPos.x, targetPos.y, targetPos.z);
         }
@@ -99,7 +100,7 @@ export class SphericalController extends EventDispatcher {
      */
     moveR(value, option) {
         option = EasingOption.init(option, this);
-        this.tweens.overrideTween(TargetParam.R, this.getTweenPosition(TargetParam.R, value, option));
+        this.tweens.overrideTween(SphericalParamType.R, this.getTweenPosition(SphericalParamType.R, value, option));
     }
     /**
      * カメラターゲットのみを移動する
@@ -124,9 +125,9 @@ export class SphericalController extends EventDispatcher {
         if (option.normalize) {
             to = SphericalControllerUtil.getTweenTheta(this.pos.theta, value);
         }
-        to = this.limiter.clampWithType(TargetParam.THETA, to);
-        const tween = this.getTweenPosition(TargetParam.THETA, to, option);
-        this.tweens.overrideTween(TargetParam.THETA, tween);
+        to = this.limiter.clampWithType(SphericalParamType.THETA, to);
+        const tween = this.getTweenPosition(SphericalParamType.THETA, to, option);
+        this.tweens.overrideTween(SphericalParamType.THETA, tween);
     }
     getTweenPosition(targetParam, to, option) {
         const toObj = {};
@@ -149,44 +150,25 @@ export class SphericalController extends EventDispatcher {
      */
     movePhi(value, option) {
         option = EasingOption.init(option, this);
-        const to = this.limiter.clampWithType(TargetParam.PHI, value);
-        const tween = this.getTweenPosition(TargetParam.PHI, to, option);
-        this.tweens.overrideTween(TargetParam.PHI, tween);
+        const to = this.limiter.clampWithType(SphericalParamType.PHI, value);
+        const tween = this.getTweenPosition(SphericalParamType.PHI, to, option);
+        this.tweens.overrideTween(SphericalParamType.PHI, tween);
+    }
+    stopLoop(type) {
+        this.tweens.stopTween(type);
     }
     /**
-     * 緯度のみをループで移動させる。
-     * 縦方向にゆらゆらと回転させるための処理
-     * @param {number} min　単位はラジアン角
-     * @param {number} max　単位はラジアン角
-     * @param option
+     * カメラ位置をループで移動させる。
+     * ゆらゆらと動かすための処理。
+     * @param type どのプロパティを操作するか。
+     * @param min
+     * @param max
+     * @param option このアニメーションに対する1回限りの設定を行う。
      */
-    loopMovePhi(min, max, option) {
-        this.loop(TargetParam.PHI, min, max, option);
-    }
-    loopMoveTheta(min, max, option) {
-        this.pos.theta = SphericalControllerUtil.PI2ToPI(this.pos.theta);
-        this.loop(TargetParam.THETA, min, max, option);
-    }
-    /**
-     * カメラ半径のみをループで移動させる。
-     * ゆらゆらとズームインアウトさせるための処理
-     * @param {number} min
-     * @param {number} max
-     * @param option
-     */
-    loopMoveR(min, max, option) {
-        this.loop(TargetParam.R, min, max, option);
-    }
-    stopLoopMoveR() {
-        this.tweens.stopTween(TargetParam.R);
-    }
-    stopLoopMovePhi() {
-        this.tweens.stopTween(TargetParam.PHI);
-    }
-    stopLoopMoveTheta() {
-        this.tweens.stopTween(TargetParam.THETA);
-    }
     loop(type, min, max, option) {
+        if (type === SphericalParamType.THETA) {
+            this.pos.theta = SphericalControllerUtil.PI2ToPI(this.pos.theta);
+        }
         option = EasingOption.init(option, this, true);
         const toMin = this.limiter.clampWithType(type, min);
         const toMax = this.limiter.clampWithType(type, max);
@@ -226,15 +208,6 @@ export class SphericalController extends EventDispatcher {
         this.tweens.overrideTween(TargetParam.CAMERA_SHIFT, tween);
     }
     /**
-     * 半径を加算する。
-     * ズームインアウトを行う際のメソッド
-     * @param value
-     * @param overrideTween tweenのキャンセルを行うか、defaultはfalse。trueの場合tweenを停止して現状値からの加算を行う
-     */
-    addR(value, overrideTween = false) {
-        this.addPosition(TargetParam.R, value, overrideTween);
-    }
-    /**
      * カメラターゲットの座標を加算する。
      * 水平、垂直移動などに使用
      * @param pos
@@ -250,46 +223,25 @@ export class SphericalController extends EventDispatcher {
         this.dispatchUpdateEvent();
     }
     /**
-     * 経度を加算する。
-     * 横方向回転を行う際のメソッド
-     * @param value 単位はラジアン角
-     * @param overrideTween tweenのキャンセルを行うか、defaultはfalse。trueの場合tweenを停止して現状値からの加算を行う
-     */
-    addTheta(value, overrideTween = false) {
-        this.addPosition(TargetParam.THETA, value, overrideTween);
-    }
-    /**
-     * 緯度を加算する
-     * 縦方向回転を行う際のメソッド
-     * @param value 単位はラジアン角
-     * @param overrideTween tweenのキャンセルを行うか、defaultはfalse。trueの場合tweenを停止して現状値からの加算を行う
-     */
-    addPhi(value, overrideTween = false) {
-        this.addPosition(TargetParam.PHI, value, overrideTween);
-    }
-    /**
      * カメラのSpherical座標に加算する。
      * @param targetParam
      * @param value
      * @param overrideTween
      */
-    addPosition(targetParam, value, overrideTween = false) {
+    addPosition(type, value, overrideTween = false) {
         if (!overrideTween && this.tweens.isPlaying())
             return;
         if (overrideTween && this.tweens.isPlaying()) {
             this.stop();
         }
-        this.pos[targetParam] += value;
-        this.pos[targetParam] = this.limiter.clampPosition(targetParam, this.pos);
+        this.pos[type] += value;
+        this.pos[type] = this.limiter.clampPosition(type, this.pos);
         this.dispatchUpdateEvent();
     }
     /**
-     * 全てのtweenインスタンスを停止、破棄する
+     * 全てのtweenインスタンスを停止する。
      */
     stop() {
-        Tween.removeTweens(this._cameraTarget);
-        Tween.removeTweens(this.cameraShift);
-        Tween.removeTweens(this.pos);
         const tweenArray = this.tweens.getTweenArray();
         for (let tween of tweenArray) {
             if (tween)

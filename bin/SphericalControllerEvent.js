@@ -11,9 +11,12 @@ export var SphericalControllerEventType;
 })(SphericalControllerEventType || (SphericalControllerEventType = {}));
 export var TargetParam;
 (function (TargetParam) {
-    TargetParam["R"] = "radius";
-    TargetParam["PHI"] = "phi";
-    TargetParam["THETA"] = "theta";
     TargetParam["CAMERA_TARGET"] = "cameraTarget";
     TargetParam["CAMERA_SHIFT"] = "CameraShift";
 })(TargetParam || (TargetParam = {}));
+export var SphericalParamType;
+(function (SphericalParamType) {
+    SphericalParamType["R"] = "radius";
+    SphericalParamType["PHI"] = "phi";
+    SphericalParamType["THETA"] = "theta";
+})(SphericalParamType || (SphericalParamType = {}));

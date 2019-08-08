@@ -1,5 +1,6 @@
 import { TargetParam } from "./SphericalControllerEvent";
 import { Spherical } from "three";
+import { SphericalParamType } from "./SphericalControllerEvent";
 
 export class CameraPositionLimiter {
   private static readonly EPS = 0.000001;
@@ -10,31 +11,31 @@ export class CameraPositionLimiter {
 
   constructor() {}
 
-  public setLimit(type: TargetParam, max: number, min: number) {
+  public setLimit(type: SphericalParamType, max: number, min: number) {
     switch (type) {
-      case TargetParam.PHI:
+      case SphericalParamType.PHI:
         console.log(type);
         this.phiMax = max;
         this.phiMin = min;
         break;
-      case TargetParam.THETA:
+      case SphericalParamType.THETA:
         this.thetaMax = max;
         this.thetaMin = min;
         break;
     }
   }
 
-  public clampWithType(type: TargetParam, val: number): number {
+  public clampWithType(type: SphericalParamType, val: number): number {
     switch (type) {
-      case TargetParam.PHI:
+      case SphericalParamType.PHI:
         return CameraPositionLimiter.clamp(val, this.phiMax, this.phiMin);
-      case TargetParam.THETA:
+      case SphericalParamType.THETA:
         return CameraPositionLimiter.clamp(val, this.thetaMax, this.thetaMin);
     }
     return val;
   }
 
-  public clampPosition(type: TargetParam, pos: Spherical): number {
+  public clampPosition(type: SphericalParamType, pos: Spherical): number {
     const val = pos[type];
     return this.clampWithType(type, val);
   }

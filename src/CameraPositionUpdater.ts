@@ -1,4 +1,4 @@
-import { Vector3, EventDispatcher, Camera, Mesh, Spherical } from "three";
+import { Vector3, EventDispatcher, Camera, Mesh } from "three";
 import {
   SphericalControllerEvent,
   SphericalControllerEventType
@@ -34,7 +34,6 @@ export class CameraPositionUpdater {
   private setNeedUpdate = (e: CameraUpdateEvent) => {
     this.isUpdate = true;
     this.updateEvent = e;
-    console.log(e);
   };
 
   /**
@@ -49,7 +48,6 @@ export class CameraPositionUpdater {
     let cameraTargetPos = new Vector3();
     let cameraPos = this._camera.position;
     cameraPos.setFromSpherical(e.position);
-    console.log(e.cameraTarget);
     cameraPos.add(e.cameraTarget.getWorldPosition(cameraTargetPos));
     this._camera.position.set(cameraPos.x, cameraPos.y, cameraPos.z);
 
