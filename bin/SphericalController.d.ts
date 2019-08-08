@@ -14,19 +14,19 @@ import { SphericalControllerTween } from "./SphericalControllerTween";
  * 北極南極を通過すると緯度も反転するため、このクラスでは南北90度以上の移動には対応していない。また、極点上空では座標が一意の値にならないため、Phi 0もしくはPIには対応していない。
  */
 export declare class SphericalController extends EventDispatcher {
-    private _camera;
+    private cameraUpdater;
     private _cameraTarget;
+    private pos;
     private cameraShift;
     tweens: SphericalControllerTween;
     limiter: CameraPositionLimiter;
-    private pos;
-    protected isUpdate: boolean;
     /**
      * コンストラクタ
      * @param camera
      * @param target
      */
     constructor(camera: Camera, target: Mesh);
+    dispatchUpdateEvent: () => void;
     /**
      * カメラ位置の初期設定を行う
      * @param pos
@@ -44,16 +44,6 @@ export declare class SphericalController extends EventDispatcher {
      * @param option
      */
     move(pos: Spherical, option?: EasingOption): void;
-    /**
-     * tweenによる更新フラグ処理
-     * イベントハンドラーで処理できるように関数とする。
-     * @param e
-     */
-    private setNeedUpdate;
-    /**
-     * カメラ位置および注視点の更新処理
-     */
-    private updatePosition;
     /**
      * カメラターゲットの変更
      * TODO 現状未実装。カメラターゲットが変更になった際の移動方法を調査、実装。

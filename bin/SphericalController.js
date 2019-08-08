@@ -5,6 +5,8 @@ import { EasingOption } from "./EasingOption";
 import { SphericalControllerUtil } from "./SphericalControllerUtil";
 import { CameraPositionLimiter } from "./CameraPositionLimiter";
 import { SphericalControllerTween } from "./SphericalControllerTween";
+import { CameraPositionUpdater } from "./CameraPositionUpdater";
+import { CameraUpdateEvent, CameraUpdateEventType } from "./CameraUpdateEvent";
 /**
  * 球面座標系でカメラ位置をコントロールするクラス。
  *
@@ -24,54 +26,24 @@ export class SphericalController extends EventDispatcher {
      */
     constructor(camera, target) {
         super();
+        this.pos = new Spherical();
         //画面のシフト
         // 例えば(0,0,0)を指定すると_cameraTargetが必ず画面中央に表示される。
         // 値を指定するとそのぶん_cameraTargetが中央からオフセットされる。
         this.cameraShift = new Vector3();
         this.tweens = new SphericalControllerTween();
         this.limiter = new CameraPositionLimiter();
-        this.pos = new Spherical();
-        this.isUpdate = false;
-        /**
-         * tweenによる更新フラグ処理
-         * イベントハンドラーで処理できるように関数とする。
-         * @param e
-         */
-        this.setNeedUpdate = (e) => {
-            this.isUpdate = true;
+        this.dispatchUpdateEvent = () => {
+            const e = new CameraUpdateEvent(CameraUpdateEventType.UPDATE, this._cameraTarget, this.pos, this.cameraShift);
+            this.dispatchEvent(e);
         };
-        /**
-         * カメラ位置および注視点の更新処理
-         */
-        this.updatePosition = () => {
-            if (!this.isUpdate)
-                return;
-            this.isUpdate = false;
-            let cameraTargetPos = new Vector3();
-            let cameraPos = this._camera.position;
-            cameraPos.setFromSpherical(this.pos);
-            cameraPos.add(this._cameraTarget.getWorldPosition(cameraTargetPos));
-            this._camera.position.set(cameraPos.x, cameraPos.y, cameraPos.z);
-            this._camera.lookAt(this._cameraTarget.getWorldPosition(cameraTargetPos));
-            if (this.cameraShift) {
-                const pos = this._camera.position.clone();
-                const move = new Vector3(this.cameraShift.x, this.cameraShift.y, this.cameraShift.z);
-                move.applyEuler(this._camera.rotation.clone());
-                pos.add(move);
-                this._camera.position.set(pos.x, pos.y, pos.z);
-            }
-            this.dispatchEvent(new SphericalControllerEvent(SphericalControllerEventType.MOVED_CAMERA));
-        };
-        this._camera = camera;
         this._cameraTarget = target;
         this._cameraTarget.material = new MeshBasicMaterial({
             color: 0xff0000,
             opacity: 0.0,
             transparent: true
         });
-        this._cameraTarget.onBeforeRender = () => {
-            this.updatePosition();
-        };
+        this.cameraUpdater = new CameraPositionUpdater(this, camera, this._cameraTarget);
     }
     /**
      * カメラ位置の初期設定を行う
@@ -86,7 +58,7 @@ export class SphericalController extends EventDispatcher {
         if (targetPos) {
             this._cameraTarget.position.set(targetPos.x, targetPos.y, targetPos.z);
         }
-        this.setNeedUpdate();
+        this.dispatchUpdateEvent();
     }
     /**
      * カメラの位置ずれ設定を行う。
@@ -94,7 +66,7 @@ export class SphericalController extends EventDispatcher {
      */
     initCameraShift(shift) {
         this.cameraShift = shift.clone();
-        this.setNeedUpdate();
+        this.dispatchUpdateEvent();
     }
     /**
      * カメラを任意の位置に移動する
@@ -137,7 +109,7 @@ export class SphericalController extends EventDispatcher {
     moveTarget(value, option) {
         option = EasingOption.init(option, this);
         const tween = Tween.get(this._cameraTarget.position).to({ x: value.x, y: value.y, z: value.z }, option.duration, option.easing);
-        tween.addEventListener("change", this.setNeedUpdate);
+        tween.addEventListener("change", this.dispatchUpdateEvent);
         this.tweens.overrideTween(TargetParam.CAMERA_TARGET, tween);
     }
     /**
@@ -160,7 +132,7 @@ export class SphericalController extends EventDispatcher {
         const toObj = {};
         toObj[targetParam] = to;
         const tween = Tween.get(this.pos).to(toObj, option.duration, option.easing);
-        tween.addEventListener("change", this.setNeedUpdate);
+        tween.addEventListener("change", this.dispatchUpdateEvent);
         tween.addEventListener("complete", e => {
             this.onCompleteCameraTween(targetParam);
         });
@@ -226,14 +198,14 @@ export class SphericalController extends EventDispatcher {
             const tween = Tween.get(this.pos, { loop: -1 })
                 .to(toObjMax, option.duration, option.easing)
                 .to(toObjMin, option.duration, option.easing);
-            tween.addEventListener("change", this.setNeedUpdate);
+            tween.addEventListener("change", this.dispatchUpdateEvent);
             this.tweens.overrideTween(type, tween);
         };
         const firstDuration = SphericalController.getFirstDuration(option.duration, this.pos[type], toMax, toMin);
         const tween = Tween.get(this.pos)
             .to(toObjMin, firstDuration, option.easing)
             .call(loop);
-        tween.addEventListener("change", this.setNeedUpdate);
+        tween.addEventListener("change", this.dispatchUpdateEvent);
         this.tweens.overrideTween(type, tween);
     }
     static getFirstDuration(duration, current, max, min) {
@@ -250,7 +222,7 @@ export class SphericalController extends EventDispatcher {
             this.cameraShift = new Vector3();
         }
         const tween = Tween.get(this.cameraShift).to({ x: value.x, y: value.y, z: value.z }, option.duration, option.easing);
-        tween.addEventListener("change", this.setNeedUpdate);
+        tween.addEventListener("change", this.dispatchUpdateEvent);
         this.tweens.overrideTween(TargetParam.CAMERA_SHIFT, tween);
     }
     /**
@@ -275,7 +247,7 @@ export class SphericalController extends EventDispatcher {
             this.stop();
         }
         this._cameraTarget.position.add(pos);
-        this.setNeedUpdate(null);
+        this.dispatchUpdateEvent();
     }
     /**
      * 経度を加算する。
@@ -309,7 +281,7 @@ export class SphericalController extends EventDispatcher {
         }
         this.pos[targetParam] += value;
         this.pos[targetParam] = this.limiter.clampPosition(targetParam, this.pos);
-        this.setNeedUpdate(null);
+        this.dispatchUpdateEvent();
     }
     /**
      * 全てのtweenインスタンスを停止、破棄する

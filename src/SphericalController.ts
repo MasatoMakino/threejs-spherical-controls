@@ -16,6 +16,8 @@ import { EasingOption } from "./EasingOption";
 import { SphericalControllerUtil } from "./SphericalControllerUtil";
 import { CameraPositionLimiter } from "./CameraPositionLimiter";
 import { SphericalControllerTween } from "./SphericalControllerTween";
+import { CameraPositionUpdater } from "./CameraPositionUpdater";
+import { CameraUpdateEvent, CameraUpdateEventType } from "./CameraUpdateEvent";
 
 /**
  * 球面座標系でカメラ位置をコントロールするクラス。
@@ -29,20 +31,17 @@ import { SphericalControllerTween } from "./SphericalControllerTween";
  * 北極南極を通過すると緯度も反転するため、このクラスでは南北90度以上の移動には対応していない。また、極点上空では座標が一意の値にならないため、Phi 0もしくはPIには対応していない。
  */
 export class SphericalController extends EventDispatcher {
-  private _camera: Camera;
-  private _cameraTarget: Mesh;
+  private cameraUpdater: CameraPositionUpdater;
 
+  private _cameraTarget: Mesh;
+  private pos: Spherical = new Spherical();
   //画面のシフト
   // 例えば(0,0,0)を指定すると_cameraTargetが必ず画面中央に表示される。
   // 値を指定するとそのぶん_cameraTargetが中央からオフセットされる。
   private cameraShift: Vector3 = new Vector3();
 
   public tweens: SphericalControllerTween = new SphericalControllerTween();
-
   public limiter: CameraPositionLimiter = new CameraPositionLimiter();
-  private pos: Spherical = new Spherical();
-
-  protected isUpdate: boolean = false;
 
   /**
    * コンストラクタ
@@ -51,18 +50,29 @@ export class SphericalController extends EventDispatcher {
    */
   constructor(camera: Camera, target: Mesh) {
     super();
-    this._camera = camera;
     this._cameraTarget = target;
     this._cameraTarget.material = new MeshBasicMaterial({
       color: 0xff0000,
       opacity: 0.0,
       transparent: true
     });
-    this._cameraTarget.onBeforeRender = () => {
-      this.updatePosition();
-    };
+
+    this.cameraUpdater = new CameraPositionUpdater(
+      this,
+      camera,
+      this._cameraTarget
+    );
   }
 
+  public dispatchUpdateEvent = () => {
+    const e = new CameraUpdateEvent(
+      CameraUpdateEventType.UPDATE,
+      this._cameraTarget,
+      this.pos,
+      this.cameraShift
+    );
+    this.dispatchEvent(e);
+  };
   /**
    * カメラ位置の初期設定を行う
    * @param pos
@@ -76,7 +86,7 @@ export class SphericalController extends EventDispatcher {
     if (targetPos) {
       this._cameraTarget.position.set(targetPos.x, targetPos.y, targetPos.z);
     }
-    this.setNeedUpdate();
+    this.dispatchUpdateEvent();
   }
 
   /**
@@ -85,7 +95,7 @@ export class SphericalController extends EventDispatcher {
    */
   public initCameraShift(shift: Vector3): void {
     this.cameraShift = shift.clone();
-    this.setNeedUpdate();
+    this.dispatchUpdateEvent();
   }
 
   /**
@@ -100,47 +110,6 @@ export class SphericalController extends EventDispatcher {
     this.movePhi(pos.phi, option);
     this.moveTheta(pos.theta, option);
   }
-
-  /**
-   * tweenによる更新フラグ処理
-   * イベントハンドラーで処理できるように関数とする。
-   * @param e
-   */
-  private setNeedUpdate = (e?: any) => {
-    this.isUpdate = true;
-  };
-
-  /**
-   * カメラ位置および注視点の更新処理
-   */
-  private updatePosition = () => {
-    if (!this.isUpdate) return;
-    this.isUpdate = false;
-
-    let cameraTargetPos = new Vector3();
-    let cameraPos = this._camera.position;
-    cameraPos.setFromSpherical(this.pos);
-    cameraPos.add(this._cameraTarget.getWorldPosition(cameraTargetPos));
-    this._camera.position.set(cameraPos.x, cameraPos.y, cameraPos.z);
-
-    this._camera.lookAt(this._cameraTarget.getWorldPosition(cameraTargetPos));
-
-    if (this.cameraShift) {
-      const pos: Vector3 = this._camera.position.clone();
-      const move: Vector3 = new Vector3(
-        this.cameraShift.x,
-        this.cameraShift.y,
-        this.cameraShift.z
-      );
-      move.applyEuler(this._camera.rotation.clone());
-      pos.add(move);
-      this._camera.position.set(pos.x, pos.y, pos.z);
-    }
-
-    this.dispatchEvent(
-      new SphericalControllerEvent(SphericalControllerEventType.MOVED_CAMERA)
-    );
-  };
 
   /**
    * カメラターゲットの変更
@@ -183,7 +152,7 @@ export class SphericalController extends EventDispatcher {
       option.duration,
       option.easing
     );
-    tween.addEventListener("change", this.setNeedUpdate);
+    tween.addEventListener("change", this.dispatchUpdateEvent);
     this.tweens.overrideTween(TargetParam.CAMERA_TARGET, tween);
   }
 
@@ -215,7 +184,7 @@ export class SphericalController extends EventDispatcher {
     toObj[targetParam] = to;
 
     const tween = Tween.get(this.pos).to(toObj, option.duration, option.easing);
-    tween.addEventListener("change", this.setNeedUpdate);
+    tween.addEventListener("change", this.dispatchUpdateEvent);
     tween.addEventListener("complete", e => {
       this.onCompleteCameraTween(targetParam);
     });
@@ -303,7 +272,7 @@ export class SphericalController extends EventDispatcher {
       const tween = Tween.get(this.pos, { loop: -1 })
         .to(toObjMax, option.duration, option.easing)
         .to(toObjMin, option.duration, option.easing);
-      tween.addEventListener("change", this.setNeedUpdate);
+      tween.addEventListener("change", this.dispatchUpdateEvent);
       this.tweens.overrideTween(type, tween);
     };
 
@@ -317,7 +286,7 @@ export class SphericalController extends EventDispatcher {
     const tween = Tween.get(this.pos)
       .to(toObjMin, firstDuration, option.easing)
       .call(loop);
-    tween.addEventListener("change", this.setNeedUpdate);
+    tween.addEventListener("change", this.dispatchUpdateEvent);
     this.tweens.overrideTween(type, tween);
   }
 
@@ -346,7 +315,7 @@ export class SphericalController extends EventDispatcher {
       option.duration,
       option.easing
     );
-    tween.addEventListener("change", this.setNeedUpdate);
+    tween.addEventListener("change", this.dispatchUpdateEvent);
     this.tweens.overrideTween(TargetParam.CAMERA_SHIFT, tween);
   }
 
@@ -373,7 +342,7 @@ export class SphericalController extends EventDispatcher {
     }
 
     this._cameraTarget.position.add(pos);
-    this.setNeedUpdate(null);
+    this.dispatchUpdateEvent();
   }
 
   /**
@@ -414,7 +383,7 @@ export class SphericalController extends EventDispatcher {
 
     this.pos[targetParam] += value;
     this.pos[targetParam] = this.limiter.clampPosition(targetParam, this.pos);
-    this.setNeedUpdate(null);
+    this.dispatchUpdateEvent();
   }
 
   /**

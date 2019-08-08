@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>SphericalControllerUtil | threejs-spherical-controls</title>
+	<title>CameraPositionUpdater | threejs-spherical-controls</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="sphericalcontrollerutil.html">SphericalControllerUtil</a>
+					<a href="camerapositionupdater.html">CameraPositionUpdater</a>
 				</li>
 			</ul>
-			<h1>Class SphericalControllerUtil</h1>
+			<h1>Class CameraPositionUpdater</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">SphericalControllerUtil</span>
+						<span class="target">CameraPositionUpdater</span>
 					</li>
 				</ul>
 			</section>
@@ -79,80 +79,159 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="camerapositionupdater.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="camerapositionupdater.html#_camera" class="tsd-kind-icon">_camera</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="camerapositionupdater.html#dispatcher" class="tsd-kind-icon">dispatcher</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="camerapositionupdater.html#isupdate" class="tsd-kind-icon">is<wbr>Update</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="camerapositionupdater.html#updateevent" class="tsd-kind-icon">update<wbr>Event</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="sphericalcontrollerutil.html#pi2topi" class="tsd-kind-icon">PI2<wbr>ToPI</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="sphericalcontrollerutil.html#gettweentheta" class="tsd-kind-icon">get<wbr>Tween<wbr>Theta</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="camerapositionupdater.html#setneedupdate" class="tsd-kind-icon">set<wbr>Need<wbr>Update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="camerapositionupdater.html#updateposition" class="tsd-kind-icon">update<wbr>Position</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="pi2topi" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> PI2<wbr>ToPI</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">PI2<wbr>ToPI<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Camera<wbr>Position<wbr>Updater<span class="tsd-signature-symbol">(</span>parent<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EventDispatcher</span>, camera<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Camera</span>, target<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Mesh</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="camerapositionupdater.html" class="tsd-signature-type">CameraPositionUpdater</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/cc9a2fd/src/SphericalControllerUtil.ts#L25">SphericalControllerUtil.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/cc9a2fd/src/CameraPositionUpdater.ts#L13">CameraPositionUpdater.ts:13</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>ラジアンを-Math.PI ~ Math.PIの範囲に正規化する。
-									Math.PIもしくは-Math.PIを入力すると正負が反転する。</p>
-								</div>
-								<dl class="tsd-comment-tags">
-									<dt>constructor</dt>
-									<dd></dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>value: <span class="tsd-signature-type">number</span></h5>
+									<h5>parent: <span class="tsd-signature-type">EventDispatcher</span></h5>
+								</li>
+								<li>
+									<h5>camera: <span class="tsd-signature-type">Camera</span></h5>
+								</li>
+								<li>
+									<h5>target: <span class="tsd-signature-type">Mesh</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="camerapositionupdater.html" class="tsd-signature-type">CameraPositionUpdater</a></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="gettweentheta" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> get<wbr>Tween<wbr>Theta</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Tween<wbr>Theta<span class="tsd-signature-symbol">(</span>from<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, to<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="_camera" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _camera</h3>
+					<div class="tsd-signature tsd-kind-icon">_camera<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Camera</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/cc9a2fd/src/CameraPositionUpdater.ts#L12">CameraPositionUpdater.ts:12</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="dispatcher" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> dispatcher</h3>
+					<div class="tsd-signature tsd-kind-icon">dispatcher<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">EventDispatcher</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/cc9a2fd/src/CameraPositionUpdater.ts#L11">CameraPositionUpdater.ts:11</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="isupdate" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> is<wbr>Update</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Update<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/cc9a2fd/src/CameraPositionUpdater.ts#L10">CameraPositionUpdater.ts:10</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="updateevent" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> update<wbr>Event</h3>
+					<div class="tsd-signature tsd-kind-icon">update<wbr>Event<span class="tsd-signature-symbol">:</span> <a href="cameraupdateevent.html" class="tsd-signature-type">CameraUpdateEvent</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/cc9a2fd/src/CameraPositionUpdater.ts#L13">CameraPositionUpdater.ts:13</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="setneedupdate" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> set<wbr>Need<wbr>Update</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Need<wbr>Update<span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="cameraupdateevent.html" class="tsd-signature-type">CameraUpdateEvent</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/cc9a2fd/src/SphericalControllerUtil.ts#L10">SphericalControllerUtil.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/cc9a2fd/src/CameraPositionUpdater.ts#L34">CameraPositionUpdater.ts:34</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>任意の点までの回転アニメーションに必要になる
-									回転方向を算出する処理。</p>
+									<p>tweenによる更新フラグ処理
+									イベントハンドラーで処理できるように関数とする。</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>from: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5>to: <span class="tsd-signature-type">number</span></h5>
+									<h5>e: <a href="cameraupdateevent.html" class="tsd-signature-type">CameraUpdateEvent</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+										</div>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-							<p>最短距離での目標となる回転角</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="updateposition" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> update<wbr>Position</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Position<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/cc9a2fd/src/CameraPositionUpdater.ts#L43">CameraPositionUpdater.ts:43</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>カメラ位置および注視点の更新処理</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -180,9 +259,36 @@
 					<li class=" tsd-kind-class">
 						<a href="camerapositionlimiter.html" class="tsd-kind-icon">Camera<wbr>Position<wbr>Limiter</a>
 					</li>
-					<li class=" tsd-kind-class">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class">
 						<a href="camerapositionupdater.html" class="tsd-kind-icon">Camera<wbr>Position<wbr>Updater</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="camerapositionupdater.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="camerapositionupdater.html#_camera" class="tsd-kind-icon">_camera</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="camerapositionupdater.html#dispatcher" class="tsd-kind-icon">dispatcher</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="camerapositionupdater.html#isupdate" class="tsd-kind-icon">is<wbr>Update</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="camerapositionupdater.html#updateevent" class="tsd-kind-icon">update<wbr>Event</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="camerapositionupdater.html#setneedupdate" class="tsd-kind-icon">set<wbr>Need<wbr>Update</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="camerapositionupdater.html#updateposition" class="tsd-kind-icon">update<wbr>Position</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-class">
 						<a href="cameraupdateevent.html" class="tsd-kind-icon">Camera<wbr>Update<wbr>Event</a>
 					</li>
@@ -198,21 +304,9 @@
 					<li class=" tsd-kind-class">
 						<a href="sphericalcontrollertween.html" class="tsd-kind-icon">Spherical<wbr>Controller<wbr>Tween</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-class">
+					<li class=" tsd-kind-class">
 						<a href="sphericalcontrollerutil.html" class="tsd-kind-icon">Spherical<wbr>Controller<wbr>Util</a>
-						<ul>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="sphericalcontrollerutil.html#pi2topi" class="tsd-kind-icon">PI2<wbr>ToPI</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="sphericalcontrollerutil.html#gettweentheta" class="tsd-kind-icon">get<wbr>Tween<wbr>Theta</a>
-							</li>
-						</ul>
 					</li>
-				</ul>
-				<ul class="after-current">
 				</ul>
 			</nav>
 		</div>
