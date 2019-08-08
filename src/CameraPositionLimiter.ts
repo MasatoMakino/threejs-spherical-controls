@@ -31,6 +31,7 @@ export class CameraPositionLimiter {
       case TargetParam.THETA:
         return CameraPositionLimiter.clamp(val, this.thetaMax, this.thetaMin);
     }
+    return val;
   }
 
   public clampPosition(type: TargetParam, pos: Spherical): number {

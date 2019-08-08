@@ -381,13 +381,7 @@ export class SphericalController extends EventDispatcher {
    * @param overrideTween tweenのキャンセルを行うか、defaultはfalse。trueの場合tweenを停止して現状値からの加算を行う
    */
   public addR(value: number, overrideTween: boolean = false): void {
-    if (!overrideTween && this.tweens.isPlaying()) return;
-    if (overrideTween && this.tweens.isPlaying()) {
-      this.stop();
-    }
-
-    this.pos.radius += value;
-    this.setNeedUpdate(null);
+    this.addPosition(TargetParam.R, value, overrideTween);
   }
 
   /**
@@ -413,14 +407,7 @@ export class SphericalController extends EventDispatcher {
    * @param overrideTween tweenのキャンセルを行うか、defaultはfalse。trueの場合tweenを停止して現状値からの加算を行う
    */
   public addTheta(value: number, overrideTween: boolean = false): void {
-    if (!overrideTween && this.tweens.isPlaying()) return;
-    if (overrideTween && this.tweens.isPlaying()) {
-      this.stop();
-    }
-
-    this.pos.theta += value;
-    this.pos.theta = this.limiter.clampPosition(TargetParam.THETA, this.pos);
-    this.setNeedUpdate(null);
+    this.addPosition(TargetParam.THETA, value, overrideTween);
   }
 
   /**
@@ -430,13 +417,27 @@ export class SphericalController extends EventDispatcher {
    * @param overrideTween tweenのキャンセルを行うか、defaultはfalse。trueの場合tweenを停止して現状値からの加算を行う
    */
   public addPhi(value: number, overrideTween: boolean = false): void {
+    this.addPosition(TargetParam.PHI, value, overrideTween);
+  }
+
+  /**
+   * カメラのSpherical座標に加算する。
+   * @param targetParam
+   * @param value
+   * @param overrideTween
+   */
+  private addPosition(
+    targetParam: TargetParam,
+    value: number,
+    overrideTween: boolean = false
+  ): void {
     if (!overrideTween && this.tweens.isPlaying()) return;
     if (overrideTween && this.tweens.isPlaying()) {
       this.stop();
     }
 
-    this.pos.phi += value;
-    this.pos.phi = this.limiter.clampPosition(TargetParam.PHI, this.pos);
+    this.pos[targetParam] += value;
+    this.pos[targetParam] = this.limiter.clampPosition(targetParam, this.pos);
     this.setNeedUpdate(null);
   }
 
