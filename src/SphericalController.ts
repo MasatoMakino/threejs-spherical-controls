@@ -171,39 +171,6 @@ export class SphericalController extends EventDispatcher {
   }
 
   /**
-   * カメラ半径のみをループで移動させる。
-   * ゆらゆらとズームインアウトさせるための処理
-   * @param {number} min
-   * @param {number} max
-   * @param option
-   */
-  public loopMoveR(min: number, max: number, option?: EasingOption): void {
-    option = EasingOption.init(option, this, true);
-
-    const loop = () => {
-      const tween = Tween.get(this.pos, { loop: -1 })
-        .to({ radius: max }, option.duration, option.easing)
-        .to({ radius: min }, option.duration, option.easing);
-      tween.addEventListener("change", this.setNeedUpdate);
-      this.tweens.overrideTween(TargetParam.R, tween);
-    };
-
-    const firstDuration = Math.abs(
-      option.duration * ((this.pos.radius - min) / (max - min))
-    );
-
-    const tween = Tween.get(this.pos)
-      .to({ radius: min }, firstDuration, option.easing)
-      .call(loop);
-    tween.addEventListener("change", this.setNeedUpdate);
-    this.tweens.overrideTween(TargetParam.R, tween);
-  }
-
-  public stopLoopMoveR(): void {
-    this.tweens.stopTween(TargetParam.R);
-  }
-
-  /**
    * カメラターゲットのみを移動する
    * @param value 単位はラジアン角
    * @param option
@@ -286,29 +253,72 @@ export class SphericalController extends EventDispatcher {
    * @param option
    */
   public loopMovePhi(min: number, max: number, option?: EasingOption): void {
+    this.loop(TargetParam.PHI, min, max, option);
+  }
+
+  public loopMoveTheta(min: number, max: number, option?: EasingOption): void {
+    this.pos.theta = SphericalControllerUtil.PI2ToPI(this.pos.theta);
+    this.loop(TargetParam.THETA, min, max, option);
+  }
+
+  /**
+   * カメラ半径のみをループで移動させる。
+   * ゆらゆらとズームインアウトさせるための処理
+   * @param {number} min
+   * @param {number} max
+   * @param option
+   */
+  public loopMoveR(min: number, max: number, option?: EasingOption): void {
+    this.loop(TargetParam.R, min, max, option);
+  }
+
+  public stopLoopMoveR(): void {
+    this.tweens.stopTween(TargetParam.R);
+  }
+
+  public stopLoopMovePhi(): void {
+    this.tweens.stopTween(TargetParam.PHI);
+  }
+
+  public stopLoopMoveTheta(): void {
+    this.tweens.stopTween(TargetParam.THETA);
+  }
+
+  private loop(
+    type: TargetParam,
+    min: number,
+    max: number,
+    option?: EasingOption
+  ): void {
     option = EasingOption.init(option, this, true);
 
-    const toMin = this.limiter.clampWithType(TargetParam.PHI, min);
-    const toMax = this.limiter.clampWithType(TargetParam.PHI, max);
+    const toMin = this.limiter.clampWithType(type, min);
+    const toMax = this.limiter.clampWithType(type, max);
+    const toObjMax = {};
+    toObjMax[type] = toMax;
+    const toObjMin = {};
+    toObjMin[type] = toMin;
+
     const loop = () => {
       const tween = Tween.get(this.pos, { loop: -1 })
-        .to({ phi: toMax }, option.duration, option.easing)
-        .to({ phi: toMin }, option.duration, option.easing);
+        .to(toObjMax, option.duration, option.easing)
+        .to(toObjMin, option.duration, option.easing);
       tween.addEventListener("change", this.setNeedUpdate);
-      this.tweens.overrideTween(TargetParam.PHI, tween);
+      this.tweens.overrideTween(type, tween);
     };
 
     const firstDuration = SphericalController.getFirstDuration(
       option.duration,
-      this.pos.phi,
+      this.pos[type],
       toMax,
       toMin
     );
+
     const tween = Tween.get(this.pos)
-      .to({ phi: toMin }, firstDuration, option.easing)
+      .to(toObjMin, firstDuration, option.easing)
       .call(loop);
     tween.addEventListener("change", this.setNeedUpdate);
-    this.tweens.overrideTween(TargetParam.PHI, tween);
+    this.tweens.overrideTween(type, tween);
   }
 
   private static getFirstDuration(
@@ -318,40 +328,6 @@ export class SphericalController extends EventDispatcher {
     min: number
   ): number {
     return Math.abs(duration * ((current - min) / (max - min)));
-  }
-
-  public loopMoveTheta(min: number, max: number, option?: EasingOption): void {
-    option = EasingOption.init(option, this, true);
-
-    const toMin = this.limiter.clampWithType(TargetParam.THETA, min);
-    const toMax = this.limiter.clampWithType(TargetParam.THETA, max);
-    const loop = () => {
-      const tween = Tween.get(this.pos, { loop: -1 })
-        .to({ theta: toMax }, option.duration, option.easing)
-        .to({ theta: toMin }, option.duration, option.easing);
-      tween.addEventListener("change", this.setNeedUpdate);
-      this.tweens.overrideTween(TargetParam.THETA, tween);
-    };
-
-    const firstDuration = SphericalController.getFirstDuration(
-      option.duration,
-      this.pos.theta,
-      toMax,
-      toMin
-    );
-    const tween = Tween.get(this.pos)
-      .to({ theta: toMin }, firstDuration, option.easing)
-      .call(loop);
-    tween.addEventListener("change", this.setNeedUpdate);
-    this.tweens.overrideTween(TargetParam.THETA, tween);
-  }
-
-  public stopLoopMovePhi(): void {
-    this.tweens.stopTween(TargetParam.PHI);
-  }
-
-  public stopLoopMoveTheta(): void {
-    this.tweens.stopTween(TargetParam.THETA);
   }
 
   /**

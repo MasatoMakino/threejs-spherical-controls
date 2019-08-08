@@ -45,12 +45,4 @@ export class CameraPositionLimiter {
     value = Math.max(value, min);
     return value;
   }
-
-  private limitPhi(phi: number): number {
-    return CameraPositionLimiter.clamp(phi, this.phiMax, this.phiMin);
-  }
-
-  private limitTheta(theta: number): number {
-    return CameraPositionLimiter.clamp(theta, this.thetaMax, this.thetaMin);
-  }
 }

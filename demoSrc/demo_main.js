@@ -1,22 +1,10 @@
-import {
-  Scene,
-  WebGLRenderer,
-  AmbientLight,
-  Color,
-  BoxGeometry,
-  MeshBasicMaterial,
-  PerspectiveCamera,
-  Mesh,
-  SphereGeometry,
-  Spherical,
-  AxesHelper,
-  Vector3
-} from "three/src/Three";
+import * as dat from "dat.gui";
+import { Mesh, Scene, SphereGeometry, Spherical, Vector3 } from "three";
+import { Common } from "./Common";
 import {
   SphericalController,
-  SphericalControllerUtil,
   SphericalControllerEventType,
-  TargetParam
+  SphericalControllerUtil
 } from "../bin";
 
 const W = 1280;
@@ -24,38 +12,28 @@ const H = 800;
 let renderer;
 let scene;
 let camera;
+// let cameraController;
+
+const R = 105;
 
 const onDomContentsLoaded = () => {
   // シーンを作成
   scene = new Scene();
-  camera = new PerspectiveCamera(45, W / H, 1, 400);
-  camera.position.set(0, 0, 100);
-  scene.add(camera);
-
-  const renderOption = {
-    canvas: document.getElementById("webgl-canvas"),
-    antialias: true
-  };
-  renderer = new WebGLRenderer(renderOption);
-  renderer.setClearColor(new Color(0x000000));
-  renderer.setSize(W, H);
-  renderer.setPixelRatio(window.devicePixelRatio);
-
-  //平行光源オブジェクト(light)の設定
-  const ambientLight = new AmbientLight(0xffffff, 1.0);
-  scene.add(ambientLight);
+  camera = Common.initCamera(scene, W, H);
+  renderer = Common.initRenderer(W, H);
+  Common.initLight(scene);
 
   testPI2();
 
-  scene.add(new AxesHelper(25));
-  initCube();
+  Common.initHelper(scene);
+  Common.initCube(scene);
   const target = initTarget();
 
-  const R = 105;
   const controller = initController(target, R);
-  checkRotationComplete(controller, R);
   checkPlaying(controller);
-  render();
+  Common.render(renderer, scene, camera);
+
+  initGUI(controller);
 };
 
 const testPI2 = () => {
@@ -72,21 +50,6 @@ const testPI2 = () => {
   );
 };
 
-const initCube = () => {
-  const size = 5;
-  const geometry = new BoxGeometry(size, size, size);
-  const material = [
-    new MeshBasicMaterial({ color: 0x00ff00 }),
-    new MeshBasicMaterial({ color: 0xff0000 }),
-    new MeshBasicMaterial({ color: 0x0000ff }),
-    new MeshBasicMaterial({ color: 0x00ff00 }),
-    new MeshBasicMaterial({ color: 0xff0000 }),
-    new MeshBasicMaterial({ color: 0x0000ff })
-  ];
-  const cube = new Mesh(geometry, material);
-  scene.add(cube);
-};
-
 const initTarget = () => {
   const geo = new SphereGeometry(1);
   const cameraTarget = new Mesh(geo);
@@ -94,9 +57,8 @@ const initTarget = () => {
   return cameraTarget;
 };
 
-let cameraController;
 const initController = (cameraTarget, R) => {
-  cameraController = new SphericalController(camera, cameraTarget);
+  const cameraController = new SphericalController(camera, cameraTarget);
   cameraController.initCameraPosition(
     new Spherical(R, 0.0001, Math.PI * 2 * 12)
   );
@@ -113,31 +75,127 @@ const initController = (cameraTarget, R) => {
   return cameraController;
 };
 
-const checkRotationComplete = (controller, R) => {
-  setInterval(() => {
-    const to = new Spherical(
-      R,
-      // Math.random() * 70 + 35,
-      Math.random() * Math.PI,
-      Math.random() * Math.PI * 6 - Math.PI * 3
-    );
-    cameraController.move(to, {
-      duration: 1500,
-      easing: createjs.Ease.cubicOut
-    });
-    console.log("Start : ", to);
-  }, 2000);
-};
-
 const checkPlaying = controller => {
   setInterval(() => {
     console.log(controller.tweens.isPlaying());
   }, 100);
 };
 
-const render = () => {
-  renderer.render(scene, camera);
-  requestAnimationFrame(render);
+const initGUI = controller => {
+  const gui = new dat.GUI();
+  initRandomGUI(gui, controller);
+  initAddGUI(gui, controller);
+  initLoopGUI(gui, controller);
+};
+
+const initRandomGUI = (gui, controller) => {
+  let id;
+
+  const prop = {
+    toggleRandomMove: () => {
+      if (id != null) {
+        controller.stop();
+        clearInterval(id);
+        id = null;
+      } else {
+        const move = () => {
+          const to = new Spherical(
+            R,
+            // Math.random() * 70 + 35,
+            Math.random() * Math.PI,
+            Math.random() * Math.PI * 6 - Math.PI * 3
+          );
+          controller.move(to, {
+            duration: 1500,
+            easing: createjs.Ease.cubicOut
+          });
+          console.log("Start : ", to);
+        };
+        move();
+
+        id = setInterval(move, 2000);
+      }
+    }
+  };
+
+  gui.add(prop, "toggleRandomMove");
+};
+
+const initAddGUI = (gui, controller) => {
+  const folder = gui.addFolder("add method");
+  folder.open();
+  const moveAngle = 0.1;
+  const prop = {
+    addR: () => {
+      controller.addR(5);
+    },
+    subR: () => {
+      controller.addR(-5);
+    },
+    addPhi: () => {
+      controller.addPhi(moveAngle);
+    },
+    subPhi: () => {
+      controller.addPhi(-moveAngle);
+    },
+    addTheta: () => {
+      controller.addTheta(moveAngle);
+    },
+    subTheta: () => {
+      controller.addTheta(-moveAngle);
+    }
+  };
+
+  folder.add(prop, "addR");
+  folder.add(prop, "subR");
+  folder.add(prop, "addPhi");
+  folder.add(prop, "subPhi");
+  folder.add(prop, "addTheta");
+  folder.add(prop, "subTheta");
+};
+
+const initLoopGUI = (gui, controller) => {
+  const folder = gui.addFolder("loop method");
+  folder.open();
+
+  const flags = {
+    isLoopR: false,
+    isLoopPhi: false,
+    isLoopTheta: false
+  };
+  const option = {
+    duration: 10 * 1000
+  };
+  const prop = {
+    loopR: () => {
+      if (flags.isLoopR) {
+        controller.stopLoopMoveR();
+      } else {
+        controller.loopMoveR(30, 150, option);
+      }
+      flags.isLoopR = !flags.isLoopR;
+    },
+    loopPhi: () => {
+      if (flags.isLoopPhi) {
+        controller.stopLoopMovePhi();
+      } else {
+        controller.loopMovePhi(0, Math.PI, option);
+      }
+      flags.isLoopPhi = !flags.isLoopPhi;
+    },
+    loopTheta: () => {
+      if (flags.isLoopTheta) {
+        controller.stopLoopMoveTheta();
+      } else {
+        controller.loopMoveTheta(-Math.PI / 4, Math.PI / 4, option);
+      }
+      flags.isLoopTheta = !flags.isLoopTheta;
+    }
+  };
+
+  folder.add(prop, "loopR");
+  folder.add(prop, "loopPhi");
+  folder.add(prop, "loopTheta");
 };
 
 /**

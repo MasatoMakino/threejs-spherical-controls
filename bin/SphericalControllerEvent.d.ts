@@ -8,8 +8,10 @@ export declare enum SphericalControllerEventType {
     MOVED_CAMERA_COMPLETE = "CameraEvent_TYPE_MOVED_CAMERA_COMPLETE"
 }
 export declare enum TargetParam {
-    R = "TargetParam_R",
-    PHI = "TargetParam_Phi",
-    THETA = "TargetParam_Theta"
+    R = "radius",
+    PHI = "phi",
+    THETA = "theta",
+    CAMERA_TARGET = "cameraTarget",
+    CAMERA_SHIFT = "CameraShift"
 }
 //# sourceMappingURL=SphericalControllerEvent.d.ts.map

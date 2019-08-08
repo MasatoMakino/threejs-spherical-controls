@@ -1,4 +1,7 @@
 import { Camera, EventDispatcher, Mesh, Spherical, Vector3 } from "three";
+import { EasingOption } from "./EasingOption";
+import { CameraPositionLimiter } from "./CameraPositionLimiter";
+import { SphericalControllerTween } from "./SphericalControllerTween";
 /**
  * 球面座標系でカメラ位置をコントロールするクラス。
  *
@@ -14,20 +17,9 @@ export declare class SphericalController extends EventDispatcher {
     private _camera;
     private _cameraTarget;
     private cameraShift;
-    private tweenTarget;
-    private tweenR;
-    private tweenTheta;
-    private tweenPhi;
-    private tweenCameraShift;
-    duration: number;
-    easing: (amount: number) => number;
-    loopEasing: (amount: number) => number;
+    tweens: SphericalControllerTween;
+    limiter: CameraPositionLimiter;
     private pos;
-    private static readonly EPS;
-    phiMin: number;
-    phiMax: number;
-    thetaMin: number;
-    thetaMax: number;
     protected isUpdate: boolean;
     /**
      * コンストラクタ
@@ -75,15 +67,6 @@ export declare class SphericalController extends EventDispatcher {
      */
     moveR(value: number, option?: EasingOption): void;
     /**
-     * カメラ半径のみをループで移動させる。
-     * ゆらゆらとズームインアウトさせるための処理
-     * @param {number} min
-     * @param {number} max
-     * @param option
-     */
-    loopMoveR(min: number, max: number, option?: EasingOption): void;
-    stopLoopMoveR(): void;
-    /**
      * カメラターゲットのみを移動する
      * @param value 単位はラジアン角
      * @param option
@@ -96,6 +79,8 @@ export declare class SphericalController extends EventDispatcher {
      * @param option
      */
     moveTheta(value: number, option?: EasingOption): void;
+    private getTweenPosition;
+    private onCompleteCameraTween;
     /**
      * 緯度のみを移動する
      * 縦方向回転を行う際のメソッド
@@ -111,10 +96,20 @@ export declare class SphericalController extends EventDispatcher {
      * @param option
      */
     loopMovePhi(min: number, max: number, option?: EasingOption): void;
-    private getFirstDuration;
-    stopLoopMovePhi(): void;
     loopMoveTheta(min: number, max: number, option?: EasingOption): void;
+    /**
+     * カメラ半径のみをループで移動させる。
+     * ゆらゆらとズームインアウトさせるための処理
+     * @param {number} min
+     * @param {number} max
+     * @param option
+     */
+    loopMoveR(min: number, max: number, option?: EasingOption): void;
+    stopLoopMoveR(): void;
+    stopLoopMovePhi(): void;
     stopLoopMoveTheta(): void;
+    private loop;
+    private static getFirstDuration;
     /**
      * カメラシフトを移動する
      * @param value 移動先
@@ -149,48 +144,16 @@ export declare class SphericalController extends EventDispatcher {
      * @param overrideTween tweenのキャンセルを行うか、defaultはfalse。trueの場合tweenを停止して現状値からの加算を行う
      */
     addPhi(value: number, overrideTween?: boolean): void;
-    private limitPhi;
-    private limitTheta;
+    /**
+     * カメラのSpherical座標に加算する。
+     * @param targetParam
+     * @param value
+     * @param overrideTween
+     */
+    private addPosition;
     /**
      * 全てのtweenインスタンスを停止、破棄する
      */
     stop(): void;
-    /**
-     * 現在アクティブなTweenが存在するか確認する。
-     */
-    isPlaying(): boolean;
-    /**
-     * 指定されたtweenを停止する。
-     * @param {createjs.Tween | null} tween
-     * @return {null}
-     */
-    private static removeTween;
-    /**
-     * 任意の点までの回転アニメーションに必要になる
-     * 回転方向を算出する処理。
-     *
-     * @param from
-     * @param to
-     * @returns {number}    最短距離での目標となる回転角
-     */
-    static getTweenTheta(from: number, to: number): number;
-    /**
-     * ラジアンを-Math.PI ~ Math.PIの範囲に正規化する。
-     * Math.PIもしくは-Math.PIを入力すると正負が反転する。
-     * @param {number} value
-     * @return {number}
-     * @constructor
-     */
-    static PI2ToPI(value: number): number;
-}
-/**
- * イージングオプション
- * move関数で一度限りのアニメーション設定するためのオプション。
- */
-export declare class EasingOption {
-    duration?: number;
-    easing?: Function;
-    normalize?: boolean;
-    static init(option: EasingOption, controller: SphericalController, isLoop?: boolean): EasingOption;
 }
 //# sourceMappingURL=SphericalController.d.ts.map

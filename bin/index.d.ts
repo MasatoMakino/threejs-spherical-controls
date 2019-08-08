@@ -1,3 +1,5 @@
-export { SphericalController } from "./SphericalController";
-export { SphericalControllerEvent, SphericalControllerEventType } from "./SphericalControllerEvent";
+export * from "./SphericalController";
+export * from "./SphericalControllerUtil";
+export * from "./SphericalControllerEvent";
+export * from "./EasingOption";
 //# sourceMappingURL=index.d.ts.map
