@@ -89,37 +89,44 @@ const initGUI = controller => {
   initLoopGUI(gui, controller);
 };
 
-const initRandomGUI = (gui, controller) => {
-  let id;
+let randomAnimationID;
 
+const initRandomGUI = (gui, controller) => {
   const prop = {
     toggleRandomMove: () => {
-      if (id != null) {
-        controller.tweens.stop();
-        clearInterval(id);
-        id = null;
+      if (randomAnimationID != null) {
+        stopRandomAnimation(controller);
       } else {
-        const move = () => {
-          const to = new Spherical(
-            R,
-            // Math.random() * 70 + 35,
-            Math.random() * Math.PI,
-            Math.random() * Math.PI * 6 - Math.PI * 3
-          );
-          controller.move(to, {
-            duration: 1500,
-            easing: createjs.Ease.cubicOut
-          });
-          console.log("Start : ", to);
-        };
-        move();
-
-        id = setInterval(move, 2000);
+        startRandomAnimation(controller);
       }
     }
   };
 
   gui.add(prop, "toggleRandomMove");
+};
+
+const stopRandomAnimation = controller => {
+  controller.tweens.stop();
+  clearInterval(randomAnimationID);
+  randomAnimationID = null;
+};
+
+const startRandomAnimation = controller => {
+  const move = () => {
+    const to = new Spherical(
+      R,
+      // Math.random() * 70 + 35,
+      Math.random() * Math.PI,
+      Math.random() * Math.PI * 6 - Math.PI * 3
+    );
+    controller.move(to, {
+      duration: 1500,
+      easing: createjs.Ease.cubicOut
+    });
+    console.log("Start : ", to);
+  };
+  move();
+  randomAnimationID = setInterval(move, 2000);
 };
 
 const initAddGUI = (gui, controller) => {
