@@ -35,9 +35,12 @@ export class SphericalController extends EventDispatcher {
 
   private _cameraTarget: Mesh;
   private pos: Spherical = new Spherical();
-  //画面のシフト
-  // 例えば(0,0,0)を指定すると_cameraTargetが必ず画面中央に表示される。
-  // 値を指定するとそのぶん_cameraTargetが中央からオフセットされる。
+
+  /**
+   * 画面のシフト
+   * 例えば(0,0,0)を指定すると_cameraTargetが必ず画面中央に表示される。
+   * 値を指定するとそのぶん_cameraTargetが中央からオフセットされる。
+   */
   private cameraShift: Vector3 = new Vector3();
 
   public tweens: SphericalControllerTween = new SphericalControllerTween();
@@ -307,7 +310,7 @@ export class SphericalController extends EventDispatcher {
 
   /**
    * カメラのSpherical座標に加算する。
-   * @param targetParam
+   * @param type
    * @param value
    * @param overrideTween
    */
