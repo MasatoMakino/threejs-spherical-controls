@@ -110,9 +110,9 @@ export class SphericalController extends EventDispatcher {
   public move(pos: Spherical, option?: EasingOption): void {
     option = EasingOption.init(option, this);
     this.tweens.stop();
-    this.moveR(pos.radius, option);
-    this.movePhi(pos.phi, option);
-    this.moveTheta(pos.theta, option);
+    this.movePosition(SphericalParamType.R, pos.radius, option);
+    this.movePosition(SphericalParamType.PHI, pos.phi, option);
+    this.movePosition(SphericalParamType.THETA, pos.theta, option);
   }
 
   /**
@@ -131,54 +131,31 @@ export class SphericalController extends EventDispatcher {
   }
 
   /**
-   * 半径のみを移動する
-   * @param value 単位はラジアン角
+   * カメラ座標のうち、typeで指定された１つのパラメーターを移動する
+   * @param type
+   * @param value
    * @param option
    */
-  public moveR(value: number, option?: EasingOption): void {
-    option = EasingOption.init(option, this);
-    this.tweens.overrideTween(
-      SphericalParamType.R,
-      this.getTweenPosition(SphericalParamType.R, value, option)
-    );
-  }
-
-  /**
-   * カメラターゲットのみを移動する
-   * @param value 単位はラジアン角
-   * @param option
-   */
-  public moveTarget(value: Vector3, option?: EasingOption): void {
+  public movePosition(
+    type: SphericalParamType,
+    value: number,
+    option?: EasingOption
+  ): void {
     option = EasingOption.init(option, this);
 
-    const tween = Tween.get(this._cameraTarget.position).to(
-      { x: value.x, y: value.y, z: value.z },
-      option.duration,
-      option.easing
-    );
-    tween.addEventListener("change", this.dispatchUpdateEvent);
-    this.tweens.overrideTween(TargetParam.CAMERA_TARGET, tween);
-  }
-
-  /**
-   * 経度のみを移動する
-   * 横向回転を行う際のメソッド
-   * @param value 単位はラジアン角
-   * @param option
-   */
-  public moveTheta(value: number, option?: EasingOption): void {
-    option = EasingOption.init(option, this);
-
-    let to = value;
-    if (option.normalize) {
-      to = SphericalControllerUtil.getTweenTheta(this.pos.theta, value);
+    if (type === SphericalParamType.THETA && option.normalize) {
+      value = SphericalControllerUtil.getTweenTheta(this.pos.theta, value);
     }
-    to = this.limiter.clampWithType(SphericalParamType.THETA, to);
-
-    const tween = this.getTweenPosition(SphericalParamType.THETA, to, option);
-    this.tweens.overrideTween(SphericalParamType.THETA, tween);
+    const to = this.limiter.clampWithType(type, value);
+    this.tweens.overrideTween(type, this.getTweenPosition(type, to, option));
   }
 
+  /**
+   * movePosition関数用のtweenオブジェクトを生成する。
+   * @param targetParam
+   * @param to
+   * @param option
+   */
   private getTweenPosition(
     targetParam: TargetParam | SphericalParamType,
     to: number,
@@ -195,6 +172,11 @@ export class SphericalController extends EventDispatcher {
     return tween;
   }
 
+  /**
+   * Tweenのcompleteイベントで呼び出される関数。
+   * MOVED_CAMERA_COMPLETEイベントを発行する。
+   * @param paramType
+   */
   private onCompleteCameraTween(
     paramType: TargetParam | SphericalParamType
   ): void {
@@ -205,19 +187,21 @@ export class SphericalController extends EventDispatcher {
       )
     );
   }
-
   /**
-   * 緯度のみを移動する
-   * 縦方向回転を行う際のメソッド
+   * カメラターゲットのみを移動する
    * @param value 単位はラジアン角
    * @param option
    */
-  public movePhi(value: number, option?: EasingOption): void {
+  public moveTarget(value: Vector3, option?: EasingOption): void {
     option = EasingOption.init(option, this);
 
-    const to = this.limiter.clampWithType(SphericalParamType.PHI, value);
-    const tween = this.getTweenPosition(SphericalParamType.PHI, to, option);
-    this.tweens.overrideTween(SphericalParamType.PHI, tween);
+    const tween = Tween.get(this._cameraTarget.position).to(
+      { x: value.x, y: value.y, z: value.z },
+      option.duration,
+      option.easing
+    );
+    tween.addEventListener("change", this.dispatchUpdateEvent);
+    this.tweens.overrideTween(TargetParam.CAMERA_TARGET, tween);
   }
 
   public stopLoop(type: SphericalParamType) {
