@@ -1,6 +1,5 @@
-import { TargetParam } from "./SphericalControllerEvent";
 import { Spherical } from "three";
-import { SphericalParamType } from "./SphericalControllerEvent";
+import { SphericalParamType } from "./TargetParam";
 
 export class CameraPositionLimiter {
   private static readonly EPS = 0.000001;

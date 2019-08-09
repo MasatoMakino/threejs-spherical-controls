@@ -9,10 +9,9 @@ import {
 } from "three";
 import {
   SphericalControllerEvent,
-  SphericalControllerEventType,
-  TargetParam
+  SphericalControllerEventType
 } from "./SphericalControllerEvent";
-import { SphericalParamType } from "./SphericalControllerEvent";
+import { SphericalParamType, TargetParam } from "./TargetParam";
 import { EasingOption } from "./EasingOption";
 import { SphericalControllerUtil } from "./SphericalControllerUtil";
 import { CameraPositionLimiter } from "./CameraPositionLimiter";

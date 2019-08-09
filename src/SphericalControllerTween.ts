@@ -1,7 +1,6 @@
 import Tween = createjs.Tween;
 import Ease = createjs.Ease;
-import { TargetParam } from "./SphericalControllerEvent";
-import { SphericalParamType } from "./SphericalControllerEvent";
+import { SphericalParamType, TargetParam } from "./TargetParam";
 
 export class SphericalControllerTween {
   //カメラターゲット移動用tween
