@@ -1,7 +1,7 @@
 var Tween = createjs.Tween;
 import { EventDispatcher, MeshBasicMaterial, Spherical, Vector3 } from "three";
-import { SphericalControllerEvent, SphericalControllerEventType, TargetParam } from "./SphericalControllerEvent";
-import { SphericalParamType } from "./SphericalControllerEvent";
+import { SphericalControllerEvent, SphericalControllerEventType } from "./SphericalControllerEvent";
+import { SphericalParamType, TargetParam } from "./TargetParam";
 import { EasingOption } from "./EasingOption";
 import { SphericalControllerUtil } from "./SphericalControllerUtil";
 import { CameraPositionLimiter } from "./CameraPositionLimiter";
@@ -28,9 +28,11 @@ export class SphericalController extends EventDispatcher {
     constructor(camera, target) {
         super();
         this.pos = new Spherical();
-        //画面のシフト
-        // 例えば(0,0,0)を指定すると_cameraTargetが必ず画面中央に表示される。
-        // 値を指定するとそのぶん_cameraTargetが中央からオフセットされる。
+        /**
+         * 画面のシフト
+         * 例えば(0,0,0)を指定すると_cameraTargetが必ず画面中央に表示される。
+         * 値を指定するとそのぶん_cameraTargetが中央からオフセットされる。
+         */
         this.cameraShift = new Vector3();
         this.tweens = new SphericalControllerTween();
         this.limiter = new CameraPositionLimiter();
@@ -77,9 +79,9 @@ export class SphericalController extends EventDispatcher {
     move(pos, option) {
         option = EasingOption.init(option, this);
         this.tweens.stop();
-        this.moveR(pos.radius, option);
-        this.movePhi(pos.phi, option);
-        this.moveTheta(pos.theta, option);
+        this.movePosition(SphericalParamType.R, pos.radius, option);
+        this.movePosition(SphericalParamType.PHI, pos.phi, option);
+        this.movePosition(SphericalParamType.THETA, pos.theta, option);
     }
     /**
      * カメラターゲットの変更
@@ -94,13 +96,42 @@ export class SphericalController extends EventDispatcher {
         // tweenが終了したらthis._cameraTargetを差し替え。
     }
     /**
-     * 半径のみを移動する
-     * @param value 単位はラジアン角
+     * カメラ座標のうち、typeで指定された１つのパラメーターを移動する
+     * @param type
+     * @param value
      * @param option
      */
-    moveR(value, option) {
+    movePosition(type, value, option) {
         option = EasingOption.init(option, this);
-        this.tweens.overrideTween(SphericalParamType.R, this.getTweenPosition(SphericalParamType.R, value, option));
+        if (type === SphericalParamType.THETA && option.normalize) {
+            value = SphericalControllerUtil.getTweenTheta(this.pos.theta, value);
+        }
+        const to = this.limiter.clampWithType(type, value);
+        this.tweens.overrideTween(type, this.getTweenPosition(type, to, option));
+    }
+    /**
+     * movePosition関数用のtweenオブジェクトを生成する。
+     * @param targetParam
+     * @param to
+     * @param option
+     */
+    getTweenPosition(targetParam, to, option) {
+        const toObj = {};
+        toObj[targetParam] = to;
+        const tween = Tween.get(this.pos).to(toObj, option.duration, option.easing);
+        tween.addEventListener("change", this.dispatchUpdateEvent);
+        tween.addEventListener("complete", e => {
+            this.onCompleteCameraTween(targetParam);
+        });
+        return tween;
+    }
+    /**
+     * Tweenのcompleteイベントで呼び出される関数。
+     * MOVED_CAMERA_COMPLETEイベントを発行する。
+     * @param paramType
+     */
+    onCompleteCameraTween(paramType) {
+        this.dispatchEvent(new SphericalControllerEvent(SphericalControllerEventType.MOVED_CAMERA_COMPLETE, paramType));
     }
     /**
      * カメラターゲットのみを移動する
@@ -112,47 +143,6 @@ export class SphericalController extends EventDispatcher {
         const tween = Tween.get(this._cameraTarget.position).to({ x: value.x, y: value.y, z: value.z }, option.duration, option.easing);
         tween.addEventListener("change", this.dispatchUpdateEvent);
         this.tweens.overrideTween(TargetParam.CAMERA_TARGET, tween);
-    }
-    /**
-     * 経度のみを移動する
-     * 横向回転を行う際のメソッド
-     * @param value 単位はラジアン角
-     * @param option
-     */
-    moveTheta(value, option) {
-        option = EasingOption.init(option, this);
-        let to = value;
-        if (option.normalize) {
-            to = SphericalControllerUtil.getTweenTheta(this.pos.theta, value);
-        }
-        to = this.limiter.clampWithType(SphericalParamType.THETA, to);
-        const tween = this.getTweenPosition(SphericalParamType.THETA, to, option);
-        this.tweens.overrideTween(SphericalParamType.THETA, tween);
-    }
-    getTweenPosition(targetParam, to, option) {
-        const toObj = {};
-        toObj[targetParam] = to;
-        const tween = Tween.get(this.pos).to(toObj, option.duration, option.easing);
-        tween.addEventListener("change", this.dispatchUpdateEvent);
-        tween.addEventListener("complete", e => {
-            this.onCompleteCameraTween(targetParam);
-        });
-        return tween;
-    }
-    onCompleteCameraTween(paramType) {
-        this.dispatchEvent(new SphericalControllerEvent(SphericalControllerEventType.MOVED_CAMERA_COMPLETE, paramType));
-    }
-    /**
-     * 緯度のみを移動する
-     * 縦方向回転を行う際のメソッド
-     * @param value 単位はラジアン角
-     * @param option
-     */
-    movePhi(value, option) {
-        option = EasingOption.init(option, this);
-        const to = this.limiter.clampWithType(SphericalParamType.PHI, value);
-        const tween = this.getTweenPosition(SphericalParamType.PHI, to, option);
-        this.tweens.overrideTween(SphericalParamType.PHI, tween);
     }
     stopLoop(type) {
         this.tweens.stopTween(type);
@@ -197,9 +187,6 @@ export class SphericalController extends EventDispatcher {
      */
     moveCameraShift(value, option) {
         option = EasingOption.init(option, this);
-        if (!this.cameraShift) {
-            this.cameraShift = new Vector3();
-        }
         const tween = Tween.get(this.cameraShift).to({ x: value.x, y: value.y, z: value.z }, option.duration, option.easing);
         tween.addEventListener("change", this.dispatchUpdateEvent);
         this.tweens.overrideTween(TargetParam.CAMERA_SHIFT, tween);
@@ -221,7 +208,7 @@ export class SphericalController extends EventDispatcher {
     }
     /**
      * カメラのSpherical座標に加算する。
-     * @param targetParam
+     * @param type
      * @param value
      * @param overrideTween
      */

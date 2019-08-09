@@ -1,4 +1,4 @@
-import { SphericalParamType } from "./SphericalControllerEvent";
+import { SphericalParamType } from "./TargetParam";
 export class CameraPositionLimiter {
     constructor() {
         this.phiMin = CameraPositionLimiter.EPS;

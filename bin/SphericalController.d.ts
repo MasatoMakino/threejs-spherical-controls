@@ -1,5 +1,5 @@
 import { Camera, EventDispatcher, Mesh, Spherical, Vector3 } from "three";
-import { SphericalParamType } from "./SphericalControllerEvent";
+import { SphericalParamType } from "./TargetParam";
 import { EasingOption } from "./EasingOption";
 import { CameraPositionLimiter } from "./CameraPositionLimiter";
 import { SphericalControllerTween } from "./SphericalControllerTween";
@@ -18,6 +18,11 @@ export declare class SphericalController extends EventDispatcher {
     private cameraUpdater;
     private _cameraTarget;
     private pos;
+    /**
+     * 画面のシフト
+     * 例えば(0,0,0)を指定すると_cameraTargetが必ず画面中央に表示される。
+     * 値を指定するとそのぶん_cameraTargetが中央からオフセットされる。
+     */
     private cameraShift;
     tweens: SphericalControllerTween;
     limiter: CameraPositionLimiter;
@@ -52,33 +57,31 @@ export declare class SphericalController extends EventDispatcher {
      */
     changeTarget(_target: Mesh): void;
     /**
-     * 半径のみを移動する
-     * @param value 単位はラジアン角
+     * カメラ座標のうち、typeで指定された１つのパラメーターを移動する
+     * @param type
+     * @param value
      * @param option
      */
-    moveR(value: number, option?: EasingOption): void;
+    movePosition(type: SphericalParamType, value: number, option?: EasingOption): void;
+    /**
+     * movePosition関数用のtweenオブジェクトを生成する。
+     * @param targetParam
+     * @param to
+     * @param option
+     */
+    private getTweenPosition;
+    /**
+     * Tweenのcompleteイベントで呼び出される関数。
+     * MOVED_CAMERA_COMPLETEイベントを発行する。
+     * @param paramType
+     */
+    private onCompleteCameraTween;
     /**
      * カメラターゲットのみを移動する
      * @param value 単位はラジアン角
      * @param option
      */
     moveTarget(value: Vector3, option?: EasingOption): void;
-    /**
-     * 経度のみを移動する
-     * 横向回転を行う際のメソッド
-     * @param value 単位はラジアン角
-     * @param option
-     */
-    moveTheta(value: number, option?: EasingOption): void;
-    private getTweenPosition;
-    private onCompleteCameraTween;
-    /**
-     * 緯度のみを移動する
-     * 縦方向回転を行う際のメソッド
-     * @param value 単位はラジアン角
-     * @param option
-     */
-    movePhi(value: number, option?: EasingOption): void;
     stopLoop(type: SphericalParamType): void;
     /**
      * カメラ位置をループで移動させる。
@@ -104,7 +107,7 @@ export declare class SphericalController extends EventDispatcher {
     addTargetPosition(pos: Vector3, overrideTween?: boolean): void;
     /**
      * カメラのSpherical座標に加算する。
-     * @param targetParam
+     * @param type
      * @param value
      * @param overrideTween
      */

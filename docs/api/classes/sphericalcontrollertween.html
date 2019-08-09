@@ -66,6 +66,14 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p><a href="sphericalcontroller.html">SphericalController</a>で使用するTweenインスタンスを管理するためのクラス。
+						Tweenを格納するMapと、新規Tweenに適用されるデフォルト設定で構成される。</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -87,24 +95,17 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="sphericalcontrollertween.html#_tweencamerashift" class="tsd-kind-icon">_tween<wbr>Camera<wbr>Shift</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="sphericalcontrollertween.html#_tweenphi" class="tsd-kind-icon">_tween<wbr>Phi</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="sphericalcontrollertween.html#_tweenr" class="tsd-kind-icon">_tweenR</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="sphericalcontrollertween.html#_tweentarget" class="tsd-kind-icon">_tween<wbr>Target</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="sphericalcontrollertween.html#_tweentheta" class="tsd-kind-icon">_tween<wbr>Theta</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="sphericalcontrollertween.html#duration" class="tsd-kind-icon">duration</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="sphericalcontrollertween.html#easing" class="tsd-kind-icon">easing</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="sphericalcontrollertween.html#loopeasing" class="tsd-kind-icon">loop<wbr>Easing</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="sphericalcontrollertween.html#tweenmap" class="tsd-kind-icon">tween<wbr>Map</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="sphericalcontrollertween.html#gettween" class="tsd-kind-icon">get<wbr>Tween</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="sphericalcontrollertween.html#gettweenarray" class="tsd-kind-icon">get<wbr>Tween<wbr>Array</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="sphericalcontrollertween.html#isplaying" class="tsd-kind-icon">is<wbr>Playing</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="sphericalcontrollertween.html#overridetween" class="tsd-kind-icon">override<wbr>Tween</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="sphericalcontrollertween.html#settween" class="tsd-kind-icon">set<wbr>Tween</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="sphericalcontrollertween.html#stop" class="tsd-kind-icon">stop</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="sphericalcontrollertween.html#stoptween" class="tsd-kind-icon">stop<wbr>Tween</a></li>
 							</ul>
@@ -124,7 +125,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/442144f/src/SphericalControllerTween.ts#L18">SphericalControllerTween.ts:18</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/5ca4f4a/src/SphericalControllerTween.ts#L14">SphericalControllerTween.ts:14</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="sphericalcontrollertween.html" class="tsd-signature-type">SphericalControllerTween</a></h4>
@@ -134,63 +135,13 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="_tweencamerashift" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _tween<wbr>Camera<wbr>Shift</h3>
-					<div class="tsd-signature tsd-kind-icon">_tween<wbr>Camera<wbr>Shift<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Tween</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/442144f/src/SphericalControllerTween.ts#L14">SphericalControllerTween.ts:14</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="_tweenphi" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _tween<wbr>Phi</h3>
-					<div class="tsd-signature tsd-kind-icon">_tween<wbr>Phi<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Tween</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/442144f/src/SphericalControllerTween.ts#L13">SphericalControllerTween.ts:13</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="_tweenr" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _tweenR</h3>
-					<div class="tsd-signature tsd-kind-icon">_tweenR<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Tween</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/442144f/src/SphericalControllerTween.ts#L11">SphericalControllerTween.ts:11</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="_tweentarget" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _tween<wbr>Target</h3>
-					<div class="tsd-signature tsd-kind-icon">_tween<wbr>Target<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Tween</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/442144f/src/SphericalControllerTween.ts#L8">SphericalControllerTween.ts:8</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="_tweentheta" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _tween<wbr>Theta</h3>
-					<div class="tsd-signature tsd-kind-icon">_tween<wbr>Theta<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Tween</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/442144f/src/SphericalControllerTween.ts#L12">SphericalControllerTween.ts:12</a></li>
-						</ul>
-					</aside>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="duration" class="tsd-anchor"></a>
 					<h3>duration</h3>
 					<div class="tsd-signature tsd-kind-icon">duration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1333</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/442144f/src/SphericalControllerTween.ts#L16">SphericalControllerTween.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/5ca4f4a/src/SphericalControllerTween.ts#L12">SphericalControllerTween.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -200,7 +151,7 @@
 					<div class="tsd-signature tsd-kind-icon">easing<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;Ease.cubicOut</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/442144f/src/SphericalControllerTween.ts#L17">SphericalControllerTween.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/5ca4f4a/src/SphericalControllerTween.ts#L13">SphericalControllerTween.ts:13</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -231,7 +182,7 @@
 					<div class="tsd-signature tsd-kind-icon">loop<wbr>Easing<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;Ease.sineInOut</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/442144f/src/SphericalControllerTween.ts#L18">SphericalControllerTween.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/5ca4f4a/src/SphericalControllerTween.ts#L14">SphericalControllerTween.ts:14</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -256,49 +207,19 @@
 						</ul>
 					</div>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="tweenmap" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> tween<wbr>Map</h3>
+					<div class="tsd-signature tsd-kind-icon">tween<wbr>Map<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><a href="../enums/sphericalparamtype.html" class="tsd-signature-type">SphericalParamType</a><span class="tsd-signature-symbol"> | </span><a href="../enums/targetparam.html" class="tsd-signature-type">TargetParam</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Tween</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Map()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/5ca4f4a/src/SphericalControllerTween.ts#L10">SphericalControllerTween.ts:10</a></li>
+						</ul>
+					</aside>
+				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="gettween" class="tsd-anchor"></a>
-					<h3>get<wbr>Tween</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Tween<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><a href="../enums/targetparam.html" class="tsd-signature-type">TargetParam</a><span class="tsd-signature-symbol"> | </span><a href="../enums/sphericalparamtype.html" class="tsd-signature-type">SphericalParamType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Tween</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/442144f/src/SphericalControllerTween.ts#L30">SphericalControllerTween.ts:30</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>type: <a href="../enums/targetparam.html" class="tsd-signature-type">TargetParam</a><span class="tsd-signature-symbol"> | </span><a href="../enums/sphericalparamtype.html" class="tsd-signature-type">SphericalParamType</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Tween</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="gettweenarray" class="tsd-anchor"></a>
-					<h3>get<wbr>Tween<wbr>Array</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Tween<wbr>Array<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Tween</span><span class="tsd-signature-symbol">[]</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/442144f/src/SphericalControllerTween.ts#L73">SphericalControllerTween.ts:73</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Tween</span><span class="tsd-signature-symbol">[]</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="isplaying" class="tsd-anchor"></a>
 					<h3>is<wbr>Playing</h3>
@@ -309,7 +230,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/442144f/src/SphericalControllerTween.ts#L86">SphericalControllerTween.ts:86</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/5ca4f4a/src/SphericalControllerTween.ts#L46">SphericalControllerTween.ts:46</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -331,9 +252,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/442144f/src/SphericalControllerTween.ts#L65">SphericalControllerTween.ts:65</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/5ca4f4a/src/SphericalControllerTween.ts#L35">SphericalControllerTween.ts:35</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>指定されたTweenを停止し、受け取ったTweenで上書きする。</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -341,32 +267,8 @@
 								</li>
 								<li>
 									<h5>tween: <span class="tsd-signature-type">Tween</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="settween" class="tsd-anchor"></a>
-					<h3>set<wbr>Tween</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Tween<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><a href="../enums/targetparam.html" class="tsd-signature-type">TargetParam</a><span class="tsd-signature-symbol"> | </span><a href="../enums/sphericalparamtype.html" class="tsd-signature-type">SphericalParamType</a>, tween<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Tween</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/442144f/src/SphericalControllerTween.ts#L45">SphericalControllerTween.ts:45</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>type: <a href="../enums/targetparam.html" class="tsd-signature-type">TargetParam</a><span class="tsd-signature-symbol"> | </span><a href="../enums/sphericalparamtype.html" class="tsd-signature-type">SphericalParamType</a></h5>
-								</li>
-								<li>
-									<h5>tween: <span class="tsd-signature-type">Tween</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -383,7 +285,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/442144f/src/SphericalControllerTween.ts#L97">SphericalControllerTween.ts:97</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/5ca4f4a/src/SphericalControllerTween.ts#L56">SphericalControllerTween.ts:56</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -405,13 +307,20 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/442144f/src/SphericalControllerTween.ts#L22">SphericalControllerTween.ts:22</a></li>
+									<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/5ca4f4a/src/SphericalControllerTween.ts#L22">SphericalControllerTween.ts:22</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>指定されたTweenを停止する。</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>type: <a href="../enums/targetparam.html" class="tsd-signature-type">TargetParam</a><span class="tsd-signature-symbol"> | </span><a href="../enums/sphericalparamtype.html" class="tsd-signature-type">SphericalParamType</a></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -468,21 +377,6 @@
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
 								<a href="sphericalcontrollertween.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="sphericalcontrollertween.html#_tweencamerashift" class="tsd-kind-icon">_tween<wbr>Camera<wbr>Shift</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="sphericalcontrollertween.html#_tweenphi" class="tsd-kind-icon">_tween<wbr>Phi</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="sphericalcontrollertween.html#_tweenr" class="tsd-kind-icon">_tweenR</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="sphericalcontrollertween.html#_tweentarget" class="tsd-kind-icon">_tween<wbr>Target</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="sphericalcontrollertween.html#_tweentheta" class="tsd-kind-icon">_tween<wbr>Theta</a>
-							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="sphericalcontrollertween.html#duration" class="tsd-kind-icon">duration</a>
 							</li>
@@ -492,20 +386,14 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="sphericalcontrollertween.html#loopeasing" class="tsd-kind-icon">loop<wbr>Easing</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="sphericalcontrollertween.html#gettween" class="tsd-kind-icon">get<wbr>Tween</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="sphericalcontrollertween.html#gettweenarray" class="tsd-kind-icon">get<wbr>Tween<wbr>Array</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="sphericalcontrollertween.html#tweenmap" class="tsd-kind-icon">tween<wbr>Map</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="sphericalcontrollertween.html#isplaying" class="tsd-kind-icon">is<wbr>Playing</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="sphericalcontrollertween.html#overridetween" class="tsd-kind-icon">override<wbr>Tween</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="sphericalcontrollertween.html#settween" class="tsd-kind-icon">set<wbr>Tween</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="sphericalcontrollertween.html#stop" class="tsd-kind-icon">stop</a>
