@@ -2,15 +2,12 @@ import Tween = createjs.Tween;
 import Ease = createjs.Ease;
 import { SphericalParamType, TargetParam } from "./TargetParam";
 
+/**
+ * [[SphericalController]]で使用するTweenインスタンスを管理するためのクラス。
+ * Tweenを格納するMapと、新規Tweenに適用されるデフォルト設定で構成される。
+ */
 export class SphericalControllerTween {
-  //カメラターゲット移動用tween
-  private _tweenTarget!: Tween | null;
-
-  //特定パラメーター移動用tween
-  private _tweenR!: Tween | null;
-  private _tweenTheta!: Tween | null;
-  private _tweenPhi!: Tween | null;
-  private _tweenCameraShift!: Tween | null;
+  private tweenMap: Map<SphericalParamType | TargetParam, Tween> = new Map();
 
   public duration: number = 1333;
   public easing = Ease.cubicOut;
@@ -18,73 +15,36 @@ export class SphericalControllerTween {
 
   constructor() {}
 
+  /**
+   * 指定されたTweenを停止する。
+   * @param type
+   */
   stopTween(type: TargetParam | SphericalParamType): void {
-    const tween = this.getTween(type);
+    const tween = this.tweenMap.get(type);
     if (!tween) return;
     tween.paused = true;
     tween.removeAllEventListeners();
-    this.setTween(type, null);
+    this.tweenMap.set(type, null);
   }
 
-  getTween(type: TargetParam | SphericalParamType): Tween {
-    switch (type) {
-      case SphericalParamType.R:
-        return this._tweenR;
-      case SphericalParamType.PHI:
-        return this._tweenPhi;
-      case SphericalParamType.THETA:
-        return this._tweenTheta;
-      case TargetParam.CAMERA_SHIFT:
-        return this._tweenCameraShift;
-      case TargetParam.CAMERA_TARGET:
-        return this._tweenTarget;
-    }
-  }
-
-  setTween(type: TargetParam | SphericalParamType, tween: Tween | null): void {
-    switch (type) {
-      case SphericalParamType.R:
-        this._tweenR = tween;
-        break;
-      case SphericalParamType.PHI:
-        this._tweenPhi = tween;
-        break;
-      case SphericalParamType.THETA:
-        this._tweenTheta = tween;
-        break;
-      case TargetParam.CAMERA_SHIFT:
-        this._tweenCameraShift = tween;
-        break;
-      case TargetParam.CAMERA_TARGET:
-        this._tweenTarget = tween;
-        break;
-    }
-  }
-
+  /**
+   * 指定されたTweenを停止し、受け取ったTweenで上書きする。
+   * @param type
+   * @param tween
+   */
   overrideTween(
     type: TargetParam | SphericalParamType,
     tween: Tween | null
   ): void {
     this.stopTween(type);
-    this.setTween(type, tween);
-  }
-
-  public getTweenArray(): Tween[] {
-    return [
-      this._tweenR,
-      this._tweenTheta,
-      this._tweenPhi,
-      this._tweenCameraShift,
-      this._tweenTarget
-    ];
+    this.tweenMap.set(type, tween);
   }
 
   /**
    * 現在アクティブなTweenが存在するか確認する。
    */
   public isPlaying(): boolean {
-    const tweenArray = this.getTweenArray();
-    for (let tween of tweenArray) {
+    for (let tween of this.tweenMap.values()) {
       if (tween && !tween.paused) return true;
     }
     return false;
@@ -94,8 +54,7 @@ export class SphericalControllerTween {
    * 全てのtweenインスタンスを停止する。
    */
   public stop(): void {
-    const tweenArray = this.getTweenArray();
-    for (let tween of tweenArray) {
+    for (let tween of this.tweenMap.values()) {
       if (tween) tween.removeAllEventListeners();
     }
   }
