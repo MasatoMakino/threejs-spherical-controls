@@ -13,8 +13,6 @@ const H = 800;
 let renderer;
 let scene;
 let camera;
-// let cameraController;
-
 const R = 105;
 
 const onDomContentsLoaded = () => {
@@ -133,33 +131,26 @@ const initAddGUI = (gui, controller) => {
   const folder = gui.addFolder("add method");
   folder.open();
   const moveAngle = 0.1;
-  const prop = {
-    addR: () => {
-      controller.addPosition(SphericalParamType.R, 5);
-    },
-    subR: () => {
-      controller.addPosition(SphericalParamType.R, -5);
-    },
-    addPhi: () => {
-      controller.addPosition(SphericalParamType.PHI, moveAngle);
-    },
-    subPhi: () => {
-      controller.addPosition(SphericalParamType.PHI, -moveAngle);
-    },
-    addTheta: () => {
-      controller.addPosition(SphericalParamType.THETA, moveAngle);
-    },
-    subTheta: () => {
-      controller.addPosition(SphericalParamType.THETA, -moveAngle);
-    }
-  };
 
-  folder.add(prop, "addR");
-  folder.add(prop, "subR");
-  folder.add(prop, "addPhi");
-  folder.add(prop, "subPhi");
-  folder.add(prop, "addTheta");
-  folder.add(prop, "subTheta");
+  addPositionGUI(SphericalParamType.R, +5, folder, controller);
+  addPositionGUI(SphericalParamType.R, -5, folder, controller);
+
+  addPositionGUI(SphericalParamType.PHI, +moveAngle, folder, controller);
+  addPositionGUI(SphericalParamType.PHI, -moveAngle, folder, controller);
+
+  addPositionGUI(SphericalParamType.THETA, +moveAngle, folder, controller);
+  addPositionGUI(SphericalParamType.THETA, -moveAngle, folder, controller);
+};
+
+const addPositionGUI = (type, value, folder, controller) => {
+  const prop = {};
+  let valString = value.toString();
+  if (value > 0) valString = "+" + valString;
+  const functionName = type + valString;
+  prop[functionName] = () => {
+    controller.addPosition(type, value);
+  };
+  folder.add(prop, functionName);
 };
 
 const initLoopGUI = (gui, controller) => {
