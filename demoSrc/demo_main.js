@@ -166,49 +166,35 @@ const initLoopGUI = (gui, controller) => {
   const folder = gui.addFolder("loop method");
   folder.open();
 
-  const flags = {
-    isLoopR: false,
-    isLoopPhi: false,
-    isLoopTheta: false
-  };
+  addLoopGUI(SphericalParamType.R, 30, 150, folder, controller);
+  addLoopGUI(SphericalParamType.PHI, 0, Math.PI, folder, controller);
+  addLoopGUI(
+    SphericalParamType.THETA,
+    -Math.PI / 4,
+    Math.PI / 4,
+    folder,
+    controller
+  );
+};
+
+const addLoopGUI = (type, min, max, folder, controller) => {
+  let flag = false;
   const option = {
     duration: 10 * 1000
   };
-  const prop = {
-    loopR: () => {
-      if (flags.isLoopR) {
-        controller.stopLoop(SphericalParamType.R);
-      } else {
-        controller.loop(SphericalParamType.R, 30, 150, option);
-      }
-      flags.isLoopR = !flags.isLoopR;
-    },
-    loopPhi: () => {
-      if (flags.isLoopPhi) {
-        controller.stopLoop(SphericalParamType.PHI);
-      } else {
-        controller.loop(SphericalParamType.PHI, 0, Math.PI, option);
-      }
-      flags.isLoopPhi = !flags.isLoopPhi;
-    },
-    loopTheta: () => {
-      if (flags.isLoopTheta) {
-        controller.stopLoop(SphericalParamType.THETA);
-      } else {
-        controller.loop(
-          SphericalParamType.THETA,
-          -Math.PI / 4,
-          Math.PI / 4,
-          option
-        );
-      }
-      flags.isLoopTheta = !flags.isLoopTheta;
+
+  const functionName = "loop_" + type;
+  const prop = {};
+  prop[functionName] = () => {
+    if (flag) {
+      controller.stopLoop(type);
+    } else {
+      controller.loop(type, min, max, option);
     }
+    flag = !flag;
   };
 
-  folder.add(prop, "loopR");
-  folder.add(prop, "loopPhi");
-  folder.add(prop, "loopTheta");
+  folder.add(prop, functionName);
 };
 
 /**
