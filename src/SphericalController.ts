@@ -263,9 +263,6 @@ export class SphericalController extends EventDispatcher {
    */
   public moveCameraShift(value: Vector3, option?: EasingOption): void {
     option = EasingOption.init(option, this);
-    if (!this.cameraShift) {
-      this.cameraShift = new Vector3();
-    }
 
     const tween = Tween.get(this.cameraShift).to(
       { x: value.x, y: value.y, z: value.z },
