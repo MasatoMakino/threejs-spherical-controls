@@ -20,7 +20,7 @@ export class SphericalControllerTween {
             return;
         tween.paused = true;
         tween.removeAllEventListeners();
-        this.tweenMap.set(type, null);
+        this.tweenMap.delete(type);
     }
     /**
      * 指定されたTweenを停止し、受け取ったTweenで上書きする。
@@ -29,7 +29,9 @@ export class SphericalControllerTween {
      */
     overrideTween(type, tween) {
         this.stopTween(type);
-        this.tweenMap.set(type, tween);
+        if (tween) {
+            this.tweenMap.set(type, tween);
+        }
     }
     /**
      * 現在アクティブなTweenが存在するか確認する。
