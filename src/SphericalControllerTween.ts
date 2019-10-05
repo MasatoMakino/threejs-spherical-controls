@@ -24,7 +24,7 @@ export class SphericalControllerTween {
     if (!tween) return;
     tween.paused = true;
     tween.removeAllEventListeners();
-    this.tweenMap.set(type, null);
+    this.tweenMap.delete(type);
   }
 
   /**
@@ -37,7 +37,9 @@ export class SphericalControllerTween {
     tween: Tween | null
   ): void {
     this.stopTween(type);
-    this.tweenMap.set(type, tween);
+    if (tween) {
+      this.tweenMap.set(type, tween);
+    }
   }
 
   /**
