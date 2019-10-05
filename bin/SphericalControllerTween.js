@@ -45,9 +45,9 @@ export class SphericalControllerTween {
      * 全てのtweenインスタンスを停止する。
      */
     stop() {
-        for (let tween of this.tweenMap.values()) {
-            if (tween)
-                tween.removeAllEventListeners();
+        for (let key of this.tweenMap.keys()) {
+            if (key)
+                this.stopTween(key);
         }
     }
 }
