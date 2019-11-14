@@ -21,9 +21,11 @@ export class CameraPositionUpdater {
       this.setNeedUpdate
     );
 
-    target.onBeforeRender = () => {
+    const onRender = () => {
       this.updatePosition();
+      requestAnimationFrame(onRender);
     };
+    requestAnimationFrame(onRender);
   }
 
   /**
