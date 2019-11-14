@@ -6,6 +6,8 @@ export declare class CameraPositionLimiter {
     phiMax: number;
     thetaMin: number;
     thetaMax: number;
+    rMax: number;
+    rMin: number;
     constructor();
     setLimit(type: SphericalParamType, max: number, min: number): void;
     clampWithType(type: SphericalParamType, val: number): number;

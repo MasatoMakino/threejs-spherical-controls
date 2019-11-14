@@ -5,11 +5,12 @@ export class CameraPositionLimiter {
         this.phiMax = Math.PI - CameraPositionLimiter.EPS;
         this.thetaMin = null;
         this.thetaMax = null;
+        this.rMax = Number.MAX_VALUE;
+        this.rMin = CameraPositionLimiter.EPS;
     }
     setLimit(type, max, min) {
         switch (type) {
             case SphericalParamType.PHI:
-                console.log(type);
                 this.phiMax = max;
                 this.phiMin = min;
                 break;
@@ -25,6 +26,8 @@ export class CameraPositionLimiter {
                 return CameraPositionLimiter.clamp(val, this.phiMax, this.phiMin);
             case SphericalParamType.THETA:
                 return CameraPositionLimiter.clamp(val, this.thetaMax, this.thetaMin);
+            case SphericalParamType.R:
+                return CameraPositionLimiter.clamp(val, this.rMax, this.rMin);
         }
         return val;
     }

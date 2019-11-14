@@ -58,6 +58,7 @@ export class SphericalController extends EventDispatcher {
         const lmt = this.limiter;
         this.pos.phi = lmt.clampPosition(SphericalParamType.PHI, this.pos);
         this.pos.theta = lmt.clampPosition(SphericalParamType.THETA, this.pos);
+        this.pos.radius = lmt.clampPosition(SphericalParamType.R, this.pos);
         if (targetPos) {
             this._cameraTarget.position.set(targetPos.x, targetPos.y, targetPos.z);
         }
