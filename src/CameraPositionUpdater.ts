@@ -5,6 +5,7 @@ import {
 } from "./SphericalControllerEvent";
 
 import { CameraUpdateEvent, CameraUpdateEventType } from "./CameraUpdateEvent";
+import { RAFTicker, RAFTickerEventType, RAFTickerEvent } from "raf-ticker";
 
 export class CameraPositionUpdater {
   private isUpdate: boolean = false;
@@ -21,11 +22,12 @@ export class CameraPositionUpdater {
       this.setNeedUpdate
     );
 
-    const onRender = () => {
-      this.updatePosition();
-      requestAnimationFrame(onRender);
-    };
-    requestAnimationFrame(onRender);
+    RAFTicker.addEventListener(
+      RAFTickerEventType.onBeforeTick,
+      (e: RAFTickerEvent) => {
+        this.updatePosition();
+      }
+    );
   }
 
   /**
