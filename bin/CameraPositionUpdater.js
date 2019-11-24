@@ -1,6 +1,7 @@
 import { Vector3 } from "three";
 import { SphericalControllerEvent, SphericalControllerEventType } from "./SphericalControllerEvent";
 import { CameraUpdateEventType } from "./CameraUpdateEvent";
+import { RAFTicker, RAFTickerEventType } from "raf-ticker";
 export class CameraPositionUpdater {
     constructor(parent, camera, target) {
         this.isUpdate = false;
@@ -39,10 +40,8 @@ export class CameraPositionUpdater {
         this.dispatcher = parent;
         this._camera = camera;
         this.dispatcher.addEventListener(CameraUpdateEventType.UPDATE, this.setNeedUpdate);
-        const onRender = () => {
+        RAFTicker.addEventListener(RAFTickerEventType.onBeforeTick, (e) => {
             this.updatePosition();
-            requestAnimationFrame(onRender);
-        };
-        requestAnimationFrame(onRender);
+        });
     }
 }
