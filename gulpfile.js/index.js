@@ -1,6 +1,6 @@
 "use strict";
 
-const { series } = require("gulp");
+const { series, parallel } = require("gulp");
 
 const doc = require("gulptask-tsdoc").get();
 const server = require("gulptask-dev-server").get("./docs/demo");
@@ -20,4 +20,4 @@ const watchTasks = async () => {
 };
 
 exports.start_dev = series(watchTasks, server);
-exports.build = series(tsc, bundleDemo, doc);
+exports.build = series(tsc, parallel(bundleDemo, doc));

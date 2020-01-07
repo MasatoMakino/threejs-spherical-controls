@@ -6,7 +6,7 @@ import {
   SphericalControllerEventType,
   SphericalControllerUtil,
   SphericalParamType
-} from "../bin";
+} from "../lib";
 
 const W = 1280;
 const H = 800;

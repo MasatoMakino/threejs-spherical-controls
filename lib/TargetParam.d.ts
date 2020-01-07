@@ -8,11 +8,10 @@
  *
  * [[SphericalParamType]]定数と合わせて、どの対象を操作するかを指定する。
  */
-export var TargetParam;
-(function (TargetParam) {
-    TargetParam["CAMERA_TARGET"] = "cameraTarget";
-    TargetParam["CAMERA_SHIFT"] = "cameraShift";
-})(TargetParam || (TargetParam = {}));
+export declare enum TargetParam {
+  CAMERA_TARGET = "cameraTarget",
+  CAMERA_SHIFT = "cameraShift"
+}
 /**
  * Spherical型の座標のうち、どのパラメーターを操作するかを指定する定数。
  * 定数はTHREE.Spherical.*のいずれかのメンバーに対応する。
@@ -24,9 +23,9 @@ export var TargetParam;
  *
  * [[TargetParam]]定数と合わせて、どの対象を操作するかを指定する。
  */
-export var SphericalParamType;
-(function (SphericalParamType) {
-    SphericalParamType["R"] = "radius";
-    SphericalParamType["PHI"] = "phi";
-    SphericalParamType["THETA"] = "theta";
-})(SphericalParamType || (SphericalParamType = {}));
+export declare enum SphericalParamType {
+  R = "radius",
+  PHI = "phi",
+  THETA = "theta"
+}
+//# sourceMappingURL=TargetParam.d.ts.map
