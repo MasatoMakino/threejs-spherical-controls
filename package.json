@@ -13,11 +13,11 @@
     "raf-ticker": "https://github.com/MasatoMakino/raf-ticker.git"
   },
   "peerDependencies": {
-    "three": "^0.111.0",
+    "three": "^0.112.1",
     "tweenjs": "^1.0.2"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.23",
+    "@types/jest": "^24.0.25",
     "@types/tweenjs": "^1.0.0",
     "dat.gui": "^0.7.6",
     "gulp": "^4.0.2",
@@ -25,11 +25,11 @@
     "gulptask-dev-server": "https://github.com/MasatoMakino/gulptask-dev-server.git",
     "gulptask-tsc": "https://github.com/MasatoMakino/gulptask-tsc.git",
     "gulptask-tsdoc": "https://github.com/MasatoMakino/gulptask-tsdoc.git",
-    "husky": "^3.1.0",
+    "husky": "^4.0.0",
     "jest": "^24.9.0",
     "prettier": "^1.19.1",
     "pretty-quick": "^2.0.1",
-    "three": "^0.111.0",
+    "three": "^0.112.1",
     "ts-jest": "^24.2.0",
     "tweenjs": "^1.0.2"
   },

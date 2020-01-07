@@ -1,4 +1,4 @@
-import { SphericalControllerUtil } from "../bin";
+import { SphericalControllerUtil } from "../src";
 
 describe("", () => {
   test("", () => {
