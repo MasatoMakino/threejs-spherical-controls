@@ -1,8 +1,13 @@
 {
   "name": "threejs-spherical-controls",
-  "version": "0.2.7",
-  "main": "./bin/index.js",
-  "types": "./bin/index.d.ts",
+  "version": "0.3.0",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "module": "./esm/index.js",
+  "files": [
+    "lib",
+    "esm"
+  ],
   "repository": "https://MasatoMakino@github.com/MasatoMakino/threejs-spherical-controls.git",
   "author": "MasatoMakino <unagiinu.g@gmail.com>",
   "license": "MIT",
