@@ -19,6 +19,7 @@
   },
   "peerDependencies": {
     "@tweenjs/tween.js": "^18.5.0",
+    "@types/tween.js": "^17.2.0",
     "three": "^0.112.1"
   },
   "devDependencies": {
