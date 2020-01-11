@@ -7,7 +7,7 @@ import { SphericalController } from "./SphericalController";
 
 export class EasingOption {
   duration?: number;
-  easing?: Function;
+  easing?: (k: number) => number;
   normalize?: boolean; //回転数の正規化を行うか否か。trueの場合は目的の角度まで最短の経路で回転する。falseの場合は指定された回転数、回転する。
 
   static init(

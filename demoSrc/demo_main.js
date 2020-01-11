@@ -1,5 +1,6 @@
 import * as dat from "dat.gui";
 import { Mesh, Scene, SphereGeometry, Spherical, Vector3 } from "three";
+import TWEEN from "@tweenjs/tween.js";
 import { Common } from "./Common";
 import {
   SphericalController,
@@ -119,7 +120,7 @@ const startRandomAnimation = controller => {
     );
     controller.move(to, {
       duration: 1500,
-      easing: createjs.Ease.cubicOut
+      easing: TWEEN.Easing.Cubic.Out
     });
     console.log("Start : ", to);
   };

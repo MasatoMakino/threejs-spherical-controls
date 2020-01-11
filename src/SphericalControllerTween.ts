@@ -1,17 +1,18 @@
-import Tween = createjs.Tween;
-import Ease = createjs.Ease;
+import TWEEN from "@tweenjs/tween.js";
 import { SphericalParamType, TargetParam } from "./TargetParam";
+
+export type TweenMapKey = SphericalParamType | TargetParam;
 
 /**
  * [[SphericalController]]で使用するTweenインスタンスを管理するためのクラス。
  * Tweenを格納するMapと、新規Tweenに適用されるデフォルト設定で構成される。
  */
 export class SphericalControllerTween {
-  private tweenMap: Map<SphericalParamType | TargetParam, Tween> = new Map();
+  private tweenMap: Map<TweenMapKey, TWEEN.Tween> = new Map();
 
   public duration: number = 1333;
-  public easing = Ease.cubicOut;
-  public loopEasing = Ease.sineInOut;
+  public easing = TWEEN.Easing.Cubic.Out;
+  public loopEasing = TWEEN.Easing.Sinusoidal.InOut;
 
   constructor() {}
 
@@ -22,8 +23,7 @@ export class SphericalControllerTween {
   stopTween(type: TargetParam | SphericalParamType): void {
     const tween = this.tweenMap.get(type);
     if (!tween) return;
-    tween.paused = true;
-    tween.removeAllEventListeners();
+    tween.stop();
     this.tweenMap.delete(type);
   }
 
@@ -32,10 +32,7 @@ export class SphericalControllerTween {
    * @param type
    * @param tween
    */
-  overrideTween(
-    type: TargetParam | SphericalParamType,
-    tween: Tween | null
-  ): void {
+  overrideTween(type: TweenMapKey, tween: TWEEN.Tween | null): void {
     this.stopTween(type);
     if (tween) {
       this.tweenMap.set(type, tween);
@@ -46,18 +43,20 @@ export class SphericalControllerTween {
    * 現在アクティブなTweenが存在するか確認する。
    */
   public isPlaying(): boolean {
-    for (let tween of this.tweenMap.values()) {
-      if (tween && !tween.paused) return true;
-    }
-    return false;
+    let isPlaying = false;
+    this.tweenMap.forEach((value: TWEEN.Tween, key: TweenMapKey) => {
+      if (value && value.isPlaying()) isPlaying = true;
+    });
+
+    return isPlaying;
   }
 
   /**
    * 全てのtweenインスタンスを停止する。
    */
   public stop(): void {
-    for (let key of this.tweenMap.keys()) {
+    this.tweenMap.forEach((value: TWEEN.Tween, key: TweenMapKey) => {
       if (key) this.stopTween(key);
-    }
+    });
   }
 }

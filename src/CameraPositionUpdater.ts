@@ -49,8 +49,8 @@ export class CameraPositionUpdater {
 
     const e = this.updateEvent;
 
-    let cameraTargetPos = new Vector3();
-    let cameraPos = this._camera.position;
+    const cameraTargetPos = new Vector3();
+    const cameraPos = this._camera.position;
     cameraPos.setFromSpherical(e.position);
     cameraPos.add(e.cameraTarget.getWorldPosition(cameraTargetPos));
     this._camera.position.set(cameraPos.x, cameraPos.y, cameraPos.z);
