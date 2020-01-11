@@ -5,7 +5,7 @@ import { SphericalController } from "./SphericalController";
  */
 export declare class EasingOption {
   duration?: number;
-  easing?: Function;
+  easing?: (k: number) => number;
   normalize?: boolean;
   static init(
     option: EasingOption,

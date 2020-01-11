@@ -1,4 +1,4 @@
-var Ease = createjs.Ease;
+import TWEEN from "@tweenjs/tween.js";
 /**
  * [[SphericalController]]で使用するTweenインスタンスを管理するためのクラス。
  * Tweenを格納するMapと、新規Tweenに適用されるデフォルト設定で構成される。
@@ -7,8 +7,8 @@ export class SphericalControllerTween {
   constructor() {
     this.tweenMap = new Map();
     this.duration = 1333;
-    this.easing = Ease.cubicOut;
-    this.loopEasing = Ease.sineInOut;
+    this.easing = TWEEN.Easing.Cubic.Out;
+    this.loopEasing = TWEEN.Easing.Sinusoidal.InOut;
   }
   /**
    * 指定されたTweenを停止する。
@@ -17,8 +17,7 @@ export class SphericalControllerTween {
   stopTween(type) {
     const tween = this.tweenMap.get(type);
     if (!tween) return;
-    tween.paused = true;
-    tween.removeAllEventListeners();
+    tween.stop();
     this.tweenMap.delete(type);
   }
   /**
@@ -36,17 +35,18 @@ export class SphericalControllerTween {
    * 現在アクティブなTweenが存在するか確認する。
    */
   isPlaying() {
-    for (let tween of this.tweenMap.values()) {
-      if (tween && !tween.paused) return true;
-    }
-    return false;
+    let isPlaying = false;
+    this.tweenMap.forEach((value, key) => {
+      if (value && value.isPlaying()) isPlaying = true;
+    });
+    return isPlaying;
   }
   /**
    * 全てのtweenインスタンスを停止する。
    */
   stop() {
-    for (let key of this.tweenMap.keys()) {
+    this.tweenMap.forEach((value, key) => {
       if (key) this.stopTween(key);
-    }
+    });
   }
 }

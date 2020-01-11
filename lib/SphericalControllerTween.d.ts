@@ -1,6 +1,7 @@
-/// <reference types="tweenjs" />
-import Tween = createjs.Tween;
+/// <reference types="tween.js" />
+import TWEEN from "@tweenjs/tween.js";
 import { SphericalParamType, TargetParam } from "./TargetParam";
+export declare type TweenMapKey = SphericalParamType | TargetParam;
 /**
  * [[SphericalController]]で使用するTweenインスタンスを管理するためのクラス。
  * Tweenを格納するMapと、新規Tweenに適用されるデフォルト設定で構成される。
@@ -8,8 +9,8 @@ import { SphericalParamType, TargetParam } from "./TargetParam";
 export declare class SphericalControllerTween {
   private tweenMap;
   duration: number;
-  easing: (amount: number) => number;
-  loopEasing: (amount: number) => number;
+  easing: (k: number) => number;
+  loopEasing: (k: number) => number;
   constructor();
   /**
    * 指定されたTweenを停止する。
@@ -21,10 +22,7 @@ export declare class SphericalControllerTween {
    * @param type
    * @param tween
    */
-  overrideTween(
-    type: TargetParam | SphericalParamType,
-    tween: Tween | null
-  ): void;
+  overrideTween(type: TweenMapKey, tween: TWEEN.Tween | null): void;
   /**
    * 現在アクティブなTweenが存在するか確認する。
    */
