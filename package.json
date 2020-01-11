@@ -15,15 +15,16 @@
     "threejs"
   ],
   "dependencies": {
-    "raf-ticker": "https://github.com/MasatoMakino/raf-ticker.git"
+    "tween.js-ticker": "https://github.com/MasatoMakino/tween.js-ticker.git"
   },
   "peerDependencies": {
-    "three": "^0.112.1",
-    "tweenjs": "^1.0.2"
+    "@tweenjs/tween.js": "^18.5.0",
+    "three": "^0.112.1"
   },
   "devDependencies": {
+    "@tweenjs/tween.js": "^18.5.0",
     "@types/jest": "^24.0.25",
-    "@types/tweenjs": "^1.0.0",
+    "@types/tween.js": "^17.2.0",
     "dat.gui": "^0.7.6",
     "gulp": "^4.0.2",
     "gulptask-demo-page": "https://github.com/MasatoMakino/gulptask-demo-page.git",
@@ -35,8 +36,7 @@
     "prettier": "^1.19.1",
     "pretty-quick": "^2.0.1",
     "three": "^0.112.1",
-    "ts-jest": "^24.2.0",
-    "tweenjs": "^1.0.2"
+    "ts-jest": "^24.2.0"
   },
   "scripts": {
     "test": "jest --coverage",
