@@ -1,6 +1,6 @@
 {
   "name": "threejs-spherical-controls",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "module": "./esm/index.js",
@@ -19,25 +19,25 @@
   },
   "peerDependencies": {
     "@tweenjs/tween.js": "^18.5.0",
-    "@types/tween.js": "^17.2.0",
-    "three": "^0.112.1"
+    "@types/tween.js": "^18.5.0",
+    "three": "^0.116.0"
   },
   "devDependencies": {
     "@tweenjs/tween.js": "^18.5.0",
-    "@types/jest": "^24.0.25",
-    "@types/tween.js": "^17.2.0",
-    "dat.gui": "^0.7.6",
+    "@types/jest": "^25.2.1",
+    "@types/tween.js": "^18.5.0",
+    "dat.gui": "^0.7.7",
     "gulp": "^4.0.2",
     "gulptask-demo-page": "https://github.com/MasatoMakino/gulptask-demo-page.git",
     "gulptask-dev-server": "https://github.com/MasatoMakino/gulptask-dev-server.git",
     "gulptask-tsc": "https://github.com/MasatoMakino/gulptask-tsc.git",
     "gulptask-tsdoc": "https://github.com/MasatoMakino/gulptask-tsdoc.git",
-    "husky": "^4.0.0",
-    "jest": "^24.9.0",
-    "prettier": "^1.19.1",
+    "husky": "^4.2.5",
+    "jest": "^25.5.3",
+    "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
-    "three": "^0.112.1",
-    "ts-jest": "^24.2.0"
+    "three": "^0.116.0",
+    "ts-jest": "^25.4.0"
   },
   "scripts": {
     "test": "jest --coverage",

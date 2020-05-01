@@ -9,8 +9,8 @@
  * [[SphericalParamType]]定数と合わせて、どの対象を操作するかを指定する。
  */
 export declare enum TargetParam {
-  CAMERA_TARGET = "cameraTarget",
-  CAMERA_SHIFT = "cameraShift"
+    CAMERA_TARGET = "cameraTarget",
+    CAMERA_SHIFT = "cameraShift"
 }
 /**
  * Spherical型の座標のうち、どのパラメーターを操作するかを指定する定数。
@@ -24,8 +24,8 @@ export declare enum TargetParam {
  * [[TargetParam]]定数と合わせて、どの対象を操作するかを指定する。
  */
 export declare enum SphericalParamType {
-  R = "radius",
-  PHI = "phi",
-  THETA = "theta"
+    R = "radius",
+    PHI = "phi",
+    THETA = "theta"
 }
 //# sourceMappingURL=TargetParam.d.ts.map
