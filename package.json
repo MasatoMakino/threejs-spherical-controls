@@ -42,8 +42,7 @@
   "scripts": {
     "test": "jest --coverage",
     "start:dev": "gulp start_dev",
-    "build": "gulp build && npm run doc:card",
-    "doc:card": "repoimg -n MasatoMakino/threejs-spherical-controls -o ./docs/card.png",
+    "build": "gulp build",
     "checkout:docs": "git checkout HEAD ./docs/"
   },
   "husky": {
