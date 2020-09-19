@@ -15,10 +15,10 @@ Spherical camera controller for Three.js
 
 ### Install
 
-threejs-spherical-controls depend on [three.js](https://threejs.org/) and [CreateJS / TweenJS](https://github.com/CreateJS/TweenJS)
+threejs-spherical-controls depend on [three.js](https://threejs.org/) and [@tweenjs/tween.js](https://github.com/tweenjs/tween.js/)
 
 ```bash
-npm install three tweenjs --save-dev
+npm install three @tweenjs/tween.js --save-dev
 ```
 
 and
