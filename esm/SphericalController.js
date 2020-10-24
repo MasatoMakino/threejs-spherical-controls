@@ -1,4 +1,4 @@
-import TWEEN from "@tweenjs/tween.js";
+import { Tween } from "@tweenjs/tween.js";
 import { TWEENTicker } from "tween.js-ticker";
 import { EventDispatcher, MeshBasicMaterial, Spherical, Vector3 } from "three";
 import { SphericalControllerEvent, SphericalControllerEventType } from "./SphericalControllerEvent";
@@ -47,7 +47,7 @@ export class SphericalController extends EventDispatcher {
         this._cameraTarget.material = new MeshBasicMaterial({
             color: 0xff0000,
             opacity: 0.0,
-            transparent: true
+            transparent: true,
         });
         this.cameraUpdater = new CameraPositionUpdater(this, camera, this._cameraTarget);
     }
@@ -122,7 +122,7 @@ export class SphericalController extends EventDispatcher {
     getTweenPosition(targetParam, to, option) {
         const toObj = {};
         toObj[targetParam] = to;
-        const tween = new TWEEN.Tween(this.pos)
+        return new Tween(this.pos)
             .to(toObj, option.duration)
             .easing(option.easing)
             .onUpdate(this.dispatchUpdateEvent)
@@ -130,7 +130,6 @@ export class SphericalController extends EventDispatcher {
             this.onCompleteCameraTween(targetParam);
         })
             .start();
-        return tween;
     }
     /**
      * Tweenのcompleteイベントで呼び出される関数。
@@ -147,7 +146,7 @@ export class SphericalController extends EventDispatcher {
      */
     moveTarget(value, option) {
         option = EasingOption.init(option, this);
-        const tween = new TWEEN.Tween(this._cameraTarget.position)
+        const tween = new Tween(this._cameraTarget.position)
             .to({ x: value.x, y: value.y, z: value.z }, option.duration)
             .easing(option.easing)
             .onUpdate(this.dispatchUpdateEvent)
@@ -177,7 +176,7 @@ export class SphericalController extends EventDispatcher {
         const toObjMin = {};
         toObjMin[type] = toMin;
         const loop = () => {
-            const tween = new TWEEN.Tween(this.pos)
+            const tween = new Tween(this.pos)
                 .to(toObjMax, option.duration)
                 .yoyo(true)
                 .easing(option.easing)
@@ -187,7 +186,7 @@ export class SphericalController extends EventDispatcher {
             this.tweens.overrideTween(type, tween);
         };
         const firstDuration = SphericalControllerUtil.getFirstDuration(option.duration, this.pos[type], toMax, toMin);
-        const tween = new TWEEN.Tween(this.pos)
+        const tween = new Tween(this.pos)
             .easing(option.easing)
             .to(toObjMin, firstDuration)
             .onUpdate(this.dispatchUpdateEvent)
@@ -202,7 +201,7 @@ export class SphericalController extends EventDispatcher {
      */
     moveCameraShift(value, option) {
         option = EasingOption.init(option, this);
-        const tween = new TWEEN.Tween(this.cameraShift)
+        const tween = new Tween(this.cameraShift)
             .easing(option.easing)
             .to({ x: value.x, y: value.y, z: value.z }, option.duration)
             .onUpdate(this.dispatchUpdateEvent)

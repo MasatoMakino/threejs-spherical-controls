@@ -1,4 +1,4 @@
-import TWEEN from "@tweenjs/tween.js";
+import { Easing } from "@tweenjs/tween.js";
 
 /**
  * [[SphericalController]]で使用するTweenインスタンスを管理するためのクラス。
@@ -8,8 +8,8 @@ export class SphericalControllerTween {
     constructor() {
         this.tweenMap = new Map();
         this.duration = 1333;
-        this.easing = TWEEN.Easing.Cubic.Out;
-        this.loopEasing = TWEEN.Easing.Sinusoidal.InOut;
+        this.easing = Easing.Cubic.Out;
+        this.loopEasing = Easing.Sinusoidal.InOut;
     }
     /**
      * 指定されたTweenを停止する。
