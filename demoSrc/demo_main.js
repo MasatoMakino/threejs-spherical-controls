@@ -6,7 +6,7 @@ import {
   SphericalController,
   SphericalControllerEventType,
   SphericalControllerUtil,
-  SphericalParamType
+  SphericalParamType,
 } from "../lib";
 
 const W = 1280;
@@ -53,7 +53,7 @@ const testPI2 = () => {
 const initTarget = () => {
   const geo = new SphereGeometry(1);
   const cameraTarget = new Mesh(geo);
-  scene.add(cameraTarget);
+  // scene.add(cameraTarget);
   return cameraTarget;
 };
 
@@ -67,7 +67,7 @@ const initController = (cameraTarget, R) => {
 
   cameraController.addEventListener(
     SphericalControllerEventType.MOVED_CAMERA_COMPLETE,
-    e => {
+    (e) => {
       console.log("Complete : ", e);
     }
   );
@@ -75,13 +75,13 @@ const initController = (cameraTarget, R) => {
   return cameraController;
 };
 
-const checkPlaying = controller => {
+const checkPlaying = (controller) => {
   setInterval(() => {
     console.log(controller.tweens.isPlaying());
   }, 100);
 };
 
-const initGUI = controller => {
+const initGUI = (controller) => {
   const gui = new dat.GUI();
   initRandomGUI(gui, controller);
   initAddGUI(gui, controller);
@@ -98,19 +98,19 @@ const initRandomGUI = (gui, controller) => {
       } else {
         startRandomAnimation(controller);
       }
-    }
+    },
   };
 
   gui.add(prop, "toggleRandomMove");
 };
 
-const stopRandomAnimation = controller => {
+const stopRandomAnimation = (controller) => {
   controller.tweens.stop();
   clearInterval(randomAnimationID);
   randomAnimationID = null;
 };
 
-const startRandomAnimation = controller => {
+const startRandomAnimation = (controller) => {
   const move = () => {
     const to = new Spherical(
       R,
@@ -120,7 +120,7 @@ const startRandomAnimation = controller => {
     );
     controller.move(to, {
       duration: 1500,
-      easing: TWEEN.Easing.Cubic.Out
+      easing: TWEEN.Easing.Cubic.Out,
     });
     console.log("Start : ", to);
   };
@@ -172,7 +172,7 @@ const initLoopGUI = (gui, controller) => {
 const addLoopGUI = (type, min, max, folder, controller) => {
   let flag = false;
   const option = {
-    duration: 10 * 1000
+    duration: 10 * 1000,
   };
 
   const functionName = "loop_" + type;

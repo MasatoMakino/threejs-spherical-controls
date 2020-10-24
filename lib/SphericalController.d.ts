@@ -3,7 +3,6 @@ import { SphericalParamType } from "./TargetParam";
 import { EasingOption } from "./EasingOption";
 import { CameraPositionLimiter } from "./CameraPositionLimiter";
 import { SphericalControllerTween } from "./SphericalControllerTween";
-
 /**
  * 球面座標系でカメラ位置をコントロールするクラス。
  *

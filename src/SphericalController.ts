@@ -1,13 +1,6 @@
 import { Tween } from "@tweenjs/tween.js";
 import { TWEENTicker } from "tween.js-ticker";
-import {
-  Camera,
-  EventDispatcher,
-  Mesh,
-  MeshBasicMaterial,
-  Spherical,
-  Vector3,
-} from "three";
+import { Camera, EventDispatcher, Mesh, Spherical, Vector3 } from "three";
 import {
   SphericalControllerEvent,
   SphericalControllerEventType,
@@ -54,19 +47,15 @@ export class SphericalController extends EventDispatcher {
    */
   constructor(camera: Camera, target: Mesh) {
     super();
-    TWEENTicker.start();
-    this._cameraTarget = target;
-    this._cameraTarget.material = new MeshBasicMaterial({
-      color: 0xff0000,
-      opacity: 0.0,
-      transparent: true,
-    });
 
+    this._cameraTarget = target;
     this.cameraUpdater = new CameraPositionUpdater(
       this,
       camera,
       this._cameraTarget
     );
+
+    TWEENTicker.start();
   }
 
   public dispatchUpdateEvent = () => {
