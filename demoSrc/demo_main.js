@@ -53,7 +53,7 @@ const testPI2 = () => {
 const initTarget = () => {
   const geo = new SphereGeometry(1);
   const cameraTarget = new Mesh(geo);
-  // scene.add(cameraTarget);
+  scene.add(cameraTarget);
   return cameraTarget;
 };
 
