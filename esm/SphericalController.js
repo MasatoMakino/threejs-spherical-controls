@@ -1,7 +1,8 @@
 import { Tween } from "@tweenjs/tween.js";
 import { TWEENTicker } from "tween.js-ticker";
 import { EventDispatcher, Spherical, Vector3 } from "three";
-import { SphericalControllerEvent, SphericalControllerEventType } from "./SphericalControllerEvent";
+import { MeshBasicMaterial } from "three";
+import { SphericalControllerEvent, SphericalControllerEventType, } from "./SphericalControllerEvent";
 import { SphericalParamType, TargetParam } from "./TargetParam";
 import { EasingOption } from "./EasingOption";
 import { SphericalControllerUtil } from "./SphericalControllerUtil";
@@ -9,7 +10,6 @@ import { CameraPositionLimiter } from "./CameraPositionLimiter";
 import { SphericalControllerTween } from "./SphericalControllerTween";
 import { CameraPositionUpdater } from "./CameraPositionUpdater";
 import { CameraUpdateEvent, CameraUpdateEventType } from "./CameraUpdateEvent";
-
 /**
  * 球面座標系でカメラ位置をコントロールするクラス。
  *
@@ -28,6 +28,8 @@ export class SphericalController extends EventDispatcher {
      * @param target
      */
     constructor(camera, target) {
+        var _a;
+        var _b;
         super();
         this.pos = new Spherical();
         /**
@@ -43,6 +45,11 @@ export class SphericalController extends EventDispatcher {
             this.dispatchEvent(e);
         };
         this._cameraTarget = target;
+        (_a = (_b = this._cameraTarget).material) !== null && _a !== void 0 ? _a : (_b.material = new MeshBasicMaterial({
+            color: 0xff0000,
+            opacity: 0.0,
+            transparent: true,
+        }));
         this.cameraUpdater = new CameraPositionUpdater(this, camera, this._cameraTarget);
         TWEENTicker.start();
     }
