@@ -1,3 +1,5 @@
+import { Mesh } from "three";
+
 export declare class SphericalControllerUtil {
     /**
      * 任意の点までの回転アニメーションに必要になる
@@ -24,5 +26,6 @@ export declare class SphericalControllerUtil {
      * @param min
      */
     static getFirstDuration(duration: number, current: number, max: number, min: number): number;
+    static generateCameraTarget(): Mesh;
 }
 //# sourceMappingURL=SphericalControllerUtil.d.ts.map
