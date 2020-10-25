@@ -1,5 +1,5 @@
 import * as dat from "dat.gui";
-import { Mesh, Scene, SphereGeometry, Spherical, Vector3 } from "three";
+import { Scene, Spherical, Vector3 } from "three";
 import TWEEN from "@tweenjs/tween.js";
 import { Common } from "./Common";
 import {
@@ -27,7 +27,8 @@ const onDomContentsLoaded = () => {
 
   Common.initHelper(scene);
   Common.initCube(scene);
-  const target = initTarget();
+  const target = SphericalControllerUtil.generateCameraTarget();
+  scene.add(target);
 
   const controller = initController(target, R);
   checkPlaying(controller);
@@ -48,13 +49,6 @@ const testPI2 = () => {
     Math.abs(SphericalControllerUtil.PI2ToPI(Math.PI * 200 + 0.01) - 0.01) <
       0.000001
   );
-};
-
-const initTarget = () => {
-  const geo = new SphereGeometry(1);
-  const cameraTarget = new Mesh(geo);
-  scene.add(cameraTarget);
-  return cameraTarget;
 };
 
 const initController = (cameraTarget, R) => {

@@ -6,7 +6,7 @@ import {
   Mesh,
   MeshBasicMaterial,
   PerspectiveCamera,
-  WebGLRenderer
+  WebGLRenderer,
 } from "three";
 
 export class Common {
@@ -29,14 +29,22 @@ export class Common {
   }
 
   static initCube(scene, size = 5) {
+    const generateMaterial = (color) => {
+      return new MeshBasicMaterial({
+        color,
+        opacity: 0.5,
+        transparent: true,
+        wireframe: true,
+      });
+    };
     const geometry = new BoxGeometry(size, size, size);
     const material = [
-      new MeshBasicMaterial({ color: 0x00ff00 }),
-      new MeshBasicMaterial({ color: 0xff0000 }),
-      new MeshBasicMaterial({ color: 0x0000ff }),
-      new MeshBasicMaterial({ color: 0x00ff00 }),
-      new MeshBasicMaterial({ color: 0xff0000 }),
-      new MeshBasicMaterial({ color: 0x0000ff })
+      generateMaterial(0x00ff00),
+      generateMaterial(0xff0000),
+      generateMaterial(0x0000ff),
+      generateMaterial(0x00ff00),
+      generateMaterial(0xff0000),
+      generateMaterial(0x0000ff),
     ];
     const cube = new Mesh(geometry, material);
     scene.add(cube);
@@ -55,7 +63,7 @@ export class Common {
     element.style.position = "absolute";
     const renderer = new WebGLRenderer({
       canvas: element,
-      antialias: antialias
+      antialias: antialias,
     });
     renderer.setClearColor(new Color(color));
     renderer.setSize(W, H);

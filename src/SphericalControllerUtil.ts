@@ -1,3 +1,7 @@
+import { Mesh } from "three";
+import { MeshBasicMaterial } from "three";
+import { SphereBufferGeometry } from "three";
+
 export class SphericalControllerUtil {
   /**
    * 任意の点までの回転アニメーションに必要になる
@@ -40,5 +44,15 @@ export class SphericalControllerUtil {
     min: number
   ): number {
     return Math.abs(duration * ((current - min) / (max - min)));
+  }
+
+  public static generateCameraTarget(): Mesh {
+    const geo = new SphereBufferGeometry(1, 3, 3);
+    const mat = new MeshBasicMaterial({
+      color: 0xff0000,
+      opacity: 0.0,
+      transparent: true,
+    });
+    return new Mesh(geo, mat);
   }
 }
