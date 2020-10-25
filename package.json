@@ -15,8 +15,10 @@
     "threejs"
   ],
   "dependencies": {
-    "three": "^0.116.0",
-    "tween.js-ticker": "https://github.com/MasatoMakino/tween.js-ticker.git",
+    "tween.js-ticker": "https://github.com/MasatoMakino/tween.js-ticker.git"
+  },
+  "peerDependencies": {
+    "three": "^0.121.1",
     "@tweenjs/tween.js": "18.6.4"
   },
   "devDependencies": {
