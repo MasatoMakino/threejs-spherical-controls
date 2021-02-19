@@ -1,5 +1,4 @@
-import { Camera, EventDispatcher, Mesh } from "three";
-
+import { EventDispatcher, Camera, Mesh } from "three";
 export declare class CameraPositionUpdater {
     private isUpdate;
     private dispatcher;

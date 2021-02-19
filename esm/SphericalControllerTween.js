@@ -1,5 +1,4 @@
 import { Easing } from "@tweenjs/tween.js";
-
 /**
  * [[SphericalController]]で使用するTweenインスタンスを管理するためのクラス。
  * Tweenを格納するMapと、新規Tweenに適用されるデフォルト設定で構成される。

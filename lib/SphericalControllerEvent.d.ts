@@ -1,5 +1,4 @@
 import { SphericalParamType, TargetParam } from "./TargetParam";
-
 export declare class SphericalControllerEvent {
     type: SphericalControllerEventType;
     targetParam: TargetParam | SphericalParamType;

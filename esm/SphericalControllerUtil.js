@@ -1,5 +1,6 @@
-import { Mesh, MeshBasicMaterial, SphereBufferGeometry } from "three";
-
+import { Mesh } from "three";
+import { MeshBasicMaterial } from "three";
+import { SphereBufferGeometry } from "three";
 export class SphericalControllerUtil {
     /**
      * 任意の点までの回転アニメーションに必要になる

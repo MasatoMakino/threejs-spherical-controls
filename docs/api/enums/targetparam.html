@@ -7,6 +7,7 @@
 	<meta name="description" content="Documentation for threejs-spherical-controls">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
@@ -40,8 +41,6 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -53,7 +52,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../modules.html">threejs-spherical-controls</a>
 				</li>
 				<li>
 					<a href="targetparam.html">TargetParam</a>
@@ -71,8 +70,9 @@
 					<div class="lead">
 						<p><a href="../classes/sphericalcontroller.html">SphericalController</a>が管理する、どのオブジェクトを操作するかを指定する定数。</p>
 					</div>
-					<pre><code class="language-typescript">controller.tweens.stopTween(TargetParam.CAMERA_TARGET);
-<span class="hljs-comment">// -&gt; カメラターゲットメッシュの移動を停止する。</span></code></pre>
+					<pre><code class="language-typescript"><span style="color: #001080">controller</span><span style="color: #000000">.</span><span style="color: #001080">tweens</span><span style="color: #000000">.</span><span style="color: #795E26">stopTween</span><span style="color: #000000">(</span><span style="color: #001080">TargetParam</span><span style="color: #000000">.</span><span style="color: #0070C1">CAMERA_TARGET</span><span style="color: #000000">);</span>
+<span style="color: #008000">// -&gt; カメラターゲットメッシュの移動を停止する。</span>
+</code></pre>
 					<p><a href="sphericalparamtype.html">SphericalParamType</a>定数と合わせて、どの対象を操作するかを指定する。</p>
 				</div>
 			</section>
@@ -98,7 +98,7 @@
 					<div class="tsd-signature tsd-kind-icon">CAMERA_<wbr>SHIFT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;cameraShift&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/c1ed24d/src/TargetParam.ts#L13">src/TargetParam.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/dd58715/src/TargetParam.ts#L13">src/TargetParam.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -108,7 +108,7 @@
 					<div class="tsd-signature tsd-kind-icon">CAMERA_<wbr>TARGET<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;cameraTarget&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/c1ed24d/src/TargetParam.ts#L12">src/TargetParam.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/MasatoMakino/threejs-spherical-controls/blob/dd58715/src/TargetParam.ts#L12">src/TargetParam.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -117,16 +117,13 @@
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum">
-						<a href="cameraupdateeventtype.html" class="tsd-kind-icon">Camera<wbr>Update<wbr>Event<wbr>Type</a>
-					</li>
 					<li class=" tsd-kind-enum">
 						<a href="sphericalcontrollereventtype.html" class="tsd-kind-icon">Spherical<wbr>Controller<wbr>Event<wbr>Type</a>
 					</li>
@@ -149,15 +146,6 @@
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-class">
-						<a href="../classes/camerapositionlimiter.html" class="tsd-kind-icon">Camera<wbr>Position<wbr>Limiter</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/camerapositionupdater.html" class="tsd-kind-icon">Camera<wbr>Position<wbr>Updater</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/cameraupdateevent.html" class="tsd-kind-icon">Camera<wbr>Update<wbr>Event</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="../classes/easingoption.html" class="tsd-kind-icon">Easing<wbr>Option</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -167,16 +155,7 @@
 						<a href="../classes/sphericalcontrollerevent.html" class="tsd-kind-icon">Spherical<wbr>Controller<wbr>Event</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="../classes/sphericalcontrollertween.html" class="tsd-kind-icon">Spherical<wbr>Controller<wbr>Tween</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="../classes/sphericalcontrollerutil.html" class="tsd-kind-icon">Spherical<wbr>Controller<wbr>Util</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="../globals.html#tweenmapkey" class="tsd-kind-icon">Tween<wbr>Map<wbr>Key</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="../globals.html#tweentype" class="tsd-kind-icon">Tween<wbr>Type</a>
 					</li>
 				</ul>
 			</nav>
@@ -195,9 +174,6 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>

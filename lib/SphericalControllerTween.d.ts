@@ -2,7 +2,6 @@ import { Tween } from "@tweenjs/tween.js";
 import { SphericalParamType, TargetParam } from "./TargetParam";
 import { Spherical } from "three";
 import { Vector3 } from "three";
-
 export declare type TweenMapKey = SphericalParamType | TargetParam;
 export declare type TweenType = Spherical | Vector3;
 /**

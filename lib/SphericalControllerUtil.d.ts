@@ -1,5 +1,4 @@
 import { Mesh } from "three";
-
 export declare class SphericalControllerUtil {
     /**
      * 任意の点までの回転アニメーションに必要になる

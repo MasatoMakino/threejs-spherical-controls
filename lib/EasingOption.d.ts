@@ -1,5 +1,4 @@
 import { SphericalController } from "./SphericalController";
-
 /**
  * イージングオプション
  * move関数で一度限りのアニメーション設定するためのオプション。
