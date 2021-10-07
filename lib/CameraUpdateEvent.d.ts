@@ -1,5 +1,6 @@
 import { Mesh, Spherical, Vector3 } from "three";
-export declare class CameraUpdateEvent {
+import { Event } from "three";
+export declare class CameraUpdateEvent implements Event {
     type: CameraUpdateEventType;
     cameraTarget: Mesh;
     position: Spherical;

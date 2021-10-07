@@ -40,7 +40,7 @@ export class CameraPositionUpdater {
         this.dispatcher = parent;
         this._camera = camera;
         this.dispatcher.addEventListener(CameraUpdateEventType.UPDATE, this.setNeedUpdate);
-        RAFTicker.addEventListener(RAFTickerEventType.onBeforeTick, (e) => {
+        RAFTicker.on(RAFTickerEventType.onBeforeTick, (e) => {
             this.updatePosition();
         });
     }

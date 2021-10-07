@@ -1,8 +1,10 @@
 import { Camera, EventDispatcher, Mesh, Spherical, Vector3 } from "three";
+import { SphericalControllerEvent } from "./SphericalControllerEvent";
 import { SphericalParamType } from "./TargetParam";
 import { EasingOption } from "./EasingOption";
 import { CameraPositionLimiter } from "./CameraPositionLimiter";
 import { SphericalControllerTween } from "./SphericalControllerTween";
+import { CameraUpdateEvent } from "./CameraUpdateEvent";
 /**
  * 球面座標系でカメラ位置をコントロールするクラス。
  *
@@ -14,7 +16,7 @@ import { SphericalControllerTween } from "./SphericalControllerTween";
  *
  * 北極南極を通過すると緯度も反転するため、このクラスでは南北90度以上の移動には対応していない。また、極点上空では座標が一意の値にならないため、Phi 0もしくはPIには対応していない。
  */
-export declare class SphericalController extends EventDispatcher {
+export declare class SphericalController extends EventDispatcher<CameraUpdateEvent | SphericalControllerEvent> {
     private cameraUpdater;
     private _cameraTarget;
     private pos;

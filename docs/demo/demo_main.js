@@ -26,7 +26,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var dat_gui__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dat.gui */ \"./node_modules/dat.gui/build/dat.gui.module.js\");\n/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! three */ \"./node_modules/three/build/three.module.js\");\n/* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @tweenjs/tween.js */ \"./node_modules/@tweenjs/tween.js/dist/tween.esm.js\");\n/* harmony import */ var _Common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Common */ \"./demoSrc/Common.js\");\n/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../lib */ \"./lib/index.js\");\n/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_lib__WEBPACK_IMPORTED_MODULE_3__);\n\n\n\n\n\nconst W = 1280;\nconst H = 800;\nlet renderer;\nlet scene;\nlet camera;\nconst R = 105;\n\nconst onDomContentsLoaded = () => {\n  // シーンを作成\n  scene = new three__WEBPACK_IMPORTED_MODULE_4__.Scene();\n  camera = _Common__WEBPACK_IMPORTED_MODULE_2__.Common.initCamera(scene, W, H);\n  renderer = _Common__WEBPACK_IMPORTED_MODULE_2__.Common.initRenderer(W, H);\n  _Common__WEBPACK_IMPORTED_MODULE_2__.Common.initLight(scene);\n  testPI2();\n  _Common__WEBPACK_IMPORTED_MODULE_2__.Common.initHelper(scene);\n  _Common__WEBPACK_IMPORTED_MODULE_2__.Common.initCube(scene);\n  const target = _lib__WEBPACK_IMPORTED_MODULE_3__.SphericalControllerUtil.generateCameraTarget();\n  scene.add(target);\n  const controller = initController(target, R);\n  checkPlaying(controller);\n  _Common__WEBPACK_IMPORTED_MODULE_2__.Common.render(renderer, scene, camera);\n  initGUI(controller);\n};\n\nconst testPI2 = () => {\n  console.log(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalControllerUtil.PI2ToPI(0) === 0);\n  console.log(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalControllerUtil.PI2ToPI(Math.PI) === Math.PI);\n  console.log(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalControllerUtil.PI2ToPI(-Math.PI) === -Math.PI);\n  console.log(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalControllerUtil.PI2ToPI(Math.PI * 2));\n  console.log(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalControllerUtil.PI2ToPI(Math.PI + 0.01) === -Math.PI + 0.01);\n  console.log(Math.abs(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalControllerUtil.PI2ToPI(Math.PI * 200 + 0.01) - 0.01) < 0.000001);\n};\n\nconst initController = (cameraTarget, R) => {\n  const cameraController = new _lib__WEBPACK_IMPORTED_MODULE_3__.SphericalController(camera, cameraTarget);\n  cameraController.initCameraPosition(new three__WEBPACK_IMPORTED_MODULE_4__.Spherical(R, 0.0001, Math.PI * 2 * 12));\n  cameraController.initCameraShift(new three__WEBPACK_IMPORTED_MODULE_4__.Vector3(20, 0, 0));\n  cameraController.duration = 1666;\n  cameraController.addEventListener(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalControllerEventType.MOVED_CAMERA_COMPLETE, e => {\n    console.log(\"Complete : \", e);\n  });\n  return cameraController;\n};\n\nconst checkPlaying = controller => {\n  setInterval(() => {\n    console.log(controller.tweens.isPlaying());\n  }, 100);\n};\n\nconst initGUI = controller => {\n  const gui = new dat_gui__WEBPACK_IMPORTED_MODULE_0__.GUI();\n  initRandomGUI(gui, controller);\n  initAddGUI(gui, controller);\n  initLoopGUI(gui, controller);\n};\n\nlet randomAnimationID;\n\nconst initRandomGUI = (gui, controller) => {\n  const prop = {\n    toggleRandomMove: () => {\n      if (randomAnimationID != null) {\n        stopRandomAnimation(controller);\n      } else {\n        startRandomAnimation(controller);\n      }\n    }\n  };\n  gui.add(prop, \"toggleRandomMove\");\n};\n\nconst stopRandomAnimation = controller => {\n  controller.tweens.stop();\n  clearInterval(randomAnimationID);\n  randomAnimationID = null;\n};\n\nconst startRandomAnimation = controller => {\n  const move = () => {\n    const to = new three__WEBPACK_IMPORTED_MODULE_4__.Spherical(R, // Math.random() * 70 + 35,\n    Math.random() * Math.PI, Math.random() * Math.PI * 6 - Math.PI * 3);\n    controller.move(to, {\n      duration: 1500,\n      easing: _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__.default.Easing.Cubic.Out\n    });\n    console.log(\"Start : \", to);\n  };\n\n  move();\n  randomAnimationID = setInterval(move, 2000);\n};\n\nconst initAddGUI = (gui, controller) => {\n  const folder = gui.addFolder(\"add method\");\n  folder.open();\n  const moveAngle = 0.1;\n  addPositionGUI(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalParamType.R, +5, folder, controller);\n  addPositionGUI(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalParamType.R, -5, folder, controller);\n  addPositionGUI(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalParamType.PHI, +moveAngle, folder, controller);\n  addPositionGUI(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalParamType.PHI, -moveAngle, folder, controller);\n  addPositionGUI(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalParamType.THETA, +moveAngle, folder, controller);\n  addPositionGUI(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalParamType.THETA, -moveAngle, folder, controller);\n};\n\nconst addPositionGUI = (type, value, folder, controller) => {\n  const prop = {};\n  let valString = value.toString();\n  if (value > 0) valString = \"+\" + valString;\n  const functionName = type + valString;\n\n  prop[functionName] = () => {\n    controller.addPosition(type, value);\n  };\n\n  folder.add(prop, functionName);\n};\n\nconst initLoopGUI = (gui, controller) => {\n  const folder = gui.addFolder(\"loop method\");\n  folder.open();\n  addLoopGUI(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalParamType.R, 30, 150, folder, controller);\n  addLoopGUI(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalParamType.PHI, 0, Math.PI, folder, controller);\n  addLoopGUI(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalParamType.THETA, -Math.PI / 4, Math.PI / 4, folder, controller);\n};\n\nconst addLoopGUI = (type, min, max, folder, controller) => {\n  let flag = false;\n  const option = {\n    duration: 10 * 1000\n  };\n  const functionName = \"loop_\" + type;\n  const prop = {};\n\n  prop[functionName] = () => {\n    if (flag) {\n      controller.stopLoop(type);\n    } else {\n      controller.loop(type, min, max, option);\n    }\n\n    flag = !flag;\n  };\n\n  folder.add(prop, functionName);\n};\n/**\n * DOMContentLoaded以降に初期化処理を実行する\n */\n\n\nwindow.onload = onDomContentsLoaded;\n\n//# sourceURL=webpack://threejs-spherical-controls/./demoSrc/demo_main.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var dat_gui__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dat.gui */ \"./node_modules/dat.gui/build/dat.gui.module.js\");\n/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! three */ \"./node_modules/three/build/three.module.js\");\n/* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @tweenjs/tween.js */ \"./node_modules/@tweenjs/tween.js/dist/tween.esm.js\");\n/* harmony import */ var _Common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Common */ \"./demoSrc/Common.js\");\n/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../lib */ \"./lib/index.js\");\n/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_lib__WEBPACK_IMPORTED_MODULE_3__);\n\n\n\n\n\nconst W = 1280;\nconst H = 800;\nlet renderer;\nlet scene;\nlet camera;\nconst R = 105;\n\nconst onDomContentsLoaded = () => {\n  // シーンを作成\n  scene = new three__WEBPACK_IMPORTED_MODULE_4__.Scene();\n  camera = _Common__WEBPACK_IMPORTED_MODULE_2__.Common.initCamera(scene, W, H);\n  renderer = _Common__WEBPACK_IMPORTED_MODULE_2__.Common.initRenderer(W, H);\n  _Common__WEBPACK_IMPORTED_MODULE_2__.Common.initLight(scene);\n  testPI2();\n  _Common__WEBPACK_IMPORTED_MODULE_2__.Common.initHelper(scene);\n  _Common__WEBPACK_IMPORTED_MODULE_2__.Common.initCube(scene);\n  const target = _lib__WEBPACK_IMPORTED_MODULE_3__.SphericalControllerUtil.generateCameraTarget();\n  scene.add(target);\n  const controller = initController(target, R);\n  checkPlaying(controller);\n  _Common__WEBPACK_IMPORTED_MODULE_2__.Common.render(renderer, scene, camera);\n  initGUI(controller);\n};\n\nconst testPI2 = () => {\n  console.log(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalControllerUtil.PI2ToPI(0) === 0);\n  console.log(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalControllerUtil.PI2ToPI(Math.PI) === Math.PI);\n  console.log(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalControllerUtil.PI2ToPI(-Math.PI) === -Math.PI);\n  console.log(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalControllerUtil.PI2ToPI(Math.PI * 2));\n  console.log(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalControllerUtil.PI2ToPI(Math.PI + 0.01) === -Math.PI + 0.01);\n  console.log(Math.abs(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalControllerUtil.PI2ToPI(Math.PI * 200 + 0.01) - 0.01) < 0.000001);\n};\n\nconst initController = (cameraTarget, R) => {\n  const cameraController = new _lib__WEBPACK_IMPORTED_MODULE_3__.SphericalController(camera, cameraTarget);\n  cameraController.initCameraPosition(new three__WEBPACK_IMPORTED_MODULE_4__.Spherical(R, 0.0001, Math.PI * 2 * 12));\n  cameraController.initCameraShift(new three__WEBPACK_IMPORTED_MODULE_4__.Vector3(20, 0, 0));\n  cameraController.duration = 1666;\n  cameraController.addEventListener(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalControllerEventType.MOVED_CAMERA_COMPLETE, e => {\n    console.log(\"Complete : \", e);\n  });\n  return cameraController;\n};\n\nconst checkPlaying = controller => {\n  setInterval(() => {\n    console.log(controller.tweens.isPlaying());\n  }, 100);\n};\n\nconst initGUI = controller => {\n  const gui = new dat_gui__WEBPACK_IMPORTED_MODULE_0__.GUI();\n  initRandomGUI(gui, controller);\n  initAddGUI(gui, controller);\n  initLoopGUI(gui, controller);\n};\n\nlet randomAnimationID;\n\nconst initRandomGUI = (gui, controller) => {\n  const prop = {\n    toggleRandomMove: () => {\n      if (randomAnimationID != null) {\n        stopRandomAnimation(controller);\n      } else {\n        startRandomAnimation(controller);\n      }\n    }\n  };\n  gui.add(prop, \"toggleRandomMove\");\n};\n\nconst stopRandomAnimation = controller => {\n  controller.tweens.stop();\n  clearInterval(randomAnimationID);\n  randomAnimationID = null;\n};\n\nconst startRandomAnimation = controller => {\n  const move = () => {\n    const to = new three__WEBPACK_IMPORTED_MODULE_4__.Spherical(R, // Math.random() * 70 + 35,\n    Math.random() * Math.PI, Math.random() * Math.PI * 6 - Math.PI * 3);\n    controller.move(to, {\n      duration: 1500,\n      easing: _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__[\"default\"].Easing.Cubic.Out\n    });\n    console.log(\"Start : \", to);\n  };\n\n  move();\n  randomAnimationID = setInterval(move, 2000);\n};\n\nconst initAddGUI = (gui, controller) => {\n  const folder = gui.addFolder(\"add method\");\n  folder.open();\n  const moveAngle = 0.1;\n  addPositionGUI(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalParamType.R, +5, folder, controller);\n  addPositionGUI(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalParamType.R, -5, folder, controller);\n  addPositionGUI(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalParamType.PHI, +moveAngle, folder, controller);\n  addPositionGUI(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalParamType.PHI, -moveAngle, folder, controller);\n  addPositionGUI(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalParamType.THETA, +moveAngle, folder, controller);\n  addPositionGUI(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalParamType.THETA, -moveAngle, folder, controller);\n};\n\nconst addPositionGUI = (type, value, folder, controller) => {\n  const prop = {};\n  let valString = value.toString();\n  if (value > 0) valString = \"+\" + valString;\n  const functionName = type + valString;\n\n  prop[functionName] = () => {\n    controller.addPosition(type, value);\n  };\n\n  folder.add(prop, functionName);\n};\n\nconst initLoopGUI = (gui, controller) => {\n  const folder = gui.addFolder(\"loop method\");\n  folder.open();\n  addLoopGUI(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalParamType.R, 30, 150, folder, controller);\n  addLoopGUI(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalParamType.PHI, 0, Math.PI, folder, controller);\n  addLoopGUI(_lib__WEBPACK_IMPORTED_MODULE_3__.SphericalParamType.THETA, -Math.PI / 4, Math.PI / 4, folder, controller);\n};\n\nconst addLoopGUI = (type, min, max, folder, controller) => {\n  let flag = false;\n  const option = {\n    duration: 10 * 1000\n  };\n  const functionName = \"loop_\" + type;\n  const prop = {};\n\n  prop[functionName] = () => {\n    if (flag) {\n      controller.stopLoop(type);\n    } else {\n      controller.loop(type, min, max, option);\n    }\n\n    flag = !flag;\n  };\n\n  folder.add(prop, functionName);\n};\n/**\n * DOMContentLoaded以降に初期化処理を実行する\n */\n\n\nwindow.onload = onDomContentsLoaded;\n\n//# sourceURL=webpack://threejs-spherical-controls/./demoSrc/demo_main.js?");
 
 /***/ }),
 
@@ -46,7 +46,7 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", ({\n  value: true\n}));
   \**************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("\n\nObject.defineProperty(exports, \"__esModule\", ({\n  value: true\n}));\nexports.CameraPositionUpdater = void 0;\n\nconst three_1 = __webpack_require__(/*! three */ \"./node_modules/three/build/three.module.js\");\n\nconst SphericalControllerEvent_1 = __webpack_require__(/*! ./SphericalControllerEvent */ \"./lib/SphericalControllerEvent.js\");\n\nconst CameraUpdateEvent_1 = __webpack_require__(/*! ./CameraUpdateEvent */ \"./lib/CameraUpdateEvent.js\");\n\nconst raf_ticker_1 = __webpack_require__(/*! raf-ticker */ \"./node_modules/raf-ticker/esm/index.js\");\n\nclass CameraPositionUpdater {\n  constructor(parent, camera, target) {\n    this.isUpdate = false;\n    /**\n     * tweenによる更新フラグ処理\n     * イベントハンドラーで処理できるように関数とする。\n     * @param e\n     */\n\n    this.setNeedUpdate = e => {\n      this.isUpdate = true;\n      this.updateEvent = e;\n    };\n    /**\n     * カメラ位置および注視点の更新処理\n     */\n\n\n    this.updatePosition = () => {\n      if (!this.isUpdate) return;\n      this.isUpdate = false;\n      const e = this.updateEvent;\n      const cameraTargetPos = new three_1.Vector3();\n      const cameraPos = this._camera.position;\n      cameraPos.setFromSpherical(e.position);\n      cameraPos.add(e.cameraTarget.getWorldPosition(cameraTargetPos));\n\n      this._camera.position.set(cameraPos.x, cameraPos.y, cameraPos.z);\n\n      this._camera.lookAt(e.cameraTarget.getWorldPosition(cameraTargetPos));\n\n      if (e.shift) {\n        const pos = this._camera.position.clone();\n\n        const move = new three_1.Vector3(e.shift.x, e.shift.y, e.shift.z);\n        move.applyEuler(this._camera.rotation.clone());\n        pos.add(move);\n\n        this._camera.position.set(pos.x, pos.y, pos.z);\n      }\n\n      this.dispatcher.dispatchEvent(new SphericalControllerEvent_1.SphericalControllerEvent(SphericalControllerEvent_1.SphericalControllerEventType.MOVED_CAMERA));\n    };\n\n    this.dispatcher = parent;\n    this._camera = camera;\n    this.dispatcher.addEventListener(CameraUpdateEvent_1.CameraUpdateEventType.UPDATE, this.setNeedUpdate);\n    raf_ticker_1.RAFTicker.addEventListener(raf_ticker_1.RAFTickerEventType.onBeforeTick, e => {\n      this.updatePosition();\n    });\n  }\n\n}\n\nexports.CameraPositionUpdater = CameraPositionUpdater;\n\n//# sourceURL=webpack://threejs-spherical-controls/./lib/CameraPositionUpdater.js?");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", ({\n  value: true\n}));\nexports.CameraPositionUpdater = void 0;\n\nconst three_1 = __webpack_require__(/*! three */ \"./node_modules/three/build/three.module.js\");\n\nconst SphericalControllerEvent_1 = __webpack_require__(/*! ./SphericalControllerEvent */ \"./lib/SphericalControllerEvent.js\");\n\nconst CameraUpdateEvent_1 = __webpack_require__(/*! ./CameraUpdateEvent */ \"./lib/CameraUpdateEvent.js\");\n\nconst raf_ticker_1 = __webpack_require__(/*! raf-ticker */ \"./node_modules/raf-ticker/esm/index.js\");\n\nclass CameraPositionUpdater {\n  constructor(parent, camera, target) {\n    this.isUpdate = false;\n    /**\n     * tweenによる更新フラグ処理\n     * イベントハンドラーで処理できるように関数とする。\n     * @param e\n     */\n\n    this.setNeedUpdate = e => {\n      this.isUpdate = true;\n      this.updateEvent = e;\n    };\n    /**\n     * カメラ位置および注視点の更新処理\n     */\n\n\n    this.updatePosition = () => {\n      if (!this.isUpdate) return;\n      this.isUpdate = false;\n      const e = this.updateEvent;\n      const cameraTargetPos = new three_1.Vector3();\n      const cameraPos = this._camera.position;\n      cameraPos.setFromSpherical(e.position);\n      cameraPos.add(e.cameraTarget.getWorldPosition(cameraTargetPos));\n\n      this._camera.position.set(cameraPos.x, cameraPos.y, cameraPos.z);\n\n      this._camera.lookAt(e.cameraTarget.getWorldPosition(cameraTargetPos));\n\n      if (e.shift) {\n        const pos = this._camera.position.clone();\n\n        const move = new three_1.Vector3(e.shift.x, e.shift.y, e.shift.z);\n        move.applyEuler(this._camera.rotation.clone());\n        pos.add(move);\n\n        this._camera.position.set(pos.x, pos.y, pos.z);\n      }\n\n      this.dispatcher.dispatchEvent(new SphericalControllerEvent_1.SphericalControllerEvent(SphericalControllerEvent_1.SphericalControllerEventType.MOVED_CAMERA));\n    };\n\n    this.dispatcher = parent;\n    this._camera = camera;\n    this.dispatcher.addEventListener(CameraUpdateEvent_1.CameraUpdateEventType.UPDATE, this.setNeedUpdate);\n    raf_ticker_1.RAFTicker.on(raf_ticker_1.RAFTickerEventType.onBeforeTick, e => {\n      this.updatePosition();\n    });\n  }\n\n}\n\nexports.CameraPositionUpdater = CameraPositionUpdater;\n\n//# sourceURL=webpack://threejs-spherical-controls/./lib/CameraPositionUpdater.js?");
 
 /***/ }),
 
@@ -138,8 +138,9 @@ eval("\n\nvar __createBinding = this && this.__createBinding || (Object.create ?
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
-/******/ 		if(__webpack_module_cache__[moduleId]) {
-/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
@@ -158,10 +159,39 @@ eval("\n\nvar __createBinding = this && this.__createBinding || (Object.create ?
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = __webpack_modules__;
 /******/ 	
-/******/ 	// the startup function
-/******/ 	// It's empty as some runtime module handles the default behavior
-/******/ 	__webpack_require__.x = x => {};
 /************************************************************************/
+/******/ 	/* webpack/runtime/chunk loaded */
+/******/ 	(() => {
+/******/ 		var deferred = [];
+/******/ 		__webpack_require__.O = (result, chunkIds, fn, priority) => {
+/******/ 			if(chunkIds) {
+/******/ 				priority = priority || 0;
+/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
+/******/ 				deferred[i] = [chunkIds, fn, priority];
+/******/ 				return;
+/******/ 			}
+/******/ 			var notFulfilled = Infinity;
+/******/ 			for (var i = 0; i < deferred.length; i++) {
+/******/ 				var [chunkIds, fn, priority] = deferred[i];
+/******/ 				var fulfilled = true;
+/******/ 				for (var j = 0; j < chunkIds.length; j++) {
+/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every((key) => (__webpack_require__.O[key](chunkIds[j])))) {
+/******/ 						chunkIds.splice(j--, 1);
+/******/ 					} else {
+/******/ 						fulfilled = false;
+/******/ 						if(priority < notFulfilled) notFulfilled = priority;
+/******/ 					}
+/******/ 				}
+/******/ 				if(fulfilled) {
+/******/ 					deferred.splice(i--, 1)
+/******/ 					var r = fn();
+/******/ 					if (r !== undefined) result = r;
+/******/ 				}
+/******/ 			}
+/******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
@@ -208,14 +238,11 @@ eval("\n\nvar __createBinding = this && this.__createBinding || (Object.create ?
 /******/ 		
 /******/ 		// object to store loaded and loading chunks
 /******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
-/******/ 		// Promise = chunk loading, 0 = chunk loaded
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = {
 /******/ 			"demo_main": 0
 /******/ 		};
 /******/ 		
-/******/ 		var deferredModules = [
-/******/ 			["./demoSrc/demo_main.js","vendor"]
-/******/ 		];
 /******/ 		// no chunk on demand loading
 /******/ 		
 /******/ 		// no prefetching
@@ -226,75 +253,45 @@ eval("\n\nvar __createBinding = this && this.__createBinding || (Object.create ?
 /******/ 		
 /******/ 		// no HMR manifest
 /******/ 		
-/******/ 		var checkDeferredModules = x => {};
+/******/ 		__webpack_require__.O.j = (chunkId) => (installedChunks[chunkId] === 0);
 /******/ 		
 /******/ 		// install a JSONP callback for chunk loading
 /******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
-/******/ 			var [chunkIds, moreModules, runtime, executeModules] = data;
+/******/ 			var [chunkIds, moreModules, runtime] = data;
 /******/ 			// add "moreModules" to the modules object,
 /******/ 			// then flag all "chunkIds" as loaded and fire callback
-/******/ 			var moduleId, chunkId, i = 0, resolves = [];
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
 /******/ 			for(;i < chunkIds.length; i++) {
 /******/ 				chunkId = chunkIds[i];
 /******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
-/******/ 					resolves.push(installedChunks[chunkId][0]);
+/******/ 					installedChunks[chunkId][0]();
 /******/ 				}
-/******/ 				installedChunks[chunkId] = 0;
+/******/ 				installedChunks[chunkIds[i]] = 0;
 /******/ 			}
-/******/ 			for(moduleId in moreModules) {
-/******/ 				if(__webpack_require__.o(moreModules, moduleId)) {
-/******/ 					__webpack_require__.m[moduleId] = moreModules[moduleId];
-/******/ 				}
-/******/ 			}
-/******/ 			if(runtime) runtime(__webpack_require__);
-/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
-/******/ 			while(resolves.length) {
-/******/ 				resolves.shift()();
-/******/ 			}
-/******/ 		
-/******/ 			// add entry modules from loaded chunk to deferred list
-/******/ 			if(executeModules) deferredModules.push.apply(deferredModules, executeModules);
-/******/ 		
-/******/ 			// run deferred modules when all chunks ready
-/******/ 			return checkDeferredModules();
+/******/ 			return __webpack_require__.O(result);
 /******/ 		}
 /******/ 		
 /******/ 		var chunkLoadingGlobal = self["webpackChunkthreejs_spherical_controls"] = self["webpackChunkthreejs_spherical_controls"] || [];
 /******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
 /******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
-/******/ 		
-/******/ 		function checkDeferredModulesImpl() {
-/******/ 			var result;
-/******/ 			for(var i = 0; i < deferredModules.length; i++) {
-/******/ 				var deferredModule = deferredModules[i];
-/******/ 				var fulfilled = true;
-/******/ 				for(var j = 1; j < deferredModule.length; j++) {
-/******/ 					var depId = deferredModule[j];
-/******/ 					if(installedChunks[depId] !== 0) fulfilled = false;
-/******/ 				}
-/******/ 				if(fulfilled) {
-/******/ 					deferredModules.splice(i--, 1);
-/******/ 					result = __webpack_require__(__webpack_require__.s = deferredModule[0]);
-/******/ 				}
-/******/ 			}
-/******/ 			if(deferredModules.length === 0) {
-/******/ 				__webpack_require__.x();
-/******/ 				__webpack_require__.x = x => {};
-/******/ 			}
-/******/ 			return result;
-/******/ 		}
-/******/ 		var startup = __webpack_require__.x;
-/******/ 		__webpack_require__.x = () => {
-/******/ 			// reset startup function so it can be called again when more startup code is added
-/******/ 			__webpack_require__.x = startup || (x => {});
-/******/ 			return (checkDeferredModules = checkDeferredModulesImpl)();
-/******/ 		};
 /******/ 	})();
 /******/ 	
 /************************************************************************/
 /******/ 	
-/******/ 	// run startup
-/******/ 	var __webpack_exports__ = __webpack_require__.x();
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendor"], () => (__webpack_require__("./demoSrc/demo_main.js")))
+/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
