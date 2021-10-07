@@ -1,7 +1,8 @@
 import { SphericalParamType, TargetParam } from "./TargetParam";
+import { Event } from "three";
 
-export class SphericalControllerEvent {
-  public type: SphericalControllerEventType;
+export class SphericalControllerEvent implements Event{
+  type: SphericalControllerEventType;
   public targetParam: TargetParam | SphericalParamType;
   constructor(
     type: SphericalControllerEventType,
