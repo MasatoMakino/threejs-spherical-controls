@@ -1,7 +1,0 @@
-language: node_js
-node_js:
-  - "12"
-  - "14"
-  - "16"
-before_install:
-  - git config --global url."https://github.com/".insteadOf ssh://git@github.com/

@@ -9,11 +9,11 @@ import { RAFTicker, RAFTickerEventType, RAFTickerEvent } from "raf-ticker";
 
 export class CameraPositionUpdater {
   private isUpdate: boolean = false;
-  private dispatcher: EventDispatcher;
+  private dispatcher: EventDispatcher<CameraUpdateEvent|SphericalControllerEvent>;
   private _camera: Camera;
   private updateEvent: CameraUpdateEvent;
 
-  constructor(parent: EventDispatcher, camera: Camera, target: Mesh) {
+  constructor(parent: EventDispatcher<CameraUpdateEvent|SphericalControllerEvent>, camera: Camera, target: Mesh) {
     this.dispatcher = parent;
     this._camera = camera;
 
@@ -22,7 +22,7 @@ export class CameraPositionUpdater {
       this.setNeedUpdate
     );
 
-    RAFTicker.addEventListener(
+    RAFTicker.on(
       RAFTickerEventType.onBeforeTick,
       (e: RAFTickerEvent) => {
         this.updatePosition();

@@ -25,7 +25,7 @@ import { CameraUpdateEvent, CameraUpdateEventType } from "./CameraUpdateEvent";
  *
  * 北極南極を通過すると緯度も反転するため、このクラスでは南北90度以上の移動には対応していない。また、極点上空では座標が一意の値にならないため、Phi 0もしくはPIには対応していない。
  */
-export class SphericalController extends EventDispatcher {
+export class SphericalController extends EventDispatcher<CameraUpdateEvent|SphericalControllerEvent> {
   private cameraUpdater: CameraPositionUpdater;
 
   private _cameraTarget: Mesh;
