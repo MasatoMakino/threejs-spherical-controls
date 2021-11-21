@@ -8,5 +8,5 @@ export class CameraUpdateEvent {
 }
 export var CameraUpdateEventType;
 (function (CameraUpdateEventType) {
-    CameraUpdateEventType["UPDATE"] = "CameraEvent_TYPE_UPDATE"; //カメラが移動した
+    CameraUpdateEventType["UPDATE"] = "CameraEvent_TYPE_UPDATE";
 })(CameraUpdateEventType || (CameraUpdateEventType = {}));

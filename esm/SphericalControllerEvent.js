@@ -7,5 +7,5 @@ export class SphericalControllerEvent {
 export var SphericalControllerEventType;
 (function (SphericalControllerEventType) {
     SphericalControllerEventType["MOVED_CAMERA"] = "CameraEvent_TYPE_MOVED_CAMERA";
-    SphericalControllerEventType["MOVED_CAMERA_COMPLETE"] = "CameraEvent_TYPE_MOVED_CAMERA_COMPLETE"; //カメラ移動アニメーションが完了した
+    SphericalControllerEventType["MOVED_CAMERA_COMPLETE"] = "CameraEvent_TYPE_MOVED_CAMERA_COMPLETE";
 })(SphericalControllerEventType || (SphericalControllerEventType = {}));

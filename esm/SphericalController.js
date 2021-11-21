@@ -50,7 +50,7 @@ export class SphericalController extends EventDispatcher {
             opacity: 0.0,
             transparent: true,
         }));
-        this.cameraUpdater = new CameraPositionUpdater(this, camera, this._cameraTarget);
+        this.cameraUpdater = new CameraPositionUpdater(this, camera);
         TWEENTicker.start();
     }
     /**

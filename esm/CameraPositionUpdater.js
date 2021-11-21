@@ -1,9 +1,9 @@
 import { Vector3 } from "three";
-import { SphericalControllerEvent, SphericalControllerEventType } from "./SphericalControllerEvent";
+import { SphericalControllerEvent, SphericalControllerEventType, } from "./SphericalControllerEvent";
 import { CameraUpdateEventType } from "./CameraUpdateEvent";
 import { RAFTicker, RAFTickerEventType } from "raf-ticker";
 export class CameraPositionUpdater {
-    constructor(parent, camera, target) {
+    constructor(parent, camera) {
         this.isUpdate = false;
         /**
          * tweenによる更新フラグ処理

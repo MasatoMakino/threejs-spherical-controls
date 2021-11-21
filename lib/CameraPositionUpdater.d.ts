@@ -1,4 +1,4 @@
-import { EventDispatcher, Camera, Mesh } from "three";
+import { Camera, EventDispatcher } from "three";
 import { SphericalControllerEvent } from "./SphericalControllerEvent";
 import { CameraUpdateEvent } from "./CameraUpdateEvent";
 export declare class CameraPositionUpdater {
@@ -6,7 +6,7 @@ export declare class CameraPositionUpdater {
     private dispatcher;
     private _camera;
     private updateEvent;
-    constructor(parent: EventDispatcher<CameraUpdateEvent | SphericalControllerEvent>, camera: Camera, target: Mesh);
+    constructor(parent: EventDispatcher<CameraUpdateEvent | SphericalControllerEvent>, camera: Camera);
     /**
      * tweenによる更新フラグ処理
      * イベントハンドラーで処理できるように関数とする。
