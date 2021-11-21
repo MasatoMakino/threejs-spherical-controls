@@ -1,7 +1,6 @@
-import { Mesh, Spherical, Vector3 } from "three";
-import { Event } from "three";
+import { Event, Mesh, Spherical, Vector3 } from "three";
 
-export class CameraUpdateEvent implements Event{
+export class CameraUpdateEvent implements Event {
   type: CameraUpdateEventType;
 
   public cameraTarget: Mesh;
@@ -22,5 +21,5 @@ export class CameraUpdateEvent implements Event{
 }
 
 export enum CameraUpdateEventType {
-  UPDATE = "CameraEvent_TYPE_UPDATE" //カメラが移動した
+  UPDATE = "CameraEvent_TYPE_UPDATE", //カメラが移動した
 }
