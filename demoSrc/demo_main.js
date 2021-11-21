@@ -1,4 +1,4 @@
-import * as dat from "dat.gui";
+import GUI from "lil-gui";
 import { Scene, Spherical, Vector3 } from "three";
 import TWEEN from "@tweenjs/tween.js";
 import { Common } from "./Common";
@@ -76,7 +76,7 @@ const checkPlaying = (controller) => {
 };
 
 const initGUI = (controller) => {
-  const gui = new dat.GUI();
+  const gui = new GUI();
   initRandomGUI(gui, controller);
   initAddGUI(gui, controller);
   initLoopGUI(gui, controller);
