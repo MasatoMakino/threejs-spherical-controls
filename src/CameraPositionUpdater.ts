@@ -17,8 +17,7 @@ export class CameraPositionUpdater {
 
   constructor(
     parent: EventDispatcher<CameraUpdateEvent | SphericalControllerEvent>,
-    camera: Camera,
-    target: Mesh
+    camera: Camera
   ) {
     this.dispatcher = parent;
     this._camera = camera;
