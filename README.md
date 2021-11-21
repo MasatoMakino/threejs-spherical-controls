@@ -52,7 +52,7 @@ cameraController.move(
 );
 ```
 
-[API documents](https://masatomakino.github.io/threejs-spherical-controls/api/)
+[API documents](https://masatomakino.github.io/threejs-spherical-controls/api/index.html)
 
 ## License
 
