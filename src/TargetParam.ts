@@ -10,7 +10,7 @@
  */
 export enum TargetParam {
   CAMERA_TARGET = "cameraTarget",
-  CAMERA_SHIFT = "cameraShift"
+  CAMERA_SHIFT = "cameraShift",
 }
 
 /**
@@ -27,5 +27,5 @@ export enum TargetParam {
 export enum SphericalParamType {
   R = "radius",
   PHI = "phi",
-  THETA = "theta"
+  THETA = "theta",
 }

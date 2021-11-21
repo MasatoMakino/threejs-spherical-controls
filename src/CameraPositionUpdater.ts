@@ -1,19 +1,25 @@
-import { Vector3, EventDispatcher, Camera, Mesh } from "three";
+import { Camera, EventDispatcher, Mesh, Vector3 } from "three";
 import {
   SphericalControllerEvent,
-  SphericalControllerEventType
+  SphericalControllerEventType,
 } from "./SphericalControllerEvent";
 
 import { CameraUpdateEvent, CameraUpdateEventType } from "./CameraUpdateEvent";
-import { RAFTicker, RAFTickerEventType, RAFTickerEvent } from "raf-ticker";
+import { RAFTicker, RAFTickerEvent, RAFTickerEventType } from "raf-ticker";
 
 export class CameraPositionUpdater {
   private isUpdate: boolean = false;
-  private dispatcher: EventDispatcher<CameraUpdateEvent|SphericalControllerEvent>;
+  private dispatcher: EventDispatcher<
+    CameraUpdateEvent | SphericalControllerEvent
+  >;
   private _camera: Camera;
   private updateEvent: CameraUpdateEvent;
 
-  constructor(parent: EventDispatcher<CameraUpdateEvent|SphericalControllerEvent>, camera: Camera, target: Mesh) {
+  constructor(
+    parent: EventDispatcher<CameraUpdateEvent | SphericalControllerEvent>,
+    camera: Camera,
+    target: Mesh
+  ) {
     this.dispatcher = parent;
     this._camera = camera;
 
@@ -22,12 +28,9 @@ export class CameraPositionUpdater {
       this.setNeedUpdate
     );
 
-    RAFTicker.on(
-      RAFTickerEventType.onBeforeTick,
-      (e: RAFTickerEvent) => {
-        this.updatePosition();
-      }
-    );
+    RAFTicker.on(RAFTickerEventType.onBeforeTick, (e: RAFTickerEvent) => {
+      this.updatePosition();
+    });
   }
 
   /**
