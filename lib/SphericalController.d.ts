@@ -114,5 +114,14 @@ export declare class SphericalController extends EventDispatcher<CameraUpdateEve
      * @param overrideTween
      */
     addPosition(type: SphericalParamType, value: number, overrideTween?: boolean): void;
+    /**
+     * カメラ座標を他のSphericalオブジェクトに転写する。
+     * @param spherical
+     */
+    copySphericalPosition(spherical: Spherical): Spherical;
+    /**
+     * カメラ座標を複製する。
+     */
+    cloneSphericalPosition(): Spherical;
 }
 //# sourceMappingURL=SphericalController.d.ts.map

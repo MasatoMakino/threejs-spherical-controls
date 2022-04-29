@@ -241,4 +241,17 @@ export class SphericalController extends EventDispatcher {
         this.pos[type] = this.limiter.clampPosition(type, this.pos);
         this.dispatchUpdateEvent();
     }
+    /**
+     * カメラ座標を他のSphericalオブジェクトに転写する。
+     * @param spherical
+     */
+    copySphericalPosition(spherical) {
+        return spherical.copy(this.pos);
+    }
+    /**
+     * カメラ座標を複製する。
+     */
+    cloneSphericalPosition() {
+        return this.pos.clone();
+    }
 }
