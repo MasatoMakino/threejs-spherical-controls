@@ -295,19 +295,19 @@ export class SphericalController extends EventDispatcher<
    * @param type
    * @param value
    * @param overrideTween 現在実行中のアニメーションを中断し、座標を上書きするか否か。
-   * @param addWhileTween アニメーション中の座標加算を許可するか。許可する場合、typeで指定した値がアニメーションしていなければ加算される。
+   * @param addDuringTween アニメーション中の座標加算を許可するか。許可する場合、typeで指定した値がアニメーションしていなければ加算される。
    */
   public addPosition(
     type: SphericalParamType,
     value: number,
     overrideTween: boolean = false,
-    addWhileTween: boolean = false
+    addDuringTween: boolean = false
   ): void {
     if (!overrideTween) {
-      if (!addWhileTween && this.tweens.isPlaying()) {
+      if (!addDuringTween && this.tweens.isPlaying()) {
         return;
       }
-      if (addWhileTween && this.tweens.isPlayingWithKey(type)) {
+      if (addDuringTween && this.tweens.isPlayingWithKey(type)) {
         return;
       }
     }
