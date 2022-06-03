@@ -30,6 +30,11 @@ export declare class SphericalControllerTween {
      */
     isPlaying(): boolean;
     /**
+     * 現在、指定されたkeyに対応するtweenが再生中か否かを判定する。
+     * @param key
+     */
+    isPlayingWithKey(key: TweenMapKey): boolean;
+    /**
      * 全てのtweenインスタンスを停止する。
      */
     stop(): void;
