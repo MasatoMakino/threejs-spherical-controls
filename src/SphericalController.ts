@@ -294,14 +294,24 @@ export class SphericalController extends EventDispatcher<
    * カメラのSpherical座標に加算する。
    * @param type
    * @param value
-   * @param overrideTween
+   * @param overrideTween 現在実行中のアニメーションを中断し、座標を上書きするか否か。
+   * @param addDuringTween アニメーション中の座標加算を許可するか。許可する場合、typeで指定した値がアニメーションしていなければ加算される。
    */
   public addPosition(
     type: SphericalParamType,
     value: number,
-    overrideTween: boolean = false
+    overrideTween: boolean = false,
+    addDuringTween: boolean = false
   ): void {
-    if (!overrideTween && this.tweens.isPlaying()) return;
+    if (!overrideTween) {
+      if (!addDuringTween && this.tweens.isPlaying()) {
+        return;
+      }
+      if (addDuringTween && this.tweens.isPlayingWithKey(type)) {
+        return;
+      }
+    }
+
     if (overrideTween && this.tweens.isPlaying()) {
       this.tweens.stop();
     }

@@ -47,10 +47,18 @@ export class SphericalControllerTween {
   public isPlaying(): boolean {
     let isPlaying = false;
     this.tweenMap.forEach((value: Tween<TweenType>, key: TweenMapKey) => {
-      if (value && value.isPlaying()) isPlaying = true;
+      if (value?.isPlaying()) isPlaying = true;
     });
 
     return isPlaying;
+  }
+
+  /**
+   * 現在、指定されたkeyに対応するtweenが再生中か否かを判定する。
+   * @param key
+   */
+  public isPlayingWithKey(key: TweenMapKey): boolean {
+    return this.tweenMap.get(key)?.isPlaying();
   }
 
   /**
