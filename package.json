@@ -50,7 +50,7 @@
     "typedocs": "npx typedoc --out ./docs/api src/index.ts",
     "server": "npx @masatomakino/gulptask-dev-server -b ./docs/demo",
     "watch:demo": "npm run demo -- -W",
-    "watch:tsc": "tsc -W --incremental --project tsconfig.json & tsc -W --incremental --project tsconfig.esm.json"
+    "watch:tsc": "npx tsc -W --incremental --project tsconfig.json & npx tsc -W --incremental --project tsconfig.esm.json"
   },
   "description": "Spherical camera controller for Three.js",
   "bugs": {
