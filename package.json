@@ -1,5 +1,5 @@
 {
-  "name": "threejs-spherical-controls",
+  "name": "@masatomakino/threejs-spherical-controls",
   "version": "0.4.5",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -8,7 +8,10 @@
     "lib",
     "esm"
   ],
-  "repository": "https://MasatoMakino@github.com/MasatoMakino/threejs-spherical-controls.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://MasatoMakino@github.com/MasatoMakino/threejs-spherical-controls.git"
+  },
   "author": "MasatoMakino <unagiinu.g@gmail.com>",
   "license": "MIT",
   "keywords": [
@@ -47,5 +50,14 @@
     "server": "npx @masatomakino/gulptask-dev-server -b ./docs/demo",
     "watch:demo": "npm run demo -- -W",
     "watch:tsc": "tsc -W --incremental --project tsconfig.json & tsc -W --incremental --project tsconfig.esm.json"
+  },
+  "description": "Spherical camera controller for Three.js",
+  "bugs": {
+    "url": "https://github.com/MasatoMakino/threejs-spherical-controls/issues"
+  },
+  "homepage": "https://github.com/MasatoMakino/threejs-spherical-controls#readme",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib"
   }
 }
