@@ -5,7 +5,11 @@ import {
 } from "./SphericalControllerEvent";
 
 import { CameraUpdateEvent, CameraUpdateEventType } from "./CameraUpdateEvent";
-import { RAFTicker, RAFTickerEvent, RAFTickerEventType } from "raf-ticker";
+import {
+  RAFTicker,
+  RAFTickerEvent,
+  RAFTickerEventType,
+} from "@masatomakino/raf-ticker";
 
 export class CameraPositionUpdater {
   private isUpdate: boolean = false;
