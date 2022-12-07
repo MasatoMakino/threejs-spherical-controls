@@ -1,6 +1,6 @@
 {
   "name": "@masatomakino/threejs-spherical-controls",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "module": "./esm/index.js",
