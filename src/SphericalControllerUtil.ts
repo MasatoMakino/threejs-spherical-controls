@@ -1,6 +1,4 @@
-import { Mesh } from "three";
-import { MeshBasicMaterial } from "three";
-import { SphereBufferGeometry } from "three";
+import { Mesh, MeshBasicMaterial, SphereGeometry } from "three";
 
 export class SphericalControllerUtil {
   /**
@@ -47,7 +45,7 @@ export class SphericalControllerUtil {
   }
 
   public static generateCameraTarget(): Mesh {
-    const geo = new SphereBufferGeometry(1, 3, 3);
+    const geo = new SphereGeometry(1, 3, 3);
     const mat = new MeshBasicMaterial({
       color: 0xff0000,
       opacity: 0.0,
