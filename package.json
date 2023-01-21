@@ -27,6 +27,8 @@
     "@types/jest": "^29.2.4",
     "@types/node": "^18.11.11",
     "@types/three": "^0.146.0",
+    "canvas": "^2.11.0",
+    "gl": "^6.0.2",
     "husky": "^8.0.2",
     "jest": "^29.3.1",
     "jest-environment-jsdom": "^29.3.1",
@@ -44,6 +46,8 @@
   },
   "scripts": {
     "prepare": "husky install",
+    "test": "jest",
+    "coverage": "jest --coverage",
     "start:dev": "npm run server & npm run watch:tsc & npm run watch:demo",
     "build": "npm run buildTS && npm run demo",
     "demo": "npx @masatomakino/gulptask-demo-page --body '<canvas id=\"webgl-canvas\" width=\"1920\" height=\"1080\"></canvas>'",
