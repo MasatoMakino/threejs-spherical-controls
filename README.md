@@ -2,8 +2,9 @@
 
 > Spherical camera controller for Three.js
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/2f9b5a94f146fec74465/maintainability)](https://codeclimate.com/github/MasatoMakino/threejs-spherical-controls/maintainability)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
+[![build test](https://github.com/MasatoMakino/threejs-spherical-controls/actions/workflows/ci_main.yml/badge.svg)](https://github.com/MasatoMakino/threejs-spherical-controls/actions/workflows/ci_main.yml)
+[![Maintainability](https://api.codeclimate.com/v1/badges/2f9b5a94f146fec74465/maintainability)](https://codeclimate.com/github/MasatoMakino/threejs-spherical-controls/maintainability)
 
 [![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=MasatoMakino&repo=threejs-spherical-controls)](https://github.com/MasatoMakino/threejs-spherical-controls)
 
