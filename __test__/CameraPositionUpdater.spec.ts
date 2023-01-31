@@ -1,0 +1,36 @@
+import { Camera, EventDispatcher, Mesh, Spherical, Vector3 } from "three";
+import {
+  CameraPositionUpdater,
+  CameraUpdateEvent,
+  CameraUpdateEventType,
+  SphericalControllerEvent,
+  SphericalControllerEventType,
+} from "../src";
+import { RAFTicker, RAFTickerEventType } from "@masatomakino/raf-ticker";
+
+describe("CameraPositionUpdater", () => {
+  test("update", () => {
+    const camera = new Camera();
+    const parent = new EventDispatcher<
+      CameraUpdateEvent | SphericalControllerEvent
+    >();
+    const onUpdateCamera = jest.fn();
+    parent.addEventListener(
+      SphericalControllerEventType.MOVED_CAMERA,
+      onUpdateCamera
+    );
+    const updater = new CameraPositionUpdater(parent, camera);
+
+    const newPosition = new Spherical();
+    const e = new CameraUpdateEvent(
+      CameraUpdateEventType.UPDATE,
+      new Mesh(),
+      newPosition,
+      new Vector3()
+    );
+    parent.dispatchEvent(e);
+    RAFTicker.emit(RAFTickerEventType.onBeforeTick, null);
+
+    expect(onUpdateCamera).toBeCalled();
+  });
+});
