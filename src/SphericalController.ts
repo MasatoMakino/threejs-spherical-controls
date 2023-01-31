@@ -80,9 +80,9 @@ export class SphericalController extends EventDispatcher<
   public initCameraPosition(pos: Spherical, targetPos?: Vector3): void {
     this.pos = pos;
     const lmt = this.limiter;
-    this.pos.phi = lmt.clampPosition(SphericalParamType.PHI, this.pos);
-    this.pos.theta = lmt.clampPosition(SphericalParamType.THETA, this.pos);
-    this.pos.radius = lmt.clampPosition(SphericalParamType.R, this.pos);
+    lmt.clampPosition(SphericalParamType.PHI, this.pos);
+    lmt.clampPosition(SphericalParamType.THETA, this.pos);
+    lmt.clampPosition(SphericalParamType.R, this.pos);
     if (targetPos) {
       this._cameraTarget.position.set(targetPos.x, targetPos.y, targetPos.z);
     }
@@ -317,7 +317,7 @@ export class SphericalController extends EventDispatcher<
     }
 
     this.pos[type] += value;
-    this.pos[type] = this.limiter.clampPosition(type, this.pos);
+    this.limiter.clampPosition(type, this.pos);
     this.dispatchUpdateEvent();
   }
 

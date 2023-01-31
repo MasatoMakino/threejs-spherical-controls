@@ -22,6 +22,10 @@ export class CameraPositionLimiter {
         this.thetaMax = max;
         this.thetaMin = min;
         break;
+      case SphericalParamType.R:
+        this.rMax = max;
+        this.rMin = min;
+        break;
     }
   }
 
@@ -37,12 +41,12 @@ export class CameraPositionLimiter {
     return val;
   }
 
-  public clampPosition(type: SphericalParamType, pos: Spherical): number {
+  public clampPosition(type: SphericalParamType, pos: Spherical): void {
     const val = pos[type];
-    return this.clampWithType(type, val);
+    pos[type] = this.clampWithType(type, val);
   }
 
-  public static clamp(value: number, max: number, min: number): number {
+  private static clamp(value: number, max: number, min: number): number {
     if (min == null || max == null) return value;
     value = Math.min(value, max);
     value = Math.max(value, min);
