@@ -167,7 +167,7 @@ export class SphericalController extends EventDispatcher<
       .onComplete(() => {
         this.onCompleteCameraTween(targetParam);
       })
-      .start();
+      .start(option.startTime);
   }
 
   /**
@@ -197,7 +197,7 @@ export class SphericalController extends EventDispatcher<
       .to({ x: value.x, y: value.y, z: value.z }, option.duration)
       .easing(option.easing)
       .onUpdate(this.dispatchUpdateEvent)
-      .start();
+      .start(option.startTime);
     this.tweens.overrideTween(TargetParam.CAMERA_TARGET, tween);
   }
 
@@ -238,7 +238,7 @@ export class SphericalController extends EventDispatcher<
         .easing(option.easing)
         .onUpdate(this.dispatchUpdateEvent)
         .repeat(Infinity)
-        .start();
+        .start(option.startTime);
       this.tweens.overrideTween(type, tween);
     };
 
@@ -254,7 +254,7 @@ export class SphericalController extends EventDispatcher<
       .to(toObjMin, firstDuration)
       .onUpdate(this.dispatchUpdateEvent)
       .onComplete(loop)
-      .start();
+      .start(option.startTime);
     this.tweens.overrideTween(type, tween);
   }
 
@@ -270,7 +270,7 @@ export class SphericalController extends EventDispatcher<
       .easing(option.easing)
       .to({ x: value.x, y: value.y, z: value.z }, option.duration)
       .onUpdate(this.dispatchUpdateEvent)
-      .start();
+      .start(option.startTime);
     this.tweens.overrideTween(TargetParam.CAMERA_SHIFT, tween);
   }
 
