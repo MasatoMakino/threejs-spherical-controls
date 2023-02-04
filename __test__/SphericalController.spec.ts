@@ -1,9 +1,9 @@
-import { SphericalControllerUtil } from "../src";
+import { SphericalController } from "../src";
+import { Camera, Mesh } from "three";
 
-describe("SphericalControllerUtil", () => {
-  test("PI2ToPI", () => {
-    expect(SphericalControllerUtil.PI2ToPI(0)).toBe(0);
-    expect(SphericalControllerUtil.PI2ToPI(Math.PI)).toBe(Math.PI);
-    expect(SphericalControllerUtil.PI2ToPI(Math.PI * 2)).toBeCloseTo(0);
+describe("SphericalController", () => {
+  test("constructor", () => {
+    const controller = new SphericalController(new Camera(), new Mesh());
+    expect(controller).toBeTruthy();
   });
 });
