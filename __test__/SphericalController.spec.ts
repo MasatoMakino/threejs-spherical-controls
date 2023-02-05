@@ -4,7 +4,7 @@ import {
   SphericalParamType,
 } from "../src";
 import { Camera, Mesh, Spherical } from "three";
-import TWEEN, { Easing } from "@tweenjs/tween.js";
+import TWEEN from "@tweenjs/tween.js";
 
 describe("SphericalController", () => {
   beforeEach(() => {
