@@ -35,4 +35,6 @@ describe("initPosition", () => {
       new Spherical(Number.MAX_VALUE, Math.PI - EPS, 1000)
     );
   });
+
+  // TODO init関数ではカメラポジションを直接受け取らず、cloneする。
 });
