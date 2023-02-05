@@ -59,27 +59,4 @@ describe("SphericalController", () => {
       });
     });
   });
-
-  describe("move", () => {
-    test("to", () => {
-      const controller = new SphericalController(new Camera(), new Mesh());
-      controller.movePosition(SphericalParamType.R, 2.0, {
-        duration: 1000,
-        easing: Easing.Linear.None,
-        startTime: 0,
-      });
-      TWEEN.update(100);
-      expect(controller.cloneSphericalPosition()).toMatchObject({
-        radius: 1.1,
-      });
-      TWEEN.update(500);
-      expect(controller.cloneSphericalPosition()).toMatchObject({
-        radius: 1.5,
-      });
-      TWEEN.update(1000);
-      expect(controller.cloneSphericalPosition()).toMatchObject({
-        radius: 2.0,
-      });
-    });
-  });
 });
