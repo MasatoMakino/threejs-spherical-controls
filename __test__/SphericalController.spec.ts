@@ -17,6 +17,13 @@ describe("SphericalController", () => {
     expect(controller).toBeTruthy();
   });
 
+  test("constructor without target material", () => {
+    const mesh = new Mesh();
+    mesh.material = undefined;
+    const controller = new SphericalController(new Camera(), mesh);
+    expect(controller).toBeTruthy();
+  });
+
   test("clone", () => {
     const controller = new SphericalController(new Camera(), new Mesh());
     expect(controller.cloneSphericalPosition()).toStrictEqual(
