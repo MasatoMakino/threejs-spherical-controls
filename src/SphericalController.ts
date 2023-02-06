@@ -80,9 +80,9 @@ export class SphericalController extends EventDispatcher<
   public initCameraPosition(pos: Spherical, targetPos?: Vector3): void {
     this.pos = pos;
     const lmt = this.limiter;
-    this.pos.phi = lmt.clampPosition(SphericalParamType.PHI, this.pos);
-    this.pos.theta = lmt.clampPosition(SphericalParamType.THETA, this.pos);
-    this.pos.radius = lmt.clampPosition(SphericalParamType.R, this.pos);
+    lmt.clampPosition(SphericalParamType.PHI, this.pos);
+    lmt.clampPosition(SphericalParamType.THETA, this.pos);
+    lmt.clampPosition(SphericalParamType.R, this.pos);
     if (targetPos) {
       this._cameraTarget.position.set(targetPos.x, targetPos.y, targetPos.z);
     }
@@ -167,7 +167,7 @@ export class SphericalController extends EventDispatcher<
       .onComplete(() => {
         this.onCompleteCameraTween(targetParam);
       })
-      .start();
+      .start(option.startTime);
   }
 
   /**
@@ -197,7 +197,7 @@ export class SphericalController extends EventDispatcher<
       .to({ x: value.x, y: value.y, z: value.z }, option.duration)
       .easing(option.easing)
       .onUpdate(this.dispatchUpdateEvent)
-      .start();
+      .start(option.startTime);
     this.tweens.overrideTween(TargetParam.CAMERA_TARGET, tween);
   }
 
@@ -232,13 +232,15 @@ export class SphericalController extends EventDispatcher<
     toObjMin[type] = toMin;
 
     const loop = () => {
+      const startTime =
+        option.startTime == null ? undefined : option.startTime + firstDuration;
       const tween = new Tween(this.pos)
         .to(toObjMax, option.duration)
         .yoyo(true)
         .easing(option.easing)
         .onUpdate(this.dispatchUpdateEvent)
         .repeat(Infinity)
-        .start();
+        .start(startTime);
       this.tweens.overrideTween(type, tween);
     };
 
@@ -254,7 +256,7 @@ export class SphericalController extends EventDispatcher<
       .to(toObjMin, firstDuration)
       .onUpdate(this.dispatchUpdateEvent)
       .onComplete(loop)
-      .start();
+      .start(option.startTime);
     this.tweens.overrideTween(type, tween);
   }
 
@@ -270,7 +272,7 @@ export class SphericalController extends EventDispatcher<
       .easing(option.easing)
       .to({ x: value.x, y: value.y, z: value.z }, option.duration)
       .onUpdate(this.dispatchUpdateEvent)
-      .start();
+      .start(option.startTime);
     this.tweens.overrideTween(TargetParam.CAMERA_SHIFT, tween);
   }
 
@@ -317,7 +319,7 @@ export class SphericalController extends EventDispatcher<
     }
 
     this.pos[type] += value;
-    this.pos[type] = this.limiter.clampPosition(type, this.pos);
+    this.limiter.clampPosition(type, this.pos);
     this.dispatchUpdateEvent();
   }
 
