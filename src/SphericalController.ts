@@ -232,13 +232,15 @@ export class SphericalController extends EventDispatcher<
     toObjMin[type] = toMin;
 
     const loop = () => {
+      const startTime =
+        option.startTime == null ? undefined : option.startTime + firstDuration;
       const tween = new Tween(this.pos)
         .to(toObjMax, option.duration)
         .yoyo(true)
         .easing(option.easing)
         .onUpdate(this.dispatchUpdateEvent)
         .repeat(Infinity)
-        .start(option.startTime + firstDuration);
+        .start(startTime);
       this.tweens.overrideTween(type, tween);
     };
 
