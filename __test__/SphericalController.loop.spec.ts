@@ -16,17 +16,28 @@ describe("loop", () => {
     const controller = new SphericalController(new Camera(), new Mesh());
     const callback = jest.fn();
     controller.addEventListener(CameraUpdateEventType.UPDATE, callback);
-    controller.loop(SphericalParamType.R, -1, 1, {
+    controller.loop(SphericalParamType.R, 0, 1, {
       easing: Easing.Linear.None,
       duration: 1000,
       startTime: 0,
     });
 
-    TWEEN.update(100);
-    expect(callback).toBeCalled();
-    callback.mockReset();
+    const testLoopPosition = (time: number, position: number) => {
+      TWEEN.update(time);
+      expect(callback).toBeCalled();
+      const lastCallbackArgs = callback.mock.calls.at(-1)[0];
+      expect(lastCallbackArgs.position[SphericalParamType.R]).toBeCloseTo(
+        position
+      );
+      expect(
+        controller.cloneSphericalPosition()[SphericalParamType.R]
+      ).toBeCloseTo(position);
+      callback.mockReset();
+    };
 
-    TWEEN.update(1000);
-    expect(callback).toBeCalled();
+    testLoopPosition(0, 1);
+    testLoopPosition(500, 0.5);
+    testLoopPosition(1000, 0);
+    testLoopPosition(1100, 0.1);
   });
 });

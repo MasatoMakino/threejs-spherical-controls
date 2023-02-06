@@ -238,7 +238,7 @@ export class SphericalController extends EventDispatcher<
         .easing(option.easing)
         .onUpdate(this.dispatchUpdateEvent)
         .repeat(Infinity)
-        .start(option.startTime);
+        .start(option.startTime + firstDuration);
       this.tweens.overrideTween(type, tween);
     };
 
