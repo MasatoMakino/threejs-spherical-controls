@@ -20,21 +20,14 @@ export class EasingOption {
       option = new EasingOption();
     }
 
-    option.duration = this.supplement(
-      option.duration,
-      controller.tweens.duration
-    );
+    option.duration ??= controller.tweens.duration;
+
     const defaultEase = isLoop
       ? controller.tweens.loopEasing
       : controller.tweens.easing;
-    option.easing = this.supplement(option.easing, defaultEase);
-    option.normalize = this.supplement(option.normalize, true);
+    option.easing ??= defaultEase;
+    option.normalize ??= true;
 
     return option;
-  }
-
-  private static supplement(target, defaultValue): any {
-    if (target == null) return defaultValue;
-    return target;
   }
 }
