@@ -12,6 +12,18 @@ describe("initPosition", () => {
     );
   });
 
+  test("Arguments of initPosition should not affect cameraPosition.", () => {
+    const controller = new SphericalController(new Camera(), new Mesh());
+    const pos = new Spherical(100, 1, -1);
+    const originalPos = pos.clone();
+
+    controller.initCameraPosition(pos);
+    expect(controller.cloneSphericalPosition()).toStrictEqual(originalPos);
+
+    pos.set(150, 0, 0);
+    expect(controller.cloneSphericalPosition()).toStrictEqual(originalPos);
+  });
+
   test("init camera position and target position", () => {
     const controller = new SphericalController(new Camera(), new Mesh());
     const onUpdate = jest.fn();
@@ -35,6 +47,4 @@ describe("initPosition", () => {
       new Spherical(Number.MAX_VALUE, Math.PI - EPS, 1000)
     );
   });
-
-  // TODO init関数ではカメラポジションを直接受け取らず、cloneする。
 });

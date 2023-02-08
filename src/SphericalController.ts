@@ -77,7 +77,7 @@ export class SphericalController extends EventDispatcher<
    * @param targetPos
    */
   public initCameraPosition(pos: Spherical, targetPos?: Vector3): void {
-    this.pos = pos;
+    this.pos.set(pos.radius, pos.phi, pos.theta);
     const lmt = this.limiter;
     lmt.clampPosition(SphericalParamType.PHI, this.pos);
     lmt.clampPosition(SphericalParamType.THETA, this.pos);
