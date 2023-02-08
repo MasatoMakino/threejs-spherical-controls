@@ -21,9 +21,12 @@ describe("SphericalController", () => {
 
   test("constructor without target material", () => {
     const mesh = new Mesh();
+    const consoleWarnMock = jest.spyOn(console, "warn").mockImplementation();
     mesh.material = undefined;
     const controller = new SphericalController(new Camera(), mesh);
     expect(controller).toBeTruthy();
+    expect(consoleWarnMock).toBeCalled();
+    consoleWarnMock.mockRestore();
   });
 
   test("clone", () => {

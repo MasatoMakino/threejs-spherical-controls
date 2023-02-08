@@ -52,11 +52,10 @@ export class SphericalController extends EventDispatcher<
     super();
 
     this._cameraTarget = target;
-    this._cameraTarget.material ??= new MeshBasicMaterial({
-      color: 0xff0000,
-      opacity: 0.0,
-      transparent: true,
-    });
+    if (!this._cameraTarget.geometry || !this._cameraTarget.material) {
+      console.warn("No geometry or material for camera target object.");
+    }
+
     this.cameraUpdater = new CameraPositionUpdater(this, camera);
 
     TWEENTicker.start();
