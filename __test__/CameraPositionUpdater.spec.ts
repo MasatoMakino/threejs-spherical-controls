@@ -6,7 +6,7 @@ import {
   SphericalControllerEvent,
   SphericalControllerEventType,
 } from "../src";
-import { RAFTicker, RAFTickerEventType } from "@masatomakino/raf-ticker";
+import { RAFTicker } from "@masatomakino/raf-ticker";
 
 describe("CameraPositionUpdater", () => {
   test("update", () => {
@@ -29,7 +29,7 @@ describe("CameraPositionUpdater", () => {
       new Vector3()
     );
     parent.dispatchEvent(e);
-    RAFTicker.emit(RAFTickerEventType.onBeforeTick, null);
+    RAFTicker.emitTickEvent(0);
 
     expect(onUpdateCamera).toBeCalled();
   });

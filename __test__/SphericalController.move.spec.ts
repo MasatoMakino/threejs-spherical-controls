@@ -1,11 +1,13 @@
 import { SphericalController, SphericalParamType } from "../src";
 import { Camera, Mesh } from "three";
 import TWEEN, { Easing } from "@tweenjs/tween.js";
+import { RAFTicker } from "@masatomakino/raf-ticker";
 
 describe("movePosition", () => {
   beforeEach(() => {
     TWEEN.removeAll();
-    TWEEN.update(0);
+    RAFTicker.stop();
+    RAFTicker.emitTickEvent(0);
   });
 
   const testLinear = (
@@ -20,15 +22,15 @@ describe("movePosition", () => {
       return obj;
     };
 
-    TWEEN.update(100);
+    RAFTicker.emitTickEvent(100);
     expect(controller.cloneSphericalPosition()).toMatchObject(
       generateObject(0.1)
     );
-    TWEEN.update(500);
+    RAFTicker.emitTickEvent(500);
     expect(controller.cloneSphericalPosition()).toMatchObject(
       generateObject(0.5)
     );
-    TWEEN.update(1000);
+    RAFTicker.emitTickEvent(1000);
     expect(controller.cloneSphericalPosition()).toMatchObject(
       generateObject(1.0)
     );
@@ -83,15 +85,15 @@ describe("movePosition", () => {
       startTime: 0,
     });
 
-    TWEEN.update(100);
+    RAFTicker.emitTickEvent(100);
     expect(controller.cloneSphericalPosition()).toMatchObject({
       theta: Math.PI * 10 - Math.PI * 0.1,
     });
-    TWEEN.update(500);
+    RAFTicker.emitTickEvent(500);
     expect(controller.cloneSphericalPosition()).toMatchObject({
       theta: Math.PI * 10 - Math.PI * 0.5,
     });
-    TWEEN.update(1000);
+    RAFTicker.emitTickEvent(1000);
     expect(controller.cloneSphericalPosition()).toMatchObject({
       theta: Math.PI * 10 - Math.PI,
     });
