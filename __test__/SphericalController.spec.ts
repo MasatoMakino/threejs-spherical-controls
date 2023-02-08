@@ -5,11 +5,13 @@ import {
 } from "../src";
 import { Camera, Mesh, Spherical } from "three";
 import TWEEN from "@tweenjs/tween.js";
+import { RAFTicker } from "@masatomakino/raf-ticker";
 
 describe("SphericalController", () => {
   beforeEach(() => {
     TWEEN.removeAll();
-    TWEEN.update(0);
+    RAFTicker.stop();
+    RAFTicker.emitTickEvent(0);
   });
 
   test("constructor", () => {
@@ -60,7 +62,7 @@ describe("SphericalController", () => {
       controller.addPosition(SphericalParamType.THETA, 1.0, true);
       expect(onMovedCamera).toBeCalled();
 
-      TWEEN.update(1000);
+      RAFTicker.emitTickEvent(1000);
       expect(controller.cloneSphericalPosition()).toMatchObject({
         radius: 1.0,
       });

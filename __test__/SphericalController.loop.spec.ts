@@ -5,11 +5,13 @@ import {
 } from "../src";
 import { Camera, Mesh } from "three";
 import TWEEN, { Easing } from "@tweenjs/tween.js";
+import { RAFTicker } from "@masatomakino/raf-ticker";
 
 describe("loop", () => {
   beforeEach(() => {
     TWEEN.removeAll();
-    TWEEN.update(0);
+    RAFTicker.stop();
+    RAFTicker.emitTickEvent(0);
   });
 
   test("loop", () => {
@@ -23,7 +25,7 @@ describe("loop", () => {
     });
 
     const testLoopPosition = (time: number, position: number) => {
-      TWEEN.update(time);
+      RAFTicker.emitTickEvent(time);
       expect(callback).toBeCalled();
       const lastCallbackArgs = callback.mock.calls.at(-1)[0];
       expect(lastCallbackArgs.position[SphericalParamType.R]).toBeCloseTo(
