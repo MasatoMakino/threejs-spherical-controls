@@ -13,10 +13,6 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main' }}
     steps:
       - uses: actions/checkout@v3
-      - name: install apt packages for headless-gl
-        run: |
-          sudo apt-get update
-          sudo apt-get -y install xvfb
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
@@ -29,4 +25,4 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: 2d68e430e88b8de73136596b1ec14309eeea9b831106aec873f6d4b0230dfe82
         with:
-          coverageCommand: xvfb-run --auto-servernum npm run coverage
+          coverageCommand: npm run coverage
