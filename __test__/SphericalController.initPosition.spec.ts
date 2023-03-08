@@ -1,4 +1,4 @@
-import { CameraUpdateEventType, SphericalController } from "../src";
+import { SphericalController } from "../src";
 import { Camera, Mesh, Spherical, Vector3 } from "three";
 
 describe("initPosition", () => {

@@ -2,9 +2,7 @@ import { Camera, EventDispatcher, Mesh, Spherical, Vector3 } from "three";
 import {
   CameraPositionUpdater,
   CameraUpdateEvent,
-  CameraUpdateEventType,
   SphericalControllerEvent,
-  SphericalControllerEventType,
 } from "../src";
 import { RAFTicker } from "@masatomakino/raf-ticker";
 

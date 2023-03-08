@@ -1,4 +1,4 @@
-import { SphericalControllerTween, SphericalParamType } from "../src";
+import { SphericalControllerTween } from "../src";
 import { Tween } from "@tweenjs/tween.js";
 import { Vector3 } from "three";
 

@@ -1,8 +1,4 @@
-import {
-  CameraUpdateEventType,
-  SphericalController,
-  SphericalParamType,
-} from "../src";
+import { SphericalController } from "../src";
 import { Camera, Mesh, Spherical } from "three";
 import TWEEN from "@tweenjs/tween.js";
 import { RAFTicker } from "@masatomakino/raf-ticker";
