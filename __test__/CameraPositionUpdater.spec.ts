@@ -15,10 +15,7 @@ describe("CameraPositionUpdater", () => {
       CameraUpdateEvent | SphericalControllerEvent
     >();
     const onUpdateCamera = jest.fn();
-    parent.addEventListener(
-      SphericalControllerEventType.MOVED_CAMERA,
-      onUpdateCamera
-    );
+    parent.addEventListener("moved_camera", onUpdateCamera);
     const updater = new CameraPositionUpdater(parent, camera);
 
     const newPosition = new Spherical();

@@ -177,10 +177,7 @@ export class SphericalController extends EventDispatcher<
     paramType: TargetParam | SphericalParamType
   ): void {
     this.dispatchEvent(
-      new SphericalControllerEvent(
-        SphericalControllerEventType.MOVED_CAMERA_COMPLETE,
-        paramType
-      )
+      new SphericalControllerEvent("moved_camera_complete", paramType)
     );
   }
   /**
