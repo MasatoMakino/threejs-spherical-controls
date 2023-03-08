@@ -1,7 +1,6 @@
 import { Tween } from "@tweenjs/tween.js";
 import { TWEENTicker } from "@masatomakino/tween.js-ticker";
 import { Camera, EventDispatcher, Mesh, Spherical, Vector3 } from "three";
-import { MeshBasicMaterial } from "three";
 import {
   SphericalControllerEvent,
   SphericalControllerEventType,

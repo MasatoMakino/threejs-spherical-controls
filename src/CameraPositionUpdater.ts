@@ -1,4 +1,4 @@
-import { Camera, EventDispatcher, Mesh, Vector3 } from "three";
+import { Camera, EventDispatcher, Vector3 } from "three";
 import {
   SphericalControllerEvent,
   SphericalControllerEventType,
