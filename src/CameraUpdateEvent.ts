@@ -20,6 +20,4 @@ export class CameraUpdateEvent implements Event {
   }
 }
 
-export enum CameraUpdateEventType {
-  UPDATE = "CameraEvent_TYPE_UPDATE", //カメラが移動した
-}
+export type CameraUpdateEventType = "update";
