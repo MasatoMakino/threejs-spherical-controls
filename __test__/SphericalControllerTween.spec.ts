@@ -14,10 +14,10 @@ describe("SphericalControllerTween", () => {
     const tween = new Tween<Vector3>(new Vector3())
       .to(new Vector3(), 1000)
       .start(0);
-    tweens.overrideTween(SphericalParamType.R, tween);
+    tweens.overrideTween("radius", tween);
     expect(tweens.isPlaying()).toBeTruthy();
-    expect(tweens.isPlayingWithKey(SphericalParamType.R)).toBeTruthy();
-    expect(tweens.isPlayingWithKey(SphericalParamType.PHI)).toBeFalsy();
+    expect(tweens.isPlayingWithKey("radius")).toBeTruthy();
+    expect(tweens.isPlayingWithKey("phi")).toBeFalsy();
 
     tweens.stop();
     expect(tweens.isPlaying()).toBeFalsy();

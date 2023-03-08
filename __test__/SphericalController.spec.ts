@@ -53,16 +53,16 @@ describe("SphericalController", () => {
 
     test("add", () => {
       const { controller, onMovedCamera } = initSpherical();
-      controller.addPosition(SphericalParamType.THETA, 1.0);
+      controller.addPosition("theta", 1.0);
       expect(onMovedCamera).toBeCalled();
       expect(controller.cloneSphericalPosition()).toMatchObject({ theta: 1.0 });
     });
 
     test("override tween", () => {
       const { controller, onMovedCamera } = initSpherical();
-      controller.movePosition(SphericalParamType.R, 2.0, { startTime: 0 });
+      controller.movePosition("radius", 2.0, { startTime: 0 });
 
-      controller.addPosition(SphericalParamType.THETA, 1.0, true);
+      controller.addPosition("theta", 1.0, true);
       expect(onMovedCamera).toBeCalled();
 
       RAFTicker.emitTickEvent(1000);

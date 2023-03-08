@@ -8,10 +8,7 @@
  *
  * [[SphericalParamType]]定数と合わせて、どの対象を操作するかを指定する。
  */
-export enum TargetParam {
-  CAMERA_TARGET = "cameraTarget",
-  CAMERA_SHIFT = "cameraShift",
-}
+export type TargetParam = "camera_target" | "camera_shift";
 
 /**
  * Spherical型の座標のうち、どのパラメーターを操作するかを指定する定数。
@@ -24,8 +21,4 @@ export enum TargetParam {
  *
  * [[TargetParam]]定数と合わせて、どの対象を操作するかを指定する。
  */
-export enum SphericalParamType {
-  R = "radius",
-  PHI = "phi",
-  THETA = "theta",
-}
+export type SphericalParamType = "radius" | "phi" | "theta";

@@ -21,8 +21,8 @@ describe("CameraPositionLimiter", () => {
       expect(spherical[type]).toBe(min);
     };
 
-    limit(SphericalParamType.R);
-    limit(SphericalParamType.THETA);
-    limit(SphericalParamType.PHI);
+    limit("radius");
+    limit("theta");
+    limit("phi");
   });
 });
