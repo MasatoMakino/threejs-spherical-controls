@@ -20,7 +20,7 @@ describe("CameraPositionUpdater", () => {
 
     const newPosition = new Spherical();
     const e = new CameraUpdateEvent(
-      CameraUpdateEventType.UPDATE,
+      "update",
       new Mesh(),
       newPosition,
       new Vector3()

@@ -47,7 +47,7 @@ describe("SphericalController", () => {
     const initSpherical = () => {
       const controller = new SphericalController(new Camera(), new Mesh());
       const onMovedCamera = jest.fn();
-      controller.addEventListener(CameraUpdateEventType.UPDATE, onMovedCamera);
+      controller.addEventListener("update", onMovedCamera);
       return { controller, onMovedCamera };
     };
 

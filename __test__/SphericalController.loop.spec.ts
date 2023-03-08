@@ -17,7 +17,7 @@ describe("loop", () => {
   test("loop", () => {
     const controller = new SphericalController(new Camera(), new Mesh());
     const callback = jest.fn();
-    controller.addEventListener(CameraUpdateEventType.UPDATE, callback);
+    controller.addEventListener("update", callback);
     controller.loop("radius", 0, 1, {
       easing: Easing.Linear.None,
       duration: 1000,
