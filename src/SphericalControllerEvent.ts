@@ -1,16 +1,9 @@
 import { SphericalParamType, TargetParam } from "./TargetParam";
 import { Event } from "three";
 
-export class SphericalControllerEvent implements Event {
+export interface SphericalControllerEvent extends Event {
   type: SphericalControllerEventType;
-  public targetParam: TargetParam | SphericalParamType;
-  constructor(
-    type: SphericalControllerEventType,
-    targetParam?: TargetParam | SphericalParamType
-  ) {
-    this.type = type;
-    this.targetParam = targetParam;
-  }
+  targetParam?: TargetParam | SphericalParamType;
 }
 
 export type SphericalControllerEventType =

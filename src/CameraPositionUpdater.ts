@@ -64,6 +64,8 @@ export class CameraPositionUpdater {
       this._camera.position.set(pos.x, pos.y, pos.z);
     }
 
-    this.dispatcher.dispatchEvent(new SphericalControllerEvent("moved_camera"));
+    this.dispatcher.dispatchEvent({
+      type: "moved_camera",
+    });
   };
 }

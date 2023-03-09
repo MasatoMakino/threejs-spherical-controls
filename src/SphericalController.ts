@@ -173,9 +173,10 @@ export class SphericalController extends EventDispatcher<
   private onCompleteCameraTween(
     paramType: TargetParam | SphericalParamType
   ): void {
-    this.dispatchEvent(
-      new SphericalControllerEvent("moved_camera_complete", paramType)
-    );
+    this.dispatchEvent({
+      type: "moved_camera_complete",
+      targetParam: paramType,
+    });
   }
   /**
    * カメラターゲットのみを移動する
