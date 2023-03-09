@@ -3,7 +3,7 @@ import { Event } from "three";
 
 export interface SphericalControllerEvent extends Event {
   type: SphericalControllerEventType;
-  targetParam?: TargetParam | SphericalParamType;
+  completedParam?: TargetParam | SphericalParamType;
 }
 
 export type SphericalControllerEventType =
