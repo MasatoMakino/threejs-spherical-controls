@@ -1,7 +1,6 @@
 import { Easing, Tween } from "@tweenjs/tween.js";
 import { SphericalParamType, TargetParam } from "./TargetParam";
-import { Spherical } from "three";
-import { Vector3 } from "three";
+import { Spherical, Vector3 } from "three";
 
 export type TweenMapKey = SphericalParamType | TargetParam;
 export type TweenType = Spherical | Vector3;

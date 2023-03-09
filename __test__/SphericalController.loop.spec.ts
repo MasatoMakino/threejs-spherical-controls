@@ -1,8 +1,4 @@
-import {
-  CameraUpdateEventType,
-  SphericalController,
-  SphericalParamType,
-} from "../src";
+import { SphericalController } from "../src";
 import { Camera, Mesh } from "three";
 import TWEEN, { Easing } from "@tweenjs/tween.js";
 import { RAFTicker } from "@masatomakino/raf-ticker";
@@ -17,8 +13,8 @@ describe("loop", () => {
   test("loop", () => {
     const controller = new SphericalController(new Camera(), new Mesh());
     const callback = jest.fn();
-    controller.addEventListener(CameraUpdateEventType.UPDATE, callback);
-    controller.loop(SphericalParamType.R, 0, 1, {
+    controller.addEventListener("update", callback);
+    controller.loop("radius", 0, 1, {
       easing: Easing.Linear.None,
       duration: 1000,
       startTime: 0,
@@ -28,12 +24,10 @@ describe("loop", () => {
       RAFTicker.emitTickEvent(time);
       expect(callback).toBeCalled();
       const lastCallbackArgs = callback.mock.calls.at(-1)[0];
-      expect(lastCallbackArgs.position[SphericalParamType.R]).toBeCloseTo(
+      expect(lastCallbackArgs.position["radius"]).toBeCloseTo(position);
+      expect(controller.cloneSphericalPosition()["radius"]).toBeCloseTo(
         position
       );
-      expect(
-        controller.cloneSphericalPosition()[SphericalParamType.R]
-      ).toBeCloseTo(position);
       callback.mockReset();
     };
 

@@ -1,25 +1,16 @@
 import { Event, Mesh, Spherical, Vector3 } from "three";
 
-export class CameraUpdateEvent implements Event {
+/**
+ * カメラ位置が更新された場合に発行されるイベント
+ * RAFで間引きされて発行される。
+ * レンダリングを間引く目的などで利用される。
+ * TODO : SphericalControllerEventとCameraUpdateEventを一本化できないか検討する
+ */
+export interface CameraUpdateEvent extends Event {
   type: CameraUpdateEventType;
-
-  public cameraTarget: Mesh;
-  public position: Spherical;
-  public shift: Vector3;
-
-  constructor(
-    type: CameraUpdateEventType,
-    cameraTarget: Mesh,
-    position: Spherical,
-    shift: Vector3
-  ) {
-    this.type = type;
-    this.cameraTarget = cameraTarget;
-    this.position = position;
-    this.shift = shift;
-  }
+  cameraTarget: Mesh;
+  position: Spherical;
+  shift: Vector3;
 }
 
-export enum CameraUpdateEventType {
-  UPDATE = "CameraEvent_TYPE_UPDATE", //カメラが移動した
-}
+export type CameraUpdateEventType = "update";

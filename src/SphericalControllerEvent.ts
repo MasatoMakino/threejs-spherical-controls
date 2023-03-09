@@ -1,19 +1,18 @@
 import { SphericalParamType, TargetParam } from "./TargetParam";
 import { Event } from "three";
 
-export class SphericalControllerEvent implements Event {
+/**
+ * カメラが移動した際に発行されるイベント
+ * 主にSphericalController内で利用される。
+ *
+ * SphericalController外でカメラの移動を検知するためにはCameraUpdateEventを利用する。
+ * TODO : SphericalControllerEventとCameraUpdateEventを一本化できないか検討する
+ */
+export interface SphericalControllerEvent extends Event {
   type: SphericalControllerEventType;
-  public targetParam: TargetParam | SphericalParamType;
-  constructor(
-    type: SphericalControllerEventType,
-    targetParam?: TargetParam | SphericalParamType
-  ) {
-    this.type = type;
-    this.targetParam = targetParam;
-  }
+  completedParam?: TargetParam | SphericalParamType;
 }
 
-export enum SphericalControllerEventType {
-  MOVED_CAMERA = "CameraEvent_TYPE_MOVED_CAMERA", //カメラが移動した
-  MOVED_CAMERA_COMPLETE = "CameraEvent_TYPE_MOVED_CAMERA_COMPLETE", //カメラ移動アニメーションが完了した
-}
+export type SphericalControllerEventType =
+  | "moved_camera"
+  | "moved_camera_complete";

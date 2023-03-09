@@ -1,18 +1,14 @@
 import { Tween } from "@tweenjs/tween.js";
 import { TWEENTicker } from "@masatomakino/tween.js-ticker";
 import { Camera, EventDispatcher, Mesh, Spherical, Vector3 } from "three";
-import { MeshBasicMaterial } from "three";
-import {
-  SphericalControllerEvent,
-  SphericalControllerEventType,
-} from "./SphericalControllerEvent";
+import { SphericalControllerEvent } from "./SphericalControllerEvent";
 import { SphericalParamType, TargetParam } from "./TargetParam";
 import { EasingOption } from "./EasingOption";
 import { SphericalControllerUtil } from "./SphericalControllerUtil";
 import { CameraPositionLimiter } from "./CameraPositionLimiter";
 import { SphericalControllerTween } from "./SphericalControllerTween";
 import { CameraPositionUpdater } from "./CameraPositionUpdater";
-import { CameraUpdateEvent, CameraUpdateEventType } from "./CameraUpdateEvent";
+import { CameraUpdateEvent } from "./CameraUpdateEvent";
 
 /**
  * 球面座標系でカメラ位置をコントロールするクラス。
@@ -62,12 +58,12 @@ export class SphericalController extends EventDispatcher<
   }
 
   public dispatchUpdateEvent = () => {
-    const e = new CameraUpdateEvent(
-      CameraUpdateEventType.UPDATE,
-      this._cameraTarget,
-      this.pos,
-      this.cameraShift
-    );
+    const e: CameraUpdateEvent = {
+      type: "update",
+      cameraTarget: this._cameraTarget,
+      position: this.pos,
+      shift: this.cameraShift,
+    };
     this.dispatchEvent(e);
   };
 
@@ -79,9 +75,9 @@ export class SphericalController extends EventDispatcher<
   public initCameraPosition(pos: Spherical, targetPos?: Vector3): void {
     this.pos.set(pos.radius, pos.phi, pos.theta);
     const lmt = this.limiter;
-    lmt.clampPosition(SphericalParamType.PHI, this.pos);
-    lmt.clampPosition(SphericalParamType.THETA, this.pos);
-    lmt.clampPosition(SphericalParamType.R, this.pos);
+    lmt.clampPosition("phi", this.pos);
+    lmt.clampPosition("theta", this.pos);
+    lmt.clampPosition("radius", this.pos);
     if (targetPos) {
       this._cameraTarget.position.set(targetPos.x, targetPos.y, targetPos.z);
     }
@@ -105,9 +101,9 @@ export class SphericalController extends EventDispatcher<
   public move(pos: Spherical, option?: EasingOption): void {
     option = EasingOption.init(option, this);
     this.tweens.stop();
-    this.movePosition(SphericalParamType.R, pos.radius, option);
-    this.movePosition(SphericalParamType.PHI, pos.phi, option);
-    this.movePosition(SphericalParamType.THETA, pos.theta, option);
+    this.movePosition("radius", pos.radius, option);
+    this.movePosition("phi", pos.phi, option);
+    this.movePosition("theta", pos.theta, option);
   }
 
   /**
@@ -138,7 +134,7 @@ export class SphericalController extends EventDispatcher<
   ): void {
     option = EasingOption.init(option, this);
 
-    if (type === SphericalParamType.THETA && option.normalize) {
+    if (type === "theta" && option.normalize) {
       value = SphericalControllerUtil.getTweenTheta(this.pos.theta, value);
     }
     const to = this.limiter.clampWithType(type, value);
@@ -177,12 +173,10 @@ export class SphericalController extends EventDispatcher<
   private onCompleteCameraTween(
     paramType: TargetParam | SphericalParamType
   ): void {
-    this.dispatchEvent(
-      new SphericalControllerEvent(
-        SphericalControllerEventType.MOVED_CAMERA_COMPLETE,
-        paramType
-      )
-    );
+    this.dispatchEvent({
+      type: "moved_camera_complete",
+      completedParam: paramType,
+    });
   }
   /**
    * カメラターゲットのみを移動する
@@ -197,7 +191,7 @@ export class SphericalController extends EventDispatcher<
       .easing(option.easing)
       .onUpdate(this.dispatchUpdateEvent)
       .start(option.startTime);
-    this.tweens.overrideTween(TargetParam.CAMERA_TARGET, tween);
+    this.tweens.overrideTween("camera_target", tween);
   }
 
   public stopLoop(type: SphericalParamType) {
@@ -218,7 +212,7 @@ export class SphericalController extends EventDispatcher<
     max: number,
     option?: EasingOption
   ): void {
-    if (type === SphericalParamType.THETA) {
+    if (type === "theta") {
       this.pos.theta = SphericalControllerUtil.PI2ToPI(this.pos.theta);
     }
     option = EasingOption.init(option, this, true);
@@ -272,7 +266,7 @@ export class SphericalController extends EventDispatcher<
       .to({ x: value.x, y: value.y, z: value.z }, option.duration)
       .onUpdate(this.dispatchUpdateEvent)
       .start(option.startTime);
-    this.tweens.overrideTween(TargetParam.CAMERA_SHIFT, tween);
+    this.tweens.overrideTween("camera_shift", tween);
   }
 
   /**

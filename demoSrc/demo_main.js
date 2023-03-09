@@ -2,12 +2,7 @@ import GUI from "lil-gui";
 import { Scene, Spherical, Vector3 } from "three";
 import TWEEN from "@tweenjs/tween.js";
 import { Common } from "./Common";
-import {
-  SphericalController,
-  SphericalControllerEventType,
-  SphericalControllerUtil,
-  SphericalParamType,
-} from "..";
+import { SphericalController, SphericalControllerUtil } from "..";
 
 const W = 1280;
 const H = 800;
@@ -59,12 +54,9 @@ const initController = (cameraTarget, R) => {
   cameraController.initCameraShift(new Vector3(20, 0, 0));
   cameraController.duration = 1666;
 
-  cameraController.addEventListener(
-    SphericalControllerEventType.MOVED_CAMERA_COMPLETE,
-    (e) => {
-      console.log("Complete : ", e);
-    }
-  );
+  cameraController.addEventListener("moved_camera_complete", (e) => {
+    console.log("Complete : ", e);
+  });
 
   return cameraController;
 };
@@ -127,14 +119,14 @@ const initAddGUI = (gui, controller) => {
   folder.open();
   const moveAngle = 0.1;
 
-  addPositionGUI(SphericalParamType.R, +5, folder, controller);
-  addPositionGUI(SphericalParamType.R, -5, folder, controller);
+  addPositionGUI("radius", +5, folder, controller);
+  addPositionGUI("radius", -5, folder, controller);
 
-  addPositionGUI(SphericalParamType.PHI, +moveAngle, folder, controller);
-  addPositionGUI(SphericalParamType.PHI, -moveAngle, folder, controller);
+  addPositionGUI("phi", +moveAngle, folder, controller);
+  addPositionGUI("phi", -moveAngle, folder, controller);
 
-  addPositionGUI(SphericalParamType.THETA, +moveAngle, folder, controller);
-  addPositionGUI(SphericalParamType.THETA, -moveAngle, folder, controller);
+  addPositionGUI("theta", +moveAngle, folder, controller);
+  addPositionGUI("theta", -moveAngle, folder, controller);
 };
 
 const addPositionGUI = (type, value, folder, controller) => {
@@ -152,15 +144,9 @@ const initLoopGUI = (gui, controller) => {
   const folder = gui.addFolder("loop method");
   folder.open();
 
-  addLoopGUI(SphericalParamType.R, 30, 150, folder, controller);
-  addLoopGUI(SphericalParamType.PHI, 0, Math.PI, folder, controller);
-  addLoopGUI(
-    SphericalParamType.THETA,
-    -Math.PI / 4,
-    Math.PI / 4,
-    folder,
-    controller
-  );
+  addLoopGUI("radius", 30, 150, folder, controller);
+  addLoopGUI("phi", 0, Math.PI, folder, controller);
+  addLoopGUI("theta", -Math.PI / 4, Math.PI / 4, folder, controller);
 };
 
 const addLoopGUI = (type, min, max, folder, controller) => {

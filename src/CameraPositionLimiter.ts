@@ -14,15 +14,15 @@ export class CameraPositionLimiter {
 
   public setLimit(type: SphericalParamType, max: number, min: number) {
     switch (type) {
-      case SphericalParamType.PHI:
+      case "phi":
         this.phiMax = max;
         this.phiMin = min;
         break;
-      case SphericalParamType.THETA:
+      case "theta":
         this.thetaMax = max;
         this.thetaMin = min;
         break;
-      case SphericalParamType.R:
+      case "radius":
         this.rMax = max;
         this.rMin = min;
         break;
@@ -31,11 +31,11 @@ export class CameraPositionLimiter {
 
   public clampWithType(type: SphericalParamType, val: number): number {
     switch (type) {
-      case SphericalParamType.PHI:
+      case "phi":
         return CameraPositionLimiter.clamp(val, this.phiMax, this.phiMin);
-      case SphericalParamType.THETA:
+      case "theta":
         return CameraPositionLimiter.clamp(val, this.thetaMax, this.thetaMin);
-      case SphericalParamType.R:
+      case "radius":
         return CameraPositionLimiter.clamp(val, this.rMax, this.rMin);
     }
     return val;
