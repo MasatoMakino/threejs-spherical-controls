@@ -17,12 +17,12 @@ describe("CameraPositionUpdater", () => {
     const updater = new CameraPositionUpdater(parent, camera);
 
     const newPosition = new Spherical();
-    const e = new CameraUpdateEvent(
-      "update",
-      new Mesh(),
-      newPosition,
-      new Vector3()
-    );
+    const e: CameraUpdateEvent = {
+      type: "update",
+      cameraTarget: new Mesh(),
+      position: newPosition,
+      shift: new Vector3(),
+    };
     parent.dispatchEvent(e);
     RAFTicker.emitTickEvent(0);
 

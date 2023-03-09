@@ -58,12 +58,12 @@ export class SphericalController extends EventDispatcher<
   }
 
   public dispatchUpdateEvent = () => {
-    const e = new CameraUpdateEvent(
-      "update",
-      this._cameraTarget,
-      this.pos,
-      this.cameraShift
-    );
+    const e: CameraUpdateEvent = {
+      type: "update",
+      cameraTarget: this._cameraTarget,
+      position: this.pos,
+      shift: this.cameraShift,
+    };
     this.dispatchEvent(e);
   };
 
