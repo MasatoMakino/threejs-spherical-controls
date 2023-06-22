@@ -1,5 +1,5 @@
 import { SphericalController } from "../src";
-import { Camera, Mesh } from "three";
+import { PerspectiveCamera, Mesh } from "three";
 import TWEEN, { Easing } from "@tweenjs/tween.js";
 import { RAFTicker } from "@masatomakino/raf-ticker";
 
@@ -11,7 +11,10 @@ describe("loop", () => {
   });
 
   test("loop", () => {
-    const controller = new SphericalController(new Camera(), new Mesh());
+    const controller = new SphericalController(
+      new PerspectiveCamera(),
+      new Mesh()
+    );
     const callback = jest.fn();
     controller.addEventListener("update", callback);
     controller.loop("radius", 0, 1, {

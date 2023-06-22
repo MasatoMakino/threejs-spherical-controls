@@ -1,5 +1,5 @@
 import { EasingOption, SphericalController } from "../src";
-import { Camera, Mesh } from "three";
+import { PerspectiveCamera, Mesh } from "three";
 import { Easing } from "@tweenjs/tween.js";
 
 describe("EasingOption", () => {
@@ -9,7 +9,10 @@ describe("EasingOption", () => {
   });
 
   test("init : default", () => {
-    const controller = new SphericalController(new Camera(), new Mesh());
+    const controller = new SphericalController(
+      new PerspectiveCamera(),
+      new Mesh()
+    );
     const option = new EasingOption();
     EasingOption.init(option, controller);
     expect(option.normalize).toBe(true);
@@ -18,7 +21,10 @@ describe("EasingOption", () => {
   });
 
   test("init : setting", () => {
-    const controller = new SphericalController(new Camera(), new Mesh());
+    const controller = new SphericalController(
+      new PerspectiveCamera(),
+      new Mesh()
+    );
     const option = new EasingOption();
     option.normalize = false;
     option.duration = 1000;
@@ -30,7 +36,10 @@ describe("EasingOption", () => {
   });
 
   test("init : undefined", () => {
-    const controller = new SphericalController(new Camera(), new Mesh());
+    const controller = new SphericalController(
+      new PerspectiveCamera(),
+      new Mesh()
+    );
     const option = EasingOption.init(undefined, controller);
     expect(option).toBeTruthy();
   });

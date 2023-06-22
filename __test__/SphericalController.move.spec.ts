@@ -1,5 +1,5 @@
 import { SphericalController, SphericalParamType, TargetParam } from "../src";
-import { Camera, Mesh } from "three";
+import { PerspectiveCamera, Mesh } from "three";
 import TWEEN, { Easing } from "@tweenjs/tween.js";
 import { RAFTicker } from "@masatomakino/raf-ticker";
 
@@ -37,7 +37,10 @@ describe("movePosition", () => {
   };
 
   test("to", () => {
-    const controller = new SphericalController(new Camera(), new Mesh());
+    const controller = new SphericalController(
+      new PerspectiveCamera(),
+      new Mesh()
+    );
     controller.movePosition("radius", 2.0, {
       duration: 1000,
       easing: Easing.Linear.None,
@@ -47,7 +50,10 @@ describe("movePosition", () => {
   });
 
   test("not normalize", () => {
-    const controller = new SphericalController(new Camera(), new Mesh());
+    const controller = new SphericalController(
+      new PerspectiveCamera(),
+      new Mesh()
+    );
     controller.addPosition("theta", Math.PI * 10);
 
     controller.movePosition("theta", Math.PI, {
@@ -60,7 +66,10 @@ describe("movePosition", () => {
   });
 
   test("move", () => {
-    const controller = new SphericalController(new Camera(), new Mesh());
+    const controller = new SphericalController(
+      new PerspectiveCamera(),
+      new Mesh()
+    );
     controller.addPosition("theta", 1.0);
     const from = controller.cloneSphericalPosition();
     const to = controller.cloneSphericalPosition();
@@ -75,7 +84,10 @@ describe("movePosition", () => {
   });
 
   test("normalize", () => {
-    const controller = new SphericalController(new Camera(), new Mesh());
+    const controller = new SphericalController(
+      new PerspectiveCamera(),
+      new Mesh()
+    );
     controller.addPosition("theta", Math.PI * 10);
 
     controller.movePosition("theta", Math.PI, {
