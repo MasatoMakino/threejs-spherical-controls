@@ -1,4 +1,10 @@
-import { Camera, EventDispatcher, Mesh, Spherical, Vector3 } from "three";
+import {
+  PerspectiveCamera,
+  EventDispatcher,
+  Mesh,
+  Spherical,
+  Vector3,
+} from "three";
 import {
   CameraPositionUpdater,
   CameraUpdateEvent,
@@ -8,7 +14,7 @@ import { RAFTicker } from "@masatomakino/raf-ticker";
 
 describe("CameraPositionUpdater", () => {
   test("update", () => {
-    const camera = new Camera();
+    const camera = new PerspectiveCamera();
     const parent = new EventDispatcher<
       CameraUpdateEvent | SphericalControllerEvent
     >();

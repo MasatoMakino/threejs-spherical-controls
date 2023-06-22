@@ -1,5 +1,5 @@
 import { SphericalController } from "../src";
-import { Camera, Mesh, Spherical } from "three";
+import { PerspectiveCamera, Mesh, Spherical } from "three";
 import TWEEN from "@tweenjs/tween.js";
 import { RAFTicker } from "@masatomakino/raf-ticker";
 
@@ -11,7 +11,10 @@ describe("SphericalController", () => {
   });
 
   test("constructor", () => {
-    const controller = new SphericalController(new Camera(), new Mesh());
+    const controller = new SphericalController(
+      new PerspectiveCamera(),
+      new Mesh()
+    );
     expect(controller).toBeTruthy();
   });
 
@@ -19,21 +22,27 @@ describe("SphericalController", () => {
     const mesh = new Mesh();
     const consoleWarnMock = jest.spyOn(console, "warn").mockImplementation();
     mesh.material = undefined;
-    const controller = new SphericalController(new Camera(), mesh);
+    const controller = new SphericalController(new PerspectiveCamera(), mesh);
     expect(controller).toBeTruthy();
     expect(consoleWarnMock).toBeCalled();
     consoleWarnMock.mockRestore();
   });
 
   test("clone", () => {
-    const controller = new SphericalController(new Camera(), new Mesh());
+    const controller = new SphericalController(
+      new PerspectiveCamera(),
+      new Mesh()
+    );
     expect(controller.cloneSphericalPosition()).toStrictEqual(
       new Spherical(1, 0, 0)
     );
   });
 
   test("copy", () => {
-    const controller = new SphericalController(new Camera(), new Mesh());
+    const controller = new SphericalController(
+      new PerspectiveCamera(),
+      new Mesh()
+    );
     const target = new Spherical();
     controller.copySphericalPosition(target);
     expect(target).toStrictEqual(new Spherical(1, 0, 0));
@@ -41,7 +50,10 @@ describe("SphericalController", () => {
 
   describe("addPosition", () => {
     const initSpherical = () => {
-      const controller = new SphericalController(new Camera(), new Mesh());
+      const controller = new SphericalController(
+        new PerspectiveCamera(),
+        new Mesh()
+      );
       const onMovedCamera = jest.fn();
       controller.addEventListener("update", onMovedCamera);
       return { controller, onMovedCamera };

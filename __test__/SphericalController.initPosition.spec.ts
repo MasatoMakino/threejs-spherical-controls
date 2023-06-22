@@ -1,11 +1,14 @@
 import { SphericalController } from "../src";
-import { Camera, Mesh, Spherical, Vector3 } from "three";
+import { PerspectiveCamera, Mesh, Spherical, Vector3 } from "three";
 
 describe("initPosition", () => {
   const EPS = 0.000001;
 
   test("initPosition", () => {
-    const controller = new SphericalController(new Camera(), new Mesh());
+    const controller = new SphericalController(
+      new PerspectiveCamera(),
+      new Mesh()
+    );
     controller.initCameraPosition(new Spherical());
     expect(controller.cloneSphericalPosition()).toStrictEqual(
       new Spherical(1, EPS, 0)
@@ -13,7 +16,10 @@ describe("initPosition", () => {
   });
 
   test("Arguments of initPosition should not affect cameraPosition.", () => {
-    const controller = new SphericalController(new Camera(), new Mesh());
+    const controller = new SphericalController(
+      new PerspectiveCamera(),
+      new Mesh()
+    );
     const pos = new Spherical(100, 1, -1);
     const originalPos = pos.clone();
 
@@ -25,7 +31,10 @@ describe("initPosition", () => {
   });
 
   test("init camera position and target position", () => {
-    const controller = new SphericalController(new Camera(), new Mesh());
+    const controller = new SphericalController(
+      new PerspectiveCamera(),
+      new Mesh()
+    );
     const onUpdate = jest.fn();
     controller.addEventListener("update", onUpdate);
 
@@ -39,7 +48,10 @@ describe("initPosition", () => {
   });
 
   test("limit position", () => {
-    const controller = new SphericalController(new Camera(), new Mesh());
+    const controller = new SphericalController(
+      new PerspectiveCamera(),
+      new Mesh()
+    );
     controller.initCameraPosition(
       new Spherical(Number.POSITIVE_INFINITY, 1000, 1000)
     );
