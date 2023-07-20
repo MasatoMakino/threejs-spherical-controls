@@ -24,7 +24,7 @@
     "@masatomakino/gulptask-demo-page": "^0.6.7",
     "@tweenjs/tween.js": "20.0.3",
     "@types/jest": "^29.5.2",
-    "@types/three": "^0.153.0",
+    "@types/three": "^0.154.0",
     "browser-sync": "^2.29.3",
     "husky": "^8.0.3",
     "jest": "^29.5.0",
