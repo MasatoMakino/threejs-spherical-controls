@@ -22,7 +22,7 @@
     "@tweenjs/tween.js": "^21.0.0"
   },
   "devDependencies": {
-    "@masatomakino/gulptask-demo-page": "^0.6.7",
+    "@masatomakino/gulptask-demo-page": "^0.7.0",
     "@types/jest": "^29.5.2",
     "@types/three": "^0.154.0",
     "browser-sync": "^2.29.3",
