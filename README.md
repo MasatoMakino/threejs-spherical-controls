@@ -17,14 +17,6 @@
 
 ### Install
 
-threejs-spherical-controls depend on [three.js](https://threejs.org/) and [@tweenjs/tween.js](https://github.com/tweenjs/tween.js/)
-
-```bash
-npm install three @tweenjs/tween.js --save-dev
-```
-
-and
-
 ```bash
 npm install @masatomakino/threejs-spherical-controls --save-dev
 ```
@@ -47,10 +39,10 @@ scene.add(cameraTarget);
 
 const cameraController = new SphericalController(camera, cameraTarget);
 cameraController.initCameraPosition(
-  new Spherical(radius, 0, 0) // => North Pole
+  new Spherical(radius, 0, 0), // => North Pole
 );
 cameraController.move(
-  new Spherical(radius, Math.PI, 0) // => South Pole
+  new Spherical(radius, Math.PI, 0), // => South Pole
 );
 ```
 
