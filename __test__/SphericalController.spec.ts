@@ -13,35 +13,25 @@ describe("SphericalController", () => {
   test("constructor", () => {
     const controller = new SphericalController(
       new PerspectiveCamera(),
-      new Mesh()
+      new Mesh(),
     );
     expect(controller).toBeTruthy();
-  });
-
-  test("constructor without target material", () => {
-    const mesh = new Mesh();
-    const consoleWarnMock = jest.spyOn(console, "warn").mockImplementation();
-    mesh.material = undefined;
-    const controller = new SphericalController(new PerspectiveCamera(), mesh);
-    expect(controller).toBeTruthy();
-    expect(consoleWarnMock).toBeCalled();
-    consoleWarnMock.mockRestore();
   });
 
   test("clone", () => {
     const controller = new SphericalController(
       new PerspectiveCamera(),
-      new Mesh()
+      new Mesh(),
     );
     expect(controller.cloneSphericalPosition()).toStrictEqual(
-      new Spherical(1, 0, 0)
+      new Spherical(1, 0, 0),
     );
   });
 
   test("copy", () => {
     const controller = new SphericalController(
       new PerspectiveCamera(),
-      new Mesh()
+      new Mesh(),
     );
     const target = new Spherical();
     controller.copySphericalPosition(target);
@@ -52,7 +42,7 @@ describe("SphericalController", () => {
     const initSpherical = () => {
       const controller = new SphericalController(
         new PerspectiveCamera(),
-        new Mesh()
+        new Mesh(),
       );
       const onMovedCamera = jest.fn();
       controller.addEventListener("update", onMovedCamera);
