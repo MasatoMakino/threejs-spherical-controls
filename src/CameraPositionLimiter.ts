@@ -5,8 +5,8 @@ export class CameraPositionLimiter {
   private static readonly EPS = 0.000001;
   public phiMin: number = CameraPositionLimiter.EPS;
   public phiMax: number = Math.PI - CameraPositionLimiter.EPS;
-  public thetaMin: number = null;
-  public thetaMax: number = null;
+  public thetaMin: number | undefined = undefined;
+  public thetaMax: number | undefined = undefined;
   public rMax: number = Number.MAX_VALUE;
   public rMin: number = CameraPositionLimiter.EPS;
 
@@ -46,7 +46,7 @@ export class CameraPositionLimiter {
     pos[type] = this.clampWithType(type, val);
   }
 
-  private static clamp(value: number, max: number, min: number): number {
+  private static clamp(value: number, max?: number, min?: number): number {
     if (min == null || max == null) return value;
     value = Math.min(value, max);
     value = Math.max(value, min);

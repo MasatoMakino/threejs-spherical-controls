@@ -48,8 +48,8 @@ export class SphericalController extends EventDispatcher<
     super();
 
     this._cameraTarget = target;
-    if (!this._cameraTarget.geometry || !this._cameraTarget.material) {
-      console.warn("No geometry or material for camera target object.");
+    if (!this._cameraTarget.geometry) {
+      console.warn("No geometry for camera target object.");
     }
 
     this.cameraUpdater = new CameraPositionUpdater(this, camera);
@@ -130,7 +130,7 @@ export class SphericalController extends EventDispatcher<
   public movePosition(
     type: SphericalParamType,
     value: number,
-    option?: EasingOption
+    option?: EasingOption,
   ): void {
     option = EasingOption.init(option, this);
 
@@ -150,9 +150,9 @@ export class SphericalController extends EventDispatcher<
   private getTweenPosition(
     targetParam: TargetParam | SphericalParamType,
     to: number,
-    option: EasingOption
+    option: EasingOption,
   ): Tween<Spherical> {
-    const toObj = {};
+    const toObj: { [key: string]: number } = {};
     toObj[targetParam] = to;
 
     return new Tween(this.pos)
@@ -171,7 +171,7 @@ export class SphericalController extends EventDispatcher<
    * @param paramType
    */
   private onCompleteCameraTween(
-    paramType: TargetParam | SphericalParamType
+    paramType: TargetParam | SphericalParamType,
   ): void {
     this.dispatchEvent({
       type: "moved_camera_complete",
@@ -210,27 +210,29 @@ export class SphericalController extends EventDispatcher<
     type: SphericalParamType,
     min: number,
     max: number,
-    option?: EasingOption
+    option?: EasingOption,
   ): void {
     if (type === "theta") {
       this.pos.theta = SphericalControllerUtil.PI2ToPI(this.pos.theta);
     }
-    option = EasingOption.init(option, this, true);
+    const requiredOption = EasingOption.init(option, this, true);
 
     const toMin = this.limiter.clampWithType(type, min);
     const toMax = this.limiter.clampWithType(type, max);
-    const toObjMax = {};
+    const toObjMax: { [key: string]: number } = {};
     toObjMax[type] = toMax;
-    const toObjMin = {};
+    const toObjMin: { [key: string]: number } = {};
     toObjMin[type] = toMin;
 
     const loop = () => {
       const startTime =
-        option.startTime == null ? undefined : option.startTime + firstDuration;
+        requiredOption.startTime == null
+          ? undefined
+          : requiredOption.startTime + firstDuration;
       const tween = new Tween(this.pos)
-        .to(toObjMax, option.duration)
+        .to(toObjMax, requiredOption.duration)
         .yoyo(true)
-        .easing(option.easing)
+        .easing(requiredOption.easing)
         .onUpdate(this.dispatchUpdateEvent)
         .repeat(Infinity)
         .start(startTime);
@@ -238,18 +240,18 @@ export class SphericalController extends EventDispatcher<
     };
 
     const firstDuration = SphericalControllerUtil.getFirstDuration(
-      option.duration,
+      requiredOption.duration,
       this.pos[type],
       toMax,
-      toMin
+      toMin,
     );
 
     const tween = new Tween(this.pos)
-      .easing(option.easing)
+      .easing(requiredOption.easing)
       .to(toObjMin, firstDuration)
       .onUpdate(this.dispatchUpdateEvent)
       .onComplete(loop)
-      .start(option.startTime);
+      .start(requiredOption.startTime);
     this.tweens.overrideTween(type, tween);
   }
 
@@ -296,7 +298,7 @@ export class SphericalController extends EventDispatcher<
     type: SphericalParamType,
     value: number,
     overrideTween: boolean = false,
-    addDuringTween: boolean = false
+    addDuringTween: boolean = false,
   ): void {
     if (!overrideTween) {
       if (!addDuringTween && this.tweens.isPlaying()) {

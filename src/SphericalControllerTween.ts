@@ -57,7 +57,9 @@ export class SphericalControllerTween {
    * @param key
    */
   public isPlayingWithKey(key: TweenMapKey): boolean {
-    return this.tweenMap.get(key)?.isPlaying();
+    const tween = this.tweenMap.get(key);
+    if (!tween) return false;
+    return tween.isPlaying();
   }
 
   /**

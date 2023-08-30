@@ -13,7 +13,7 @@ import {
 import { RAFTicker } from "@masatomakino/raf-ticker";
 
 describe("CameraPositionUpdater", () => {
-  test("update", () => {
+  const initCameraPositionUpdater = () => {
     const camera = new PerspectiveCamera();
     const parent = new EventDispatcher<
       CameraUpdateEvent | SphericalControllerEvent
@@ -22,6 +22,10 @@ describe("CameraPositionUpdater", () => {
     parent.addEventListener("moved_camera", onUpdateCamera);
     const updater = new CameraPositionUpdater(parent, camera);
 
+    return { parent, onUpdateCamera };
+  };
+
+  const generateCameraUpdateEvent = () => {
     const newPosition = new Spherical();
     const e: CameraUpdateEvent = {
       type: "update",
@@ -29,9 +33,24 @@ describe("CameraPositionUpdater", () => {
       position: newPosition,
       shift: new Vector3(),
     };
-    parent.dispatchEvent(e);
-    RAFTicker.emitTickEvent(0);
+    return e;
+  };
 
+  test("update", () => {
+    const { parent, onUpdateCamera } = initCameraPositionUpdater();
+    const e = generateCameraUpdateEvent();
+    parent.dispatchEvent(e);
+
+    //rafが呼び出されるまでは、cameraの移動は発生しない。
+    expect(onUpdateCamera).not.toBeCalled();
+
+    //rafが呼び出されたら、レンダリングの前にカメラが移動する。
+    RAFTicker.emitTickEvent(0);
     expect(onUpdateCamera).toBeCalled();
+
+    //カメラ移動後に、rafが呼び出されても、カメラは移動しない。
+    onUpdateCamera.mockClear();
+    RAFTicker.emitTickEvent(1);
+    expect(onUpdateCamera).not.toBeCalled();
   });
 });
