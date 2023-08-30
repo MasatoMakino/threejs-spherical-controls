@@ -1,10 +1,15 @@
 import { SphericalController } from "./SphericalController";
 
+export interface RequiredEasingOption {
+  duration: number;
+  easing: (k: number) => number;
+  normalize: boolean;
+  startTime?: number;
+}
 /**
  * イージングオプション
  * move関数で一度限りのアニメーション設定するためのオプション。
  */
-
 export class EasingOption {
   duration?: number;
   easing?: (k: number) => number;
@@ -12,12 +17,12 @@ export class EasingOption {
   startTime?: number;
 
   static init(
-    option: EasingOption,
+    option: EasingOption | undefined,
     controller: SphericalController,
-    isLoop: boolean = false
-  ): EasingOption {
+    isLoop: boolean = false,
+  ): RequiredEasingOption {
     if (option == null) {
-      option = new EasingOption();
+      option = {};
     }
 
     option.duration ??= controller.tweens.duration;
@@ -28,6 +33,6 @@ export class EasingOption {
     option.easing ??= defaultEase;
     option.normalize ??= true;
 
-    return option;
+    return option as RequiredEasingOption;
   }
 }

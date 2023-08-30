@@ -48,8 +48,8 @@ export class SphericalController extends EventDispatcher<
     super();
 
     this._cameraTarget = target;
-    if (!this._cameraTarget.geometry || !this._cameraTarget.material) {
-      console.warn("No geometry or material for camera target object.");
+    if (!this._cameraTarget.geometry) {
+      console.warn("No geometry for camera target object.");
     }
 
     this.cameraUpdater = new CameraPositionUpdater(this, camera);
@@ -215,7 +215,7 @@ export class SphericalController extends EventDispatcher<
     if (type === "theta") {
       this.pos.theta = SphericalControllerUtil.PI2ToPI(this.pos.theta);
     }
-    option = EasingOption.init(option, this, true);
+    const requiredOption = EasingOption.init(option, this, true);
 
     const toMin = this.limiter.clampWithType(type, min);
     const toMax = this.limiter.clampWithType(type, max);
@@ -226,11 +226,13 @@ export class SphericalController extends EventDispatcher<
 
     const loop = () => {
       const startTime =
-        option.startTime == null ? undefined : option.startTime + firstDuration;
+        requiredOption.startTime == null
+          ? undefined
+          : requiredOption.startTime + firstDuration;
       const tween = new Tween(this.pos)
-        .to(toObjMax, option.duration)
+        .to(toObjMax, requiredOption.duration)
         .yoyo(true)
-        .easing(option.easing)
+        .easing(requiredOption.easing)
         .onUpdate(this.dispatchUpdateEvent)
         .repeat(Infinity)
         .start(startTime);
@@ -238,18 +240,18 @@ export class SphericalController extends EventDispatcher<
     };
 
     const firstDuration = SphericalControllerUtil.getFirstDuration(
-      option.duration,
+      requiredOption.duration,
       this.pos[type],
       toMax,
       toMin,
     );
 
     const tween = new Tween(this.pos)
-      .easing(option.easing)
+      .easing(requiredOption.easing)
       .to(toObjMin, firstDuration)
       .onUpdate(this.dispatchUpdateEvent)
       .onComplete(loop)
-      .start(option.startTime);
+      .start(requiredOption.startTime);
     this.tweens.overrideTween(type, tween);
   }
 
