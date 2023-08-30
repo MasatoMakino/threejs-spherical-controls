@@ -9,11 +9,11 @@ export class CameraPositionUpdater {
     CameraUpdateEvent | SphericalControllerEvent
   >;
   private _camera: Camera;
-  private updateEvent: CameraUpdateEvent;
+  private updateEvent?: CameraUpdateEvent;
 
   constructor(
     parent: EventDispatcher<CameraUpdateEvent | SphericalControllerEvent>,
-    camera: Camera
+    camera: Camera,
   ) {
     this.dispatcher = parent;
     this._camera = camera;
@@ -39,7 +39,7 @@ export class CameraPositionUpdater {
    * カメラ位置および注視点の更新処理
    */
   private updatePosition = () => {
-    if (!this.isUpdate) return;
+    if (!this.isUpdate || !this.updateEvent) return;
     this.isUpdate = false;
 
     const e = this.updateEvent;
