@@ -14,32 +14,32 @@ describe("movePosition", () => {
     controller: SphericalController,
     key: SphericalParamType | TargetParam,
     from: number,
-    to: number
+    to: number,
   ) => {
     const generateObject = (rate: number) => {
-      const obj = {};
+      const obj: { [key: string]: number } = {};
       obj[key] = from * (1 - rate) + to * rate;
       return obj;
     };
 
     RAFTicker.emitTickEvent(100);
     expect(controller.cloneSphericalPosition()).toMatchObject(
-      generateObject(0.1)
+      generateObject(0.1),
     );
     RAFTicker.emitTickEvent(500);
     expect(controller.cloneSphericalPosition()).toMatchObject(
-      generateObject(0.5)
+      generateObject(0.5),
     );
     RAFTicker.emitTickEvent(1000);
     expect(controller.cloneSphericalPosition()).toMatchObject(
-      generateObject(1.0)
+      generateObject(1.0),
     );
   };
 
   test("to", () => {
     const controller = new SphericalController(
       new PerspectiveCamera(),
-      new Mesh()
+      new Mesh(),
     );
     controller.movePosition("radius", 2.0, {
       duration: 1000,
@@ -52,7 +52,7 @@ describe("movePosition", () => {
   test("not normalize", () => {
     const controller = new SphericalController(
       new PerspectiveCamera(),
-      new Mesh()
+      new Mesh(),
     );
     controller.addPosition("theta", Math.PI * 10);
 
@@ -68,7 +68,7 @@ describe("movePosition", () => {
   test("move", () => {
     const controller = new SphericalController(
       new PerspectiveCamera(),
-      new Mesh()
+      new Mesh(),
     );
     controller.addPosition("theta", 1.0);
     const from = controller.cloneSphericalPosition();
@@ -86,7 +86,7 @@ describe("movePosition", () => {
   test("normalize", () => {
     const controller = new SphericalController(
       new PerspectiveCamera(),
-      new Mesh()
+      new Mesh(),
     );
     controller.addPosition("theta", Math.PI * 10);
 

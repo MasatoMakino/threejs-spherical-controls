@@ -130,7 +130,7 @@ export class SphericalController extends EventDispatcher<
   public movePosition(
     type: SphericalParamType,
     value: number,
-    option?: EasingOption
+    option?: EasingOption,
   ): void {
     option = EasingOption.init(option, this);
 
@@ -150,9 +150,9 @@ export class SphericalController extends EventDispatcher<
   private getTweenPosition(
     targetParam: TargetParam | SphericalParamType,
     to: number,
-    option: EasingOption
+    option: EasingOption,
   ): Tween<Spherical> {
-    const toObj = {};
+    const toObj: { [key: string]: number } = {};
     toObj[targetParam] = to;
 
     return new Tween(this.pos)
@@ -171,7 +171,7 @@ export class SphericalController extends EventDispatcher<
    * @param paramType
    */
   private onCompleteCameraTween(
-    paramType: TargetParam | SphericalParamType
+    paramType: TargetParam | SphericalParamType,
   ): void {
     this.dispatchEvent({
       type: "moved_camera_complete",
@@ -210,7 +210,7 @@ export class SphericalController extends EventDispatcher<
     type: SphericalParamType,
     min: number,
     max: number,
-    option?: EasingOption
+    option?: EasingOption,
   ): void {
     if (type === "theta") {
       this.pos.theta = SphericalControllerUtil.PI2ToPI(this.pos.theta);
@@ -219,9 +219,9 @@ export class SphericalController extends EventDispatcher<
 
     const toMin = this.limiter.clampWithType(type, min);
     const toMax = this.limiter.clampWithType(type, max);
-    const toObjMax = {};
+    const toObjMax: { [key: string]: number } = {};
     toObjMax[type] = toMax;
-    const toObjMin = {};
+    const toObjMin: { [key: string]: number } = {};
     toObjMin[type] = toMin;
 
     const loop = () => {
@@ -241,7 +241,7 @@ export class SphericalController extends EventDispatcher<
       option.duration,
       this.pos[type],
       toMax,
-      toMin
+      toMin,
     );
 
     const tween = new Tween(this.pos)
@@ -296,7 +296,7 @@ export class SphericalController extends EventDispatcher<
     type: SphericalParamType,
     value: number,
     overrideTween: boolean = false,
-    addDuringTween: boolean = false
+    addDuringTween: boolean = false,
   ): void {
     if (!overrideTween) {
       if (!addDuringTween && this.tweens.isPlaying()) {
