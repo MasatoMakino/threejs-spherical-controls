@@ -1,4 +1,4 @@
-import { SphericalControllerUtil } from "../src";
+import { SphericalControllerUtil } from "../src/index.js";
 import { MeshBasicMaterial } from "three";
 
 describe("SphericalControllerUtil", () => {
@@ -21,7 +21,7 @@ describe("SphericalControllerUtil", () => {
 
     expect(SphericalControllerUtil.getFirstDuration(1, 0, 1.0, -1)).toBe(0.5);
     expect(SphericalControllerUtil.getFirstDuration(1, 0.5, 1.0, -1)).toBe(
-      0.75
+      0.75,
     );
     expect(SphericalControllerUtil.getFirstDuration(1, 1.0, 1.0, -1)).toBe(1);
   });
@@ -32,17 +32,17 @@ describe("SphericalControllerUtil", () => {
     expect(SphericalControllerUtil.getTweenTheta(0, -0.1)).toBe(-0.1);
 
     expect(SphericalControllerUtil.getTweenTheta(0, PI2 + 0.1)).toBeCloseTo(
-      0.1
+      0.1,
     );
     expect(SphericalControllerUtil.getTweenTheta(0, PI2 - 0.1)).toBeCloseTo(
-      -0.1
+      -0.1,
     );
 
     expect(SphericalControllerUtil.getTweenTheta(PI2, 0.1)).toBeCloseTo(
-      PI2 + 0.1
+      PI2 + 0.1,
     );
     expect(SphericalControllerUtil.getTweenTheta(PI2, -0.1)).toBeCloseTo(
-      PI2 - 0.1
+      PI2 - 0.1,
     );
   });
 });

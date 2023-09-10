@@ -1,4 +1,8 @@
-import { SphericalController, SphericalParamType, TargetParam } from "../src";
+import {
+  SphericalController,
+  SphericalParamType,
+  TargetParam,
+} from "../src/index.js";
 import { PerspectiveCamera, Mesh } from "three";
 import TWEEN, { Easing } from "@tweenjs/tween.js";
 import { RAFTicker } from "@masatomakino/raf-ticker";

@@ -1,8 +1,8 @@
 import GUI from "lil-gui";
 import { Scene, Spherical, Vector3 } from "three";
 import TWEEN from "@tweenjs/tween.js";
-import { Common } from "./Common";
-import { SphericalController, SphericalControllerUtil } from "..";
+import { Common } from "./Common.js";
+import { SphericalController, SphericalControllerUtil } from "../esm/index.js";
 
 const W = 1280;
 const H = 800;
@@ -38,18 +38,18 @@ const testPI2 = () => {
   console.log(SphericalControllerUtil.PI2ToPI(-Math.PI) === -Math.PI);
   console.log(SphericalControllerUtil.PI2ToPI(Math.PI * 2));
   console.log(
-    SphericalControllerUtil.PI2ToPI(Math.PI + 0.01) === -Math.PI + 0.01
+    SphericalControllerUtil.PI2ToPI(Math.PI + 0.01) === -Math.PI + 0.01,
   );
   console.log(
     Math.abs(SphericalControllerUtil.PI2ToPI(Math.PI * 200 + 0.01) - 0.01) <
-      0.000001
+      0.000001,
   );
 };
 
 const initController = (cameraTarget, R) => {
   const cameraController = new SphericalController(camera, cameraTarget);
   cameraController.initCameraPosition(
-    new Spherical(R, 0.0001, Math.PI * 2 * 12)
+    new Spherical(R, 0.0001, Math.PI * 2 * 12),
   );
   cameraController.initCameraShift(new Vector3(20, 0, 0));
   cameraController.duration = 1666;
@@ -102,7 +102,7 @@ const startRandomAnimation = (controller) => {
       R,
       // Math.random() * 70 + 35,
       Math.random() * Math.PI,
-      Math.random() * Math.PI * 6 - Math.PI * 3
+      Math.random() * Math.PI * 6 - Math.PI * 3,
     );
     controller.move(to, {
       duration: 1500,

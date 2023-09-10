@@ -1,4 +1,4 @@
-import { CameraPositionLimiter, SphericalParamType } from "../src";
+import { CameraPositionLimiter, SphericalParamType } from "../src/index.js";
 import { Spherical } from "three";
 
 describe("CameraPositionLimiter", () => {
@@ -6,7 +6,7 @@ describe("CameraPositionLimiter", () => {
     const limit = (
       type: SphericalParamType,
       max: number = 1.0,
-      min: number = 0.0
+      min: number = 0.0,
     ) => {
       const limiter = new CameraPositionLimiter();
       const spherical = new Spherical();
