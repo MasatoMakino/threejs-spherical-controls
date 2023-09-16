@@ -1,6 +1,5 @@
 import { Camera, EventDispatcher, Vector3 } from "three";
-import { SphericalControllerEvent } from "./SphericalControllerEvent";
-import { CameraUpdateEvent } from "./CameraUpdateEvent";
+import { SphericalControllerEvent, CameraUpdateEvent } from "./index.js";
 import { RAFTicker } from "@masatomakino/raf-ticker";
 
 export class CameraPositionUpdater {

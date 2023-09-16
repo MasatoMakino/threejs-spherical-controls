@@ -1,5 +1,5 @@
 import { Spherical } from "three";
-import { SphericalParamType } from "./TargetParam";
+import { SphericalParamType } from "./TargetParam.js";
 
 export class CameraPositionLimiter {
   private static readonly EPS = 0.000001;
