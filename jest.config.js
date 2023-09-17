@@ -1,3 +1,9 @@
+/**
+ * transformが必要なPure ESMのパッケージ。
+ * @type {string[]}
+ */
+const ignorePackages = ["@masatomakino/tween.js-ticker"];
+
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 const jestConfig = {
   preset: "ts-jest",
@@ -15,6 +21,7 @@ const jestConfig = {
       },
     ],
   },
+  transformIgnorePatterns: [`node_modules/(?!(${ignorePackages.join("|")})/)`],
 };
 
 export default jestConfig;
