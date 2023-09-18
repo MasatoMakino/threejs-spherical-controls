@@ -12,7 +12,9 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+
+    "allowJs": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "__test__"]
