@@ -1,4 +1,4 @@
-import { SphericalController } from "../src";
+import { SphericalController } from "../src/index.js";
 import { PerspectiveCamera, Mesh } from "three";
 import TWEEN, { Easing } from "@tweenjs/tween.js";
 import { RAFTicker } from "@masatomakino/raf-ticker";
@@ -13,7 +13,7 @@ describe("loop", () => {
   test("loop", () => {
     const controller = new SphericalController(
       new PerspectiveCamera(),
-      new Mesh()
+      new Mesh(),
     );
     const callback = jest.fn();
     controller.addEventListener("update", callback);
@@ -29,7 +29,7 @@ describe("loop", () => {
       const lastCallbackArgs = callback.mock.calls.at(-1)[0];
       expect(lastCallbackArgs.position["radius"]).toBeCloseTo(position);
       expect(controller.cloneSphericalPosition()["radius"]).toBeCloseTo(
-        position
+        position,
       );
       callback.mockReset();
     };

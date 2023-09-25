@@ -9,7 +9,7 @@ import {
   CameraPositionUpdater,
   CameraUpdateEvent,
   SphericalControllerEvent,
-} from "../src";
+} from "../src/index.js";
 import { RAFTicker } from "@masatomakino/raf-ticker";
 
 describe("CameraPositionUpdater", () => {

@@ -1,4 +1,4 @@
-import { SphericalParamType, TargetParam } from "./TargetParam";
+import { SphericalParamType, TargetParam } from "./index.js";
 import { Event } from "three";
 
 /**

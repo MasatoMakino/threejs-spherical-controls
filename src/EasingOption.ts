@@ -1,4 +1,4 @@
-import { SphericalController } from "./SphericalController";
+import { SphericalController } from "./SphericalController.js";
 
 export interface RequiredEasingOption {
   duration: number;
