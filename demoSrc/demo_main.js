@@ -54,7 +54,7 @@ const initController = (cameraTarget, R) => {
   cameraController.initCameraShift(new Vector3(20, 0, 0));
   cameraController.duration = 1666;
 
-  cameraController.addEventListener("moved_camera_complete", (e) => {
+  cameraController.on("moved_camera_complete", (e) => {
     console.log("Complete : ", e);
   });
 

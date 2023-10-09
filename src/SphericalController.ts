@@ -11,7 +11,10 @@ import {
   SphericalControllerTween,
   CameraPositionUpdater,
   CameraUpdateEvent,
+  CameraUpdateEventMap,
+  SphericalControllerEventMap,
 } from "./index.js";
+import EventEmitter from "eventemitter3";
 
 /**
  * 球面座標系でカメラ位置をコントロールするクラス。
@@ -24,8 +27,8 @@ import {
  *
  * 北極南極を通過すると緯度も反転するため、このクラスでは南北90度以上の移動には対応していない。また、極点上空では座標が一意の値にならないため、Phi 0もしくはPIには対応していない。
  */
-export class SphericalController extends EventDispatcher<
-  CameraUpdateEvent | SphericalControllerEvent
+export class SphericalController extends EventEmitter<
+  CameraUpdateEventMap | SphericalControllerEventMap
 > {
   private cameraUpdater: CameraPositionUpdater;
 
@@ -67,7 +70,7 @@ export class SphericalController extends EventDispatcher<
       position: this.pos,
       shift: this.cameraShift,
     };
-    this.dispatchEvent(e);
+    this.emit(e.type, e);
   };
 
   /**
@@ -176,7 +179,7 @@ export class SphericalController extends EventDispatcher<
   private onCompleteCameraTween(
     paramType: TargetParam | SphericalParamType,
   ): void {
-    this.dispatchEvent({
+    this.emit("moved_camera_complete", {
       type: "moved_camera_complete",
       completedParam: paramType,
     });

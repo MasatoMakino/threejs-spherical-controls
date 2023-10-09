@@ -8,18 +8,20 @@ import {
 import {
   CameraPositionUpdater,
   CameraUpdateEvent,
-  SphericalControllerEvent,
+  CameraUpdateEventMap,
+  SphericalControllerEventMap,
 } from "../src/index.js";
 import { RAFTicker } from "@masatomakino/raf-ticker";
+import EventEmitter from "eventemitter3";
 
 describe("CameraPositionUpdater", () => {
   const initCameraPositionUpdater = () => {
     const camera = new PerspectiveCamera();
-    const parent = new EventDispatcher<
-      CameraUpdateEvent | SphericalControllerEvent
+    const parent = new EventEmitter<
+      CameraUpdateEventMap | SphericalControllerEventMap
     >();
     const onUpdateCamera = jest.fn();
-    parent.addEventListener("moved_camera", onUpdateCamera);
+    parent.on("moved_camera", onUpdateCamera);
     const updater = new CameraPositionUpdater(parent, camera);
 
     return { parent, onUpdateCamera };
@@ -39,7 +41,7 @@ describe("CameraPositionUpdater", () => {
   test("update", () => {
     const { parent, onUpdateCamera } = initCameraPositionUpdater();
     const e = generateCameraUpdateEvent();
-    parent.dispatchEvent(e);
+    parent.emit(e.type, e);
 
     //rafが呼び出されるまでは、cameraの移動は発生しない。
     expect(onUpdateCamera).not.toBeCalled();

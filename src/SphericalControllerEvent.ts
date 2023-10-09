@@ -1,5 +1,9 @@
 import { SphericalParamType, TargetParam } from "./index.js";
-import { Event } from "three";
+
+export interface SphericalControllerEventMap {
+  moved_camera: (e: SphericalControllerEvent) => void;
+  moved_camera_complete: (e: SphericalControllerEvent) => void;
+}
 
 /**
  * カメラが移動した際に発行されるイベント
@@ -8,11 +12,7 @@ import { Event } from "three";
  * SphericalController外でカメラの移動を検知するためにはCameraUpdateEventを利用する。
  * TODO : SphericalControllerEventとCameraUpdateEventを一本化できないか検討する
  */
-export interface SphericalControllerEvent extends Event {
-  type: SphericalControllerEventType;
+export interface SphericalControllerEvent {
+  type: keyof SphericalControllerEventMap;
   completedParam?: TargetParam | SphericalParamType;
 }
-
-export type SphericalControllerEventType =
-  | "moved_camera"
-  | "moved_camera_complete";

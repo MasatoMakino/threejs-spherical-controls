@@ -16,7 +16,7 @@ describe("loop", () => {
       new Mesh(),
     );
     const callback = jest.fn();
-    controller.addEventListener("update", callback);
+    controller.on("update", callback);
     controller.loop("radius", 0, 1, {
       easing: Easing.Linear.None,
       duration: 1000,
