@@ -36,7 +36,7 @@ describe("initPosition", () => {
       new Mesh(),
     );
     const onUpdate = jest.fn();
-    controller.addEventListener("update", onUpdate);
+    controller.on("update", onUpdate);
 
     const targetPos = new Vector3(0, 10, 0);
     controller.initCameraPosition(new Spherical(), targetPos);
