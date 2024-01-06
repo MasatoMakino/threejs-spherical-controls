@@ -28,14 +28,14 @@
     "threejs"
   ],
   "peerDependencies": {
-    "@masatomakino/tween.js-ticker": "^0.6.0",
+    "@masatomakino/tween.js-ticker": "0.6.0 - 0.7.x",
     "three": ">=0.126.0 <1.0.0"
   },
   "dependencies": {
     "eventemitter3": "^5.0.1"
   },
   "devDependencies": {
-    "@masatomakino/gulptask-demo-page": "^0.7.4",
+    "@masatomakino/gulptask-demo-page": "^0.8.0",
     "@types/jest": "^29.5.5",
     "@types/three": "^0.160.0",
     "browser-sync": "^3.0.2",
