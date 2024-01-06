@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import { SphericalControllerUtil } from "../src/index.js";
 import { MeshBasicMaterial } from "three";
 

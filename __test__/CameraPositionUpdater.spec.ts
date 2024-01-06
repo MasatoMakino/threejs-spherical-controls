@@ -1,10 +1,5 @@
-import {
-  PerspectiveCamera,
-  EventDispatcher,
-  Mesh,
-  Spherical,
-  Vector3,
-} from "three";
+import { describe, expect, test, vi } from "vitest";
+import { PerspectiveCamera, Mesh, Spherical, Vector3 } from "three";
 import {
   CameraPositionUpdater,
   CameraUpdateEvent,
@@ -20,7 +15,7 @@ describe("CameraPositionUpdater", () => {
     const parent = new EventEmitter<
       CameraUpdateEventMap | SphericalControllerEventMap
     >();
-    const onUpdateCamera = jest.fn();
+    const onUpdateCamera = vi.fn();
     parent.on("moved_camera", onUpdateCamera);
     const updater = new CameraPositionUpdater(parent, camera);
 
