@@ -1,3 +1,4 @@
+import { describe, expect, test, vi, beforeEach } from "vitest";
 import { SphericalController } from "../src/index.js";
 import { PerspectiveCamera, Mesh } from "three";
 import TWEEN, { Easing } from "@tweenjs/tween.js";
@@ -15,7 +16,7 @@ describe("loop", () => {
       new PerspectiveCamera(),
       new Mesh(),
     );
-    const callback = jest.fn();
+    const callback = vi.fn();
     controller.on("update", callback);
     controller.loop("radius", 0, 1, {
       easing: Easing.Linear.None,

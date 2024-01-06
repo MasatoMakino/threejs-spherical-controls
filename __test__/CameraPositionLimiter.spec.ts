@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import { CameraPositionLimiter, SphericalParamType } from "../src/index.js";
 import { Spherical } from "three";
 

@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import { EasingOption, SphericalController } from "../src/index.js";
 import { PerspectiveCamera, Mesh } from "three";
 import { Easing } from "@tweenjs/tween.js";

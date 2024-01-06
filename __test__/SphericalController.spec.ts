@@ -1,3 +1,4 @@
+import { describe, beforeEach, expect, test, vi } from "vitest";
 import { SphericalController } from "../src/index.js";
 import { PerspectiveCamera, Mesh, Spherical } from "three";
 import TWEEN from "@tweenjs/tween.js";
@@ -44,7 +45,7 @@ describe("SphericalController", () => {
         new PerspectiveCamera(),
         new Mesh(),
       );
-      const onMovedCamera = jest.fn();
+      const onMovedCamera = vi.fn();
       controller.on("update", onMovedCamera);
       return { controller, onMovedCamera };
     };

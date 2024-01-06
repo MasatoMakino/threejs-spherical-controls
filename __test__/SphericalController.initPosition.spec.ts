@@ -1,3 +1,4 @@
+import { describe, expect, test, vi } from "vitest";
 import { SphericalController } from "../src/index.js";
 import { PerspectiveCamera, Mesh, Spherical, Vector3 } from "three";
 
@@ -35,7 +36,7 @@ describe("initPosition", () => {
       new PerspectiveCamera(),
       new Mesh(),
     );
-    const onUpdate = jest.fn();
+    const onUpdate = vi.fn();
     controller.on("update", onUpdate);
 
     const targetPos = new Vector3(0, 10, 0);
