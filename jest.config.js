@@ -2,7 +2,10 @@
  * transformが必要なPure ESMのパッケージ。
  * @type {string[]}
  */
-const ignorePackages = ["@masatomakino/tween.js-ticker"];
+const ignorePackages = [
+  "@masatomakino/raf-ticker",
+  "@masatomakino/tween.js-ticker",
+];
 
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 const jestConfig = {
