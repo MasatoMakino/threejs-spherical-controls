@@ -1,20 +1,19 @@
-import { Tween } from "@tweenjs/tween.js";
 import { TWEENTicker } from "@masatomakino/tween.js-ticker";
-import { Camera, EventDispatcher, Mesh, Spherical, Vector3 } from "three";
+import { Tween } from "@tweenjs/tween.js";
+import EventEmitter from "eventemitter3";
+import { Camera, Mesh, Spherical, Vector3 } from "three";
 import {
-  SphericalControllerEvent,
-  SphericalParamType,
-  TargetParam,
-  EasingOption,
-  SphericalControllerUtil,
   CameraPositionLimiter,
-  SphericalControllerTween,
   CameraPositionUpdater,
   CameraUpdateEvent,
   CameraUpdateEventMap,
+  EasingOption,
   SphericalControllerEventMap,
+  SphericalControllerTween,
+  SphericalControllerUtil,
+  SphericalParamType,
+  TargetParam,
 } from "./index.js";
-import EventEmitter from "eventemitter3";
 
 /**
  * 球面座標系でカメラ位置をコントロールするクラス。
