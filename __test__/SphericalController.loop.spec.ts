@@ -39,5 +39,8 @@ describe("loop", () => {
     testLoopPosition(500, 0.5);
     testLoopPosition(1000, 0);
     testLoopPosition(1100, 0.1);
+    testLoopPosition(1500, 0.5);
+    testLoopPosition(2000, 1);
+    testLoopPosition(2500, 0.5);
   });
 });

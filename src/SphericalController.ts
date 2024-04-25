@@ -229,17 +229,19 @@ export class SphericalController extends EventEmitter<
     const toObjMin: { [key: string]: number } = {};
     toObjMin[type] = toMin;
 
-    const loop = (to: { [key: string]: number }) => {
-      const startTime =
-        requiredOption.startTime == null
-          ? undefined
-          : requiredOption.startTime + firstDuration;
+    const loop = (
+      to: { [key: string]: number },
+      startTime: number | undefined,
+    ) => {
+      const nextStartTime =
+        startTime == null ? undefined : startTime + requiredOption.duration;
+
       const tween = new Tween(this.pos)
         .to(to, requiredOption.duration)
         .easing(requiredOption.easing)
         .onUpdate(this.dispatchUpdateEvent)
         .onComplete(() => {
-          loop(to === toObjMax ? toObjMin : toObjMax);
+          loop(to === toObjMax ? toObjMin : toObjMax, nextStartTime);
         })
         .start(startTime);
       this.tweens.overrideTween(type, tween);
@@ -252,12 +254,17 @@ export class SphericalController extends EventEmitter<
       toMin,
     );
 
+    const nextStartTime =
+      requiredOption.startTime == null
+        ? undefined
+        : requiredOption.startTime + firstDuration;
+
     const tween = new Tween(this.pos)
       .easing(requiredOption.easing)
       .to(toObjMin, firstDuration)
       .onUpdate(this.dispatchUpdateEvent)
       .onComplete(() => {
-        loop(toObjMax);
+        loop(toObjMax, nextStartTime);
       })
       .start(requiredOption.startTime);
     this.tweens.overrideTween(type, tween);
