@@ -46,7 +46,7 @@
     "prettier": "^3.0.1",
     "three": "^0.165.0",
     "typedoc": "^0.26.3",
-    "typescript": "5.4.5"
+    "typescript": "5.5.3"
   },
   "scripts": {
     "prepare": "husky",
