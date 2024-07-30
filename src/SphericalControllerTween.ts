@@ -46,7 +46,7 @@ export class SphericalControllerTween {
    */
   public isPlaying(): boolean {
     let isPlaying = false;
-    this.tweenMap.forEach((value: Tween<TweenType>, key: TweenMapKey) => {
+    this.tweenMap.forEach((value) => {
       if (value?.isPlaying()) isPlaying = true;
     });
 
@@ -67,7 +67,7 @@ export class SphericalControllerTween {
    * 全てのtweenインスタンスを停止する。
    */
   public stop(): void {
-    this.tweenMap.forEach((value: Tween<TweenType>, key: TweenMapKey) => {
+    this.tweenMap.forEach((_, key) => {
       if (key) this.stopTween(key);
     });
   }
@@ -77,7 +77,7 @@ export class SphericalControllerTween {
    * @param e RAFTickerEventContext
    */
   update(e: RAFTickerEventContext): void {
-    this.tweenMap.forEach((value: Tween<TweenType>) => {
+    this.tweenMap.forEach((value) => {
       value.update(e.timestamp);
     });
   }
