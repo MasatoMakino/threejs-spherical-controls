@@ -1,6 +1,7 @@
 import { Easing, Tween } from "@tweenjs/tween.js";
 import { SphericalParamType, TargetParam } from "./index.js";
 import { Spherical, Vector3 } from "three";
+import { RAFTickerEventContext } from "@masatomakino/raf-ticker";
 
 export type TweenMapKey = SphericalParamType | TargetParam;
 export type TweenType = Spherical | Vector3;
@@ -45,7 +46,7 @@ export class SphericalControllerTween {
    */
   public isPlaying(): boolean {
     let isPlaying = false;
-    this.tweenMap.forEach((value: Tween<TweenType>, key: TweenMapKey) => {
+    this.tweenMap.forEach((value) => {
       if (value?.isPlaying()) isPlaying = true;
     });
 
@@ -66,8 +67,18 @@ export class SphericalControllerTween {
    * 全てのtweenインスタンスを停止する。
    */
   public stop(): void {
-    this.tweenMap.forEach((value: Tween<TweenType>, key: TweenMapKey) => {
+    this.tweenMap.forEach((_, key) => {
       if (key) this.stopTween(key);
+    });
+  }
+
+  /**
+   * 全てのtweenインスタンスを更新する。
+   * @param e RAFTickerEventContext
+   */
+  update(e: RAFTickerEventContext): void {
+    this.tweenMap.forEach((value) => {
+      value.update(e.timestamp);
     });
   }
 }

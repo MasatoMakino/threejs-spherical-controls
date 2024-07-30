@@ -1,4 +1,4 @@
-import { TWEENTicker } from "@masatomakino/tween.js-ticker";
+import { RAFTicker, RAFTickerEventContext } from "@masatomakino/raf-ticker";
 import { Tween } from "@tweenjs/tween.js";
 import EventEmitter from "eventemitter3";
 import { Camera, Mesh, Spherical, Vector3 } from "three";
@@ -59,8 +59,12 @@ export class SphericalController extends EventEmitter<
 
     this.cameraUpdater = new CameraPositionUpdater(this, camera);
 
-    TWEENTicker.start();
+    RAFTicker.on("tick", this.onTick);
   }
+
+  private onTick = (e: RAFTickerEventContext) => {
+    this.tweens.update(e);
+  };
 
   public dispatchUpdateEvent = () => {
     const e: CameraUpdateEvent = {
@@ -346,5 +350,12 @@ export class SphericalController extends EventEmitter<
    */
   public cloneSphericalPosition(): Spherical {
     return this.pos.clone();
+  }
+
+  public dispose(): void {
+    RAFTicker.off("tick", this.onTick);
+    this.cameraUpdater.dispose();
+    this.tweens.stop();
+    this.removeAllListeners();
   }
 }
