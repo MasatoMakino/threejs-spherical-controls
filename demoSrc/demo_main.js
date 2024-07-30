@@ -1,8 +1,8 @@
 import GUI from "lil-gui";
 import { Scene, Spherical, Vector3 } from "three";
-import TWEEN from "@tweenjs/tween.js";
 import { Common } from "./Common.js";
 import { SphericalController, SphericalControllerUtil } from "../esm/index.js";
+import { Easing } from "@tweenjs/tween.js";
 
 const W = 1280;
 const H = 800;
@@ -106,7 +106,7 @@ const startRandomAnimation = (controller) => {
     );
     controller.move(to, {
       duration: 1500,
-      easing: TWEEN.Easing.Cubic.Out,
+      easing: Easing.Cubic.Out,
     });
     console.log("Start : ", to);
   };

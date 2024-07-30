@@ -1,12 +1,10 @@
 import { describe, beforeEach, expect, test, vi } from "vitest";
 import { SphericalController } from "../src/index.js";
 import { PerspectiveCamera, Mesh, Spherical } from "three";
-import TWEEN from "@tweenjs/tween.js";
 import { RAFTicker } from "@masatomakino/raf-ticker";
 
 describe("SphericalController", () => {
   beforeEach(() => {
-    TWEEN.removeAll();
     RAFTicker.stop();
     RAFTicker.emitTickEvent(0);
   });
@@ -17,6 +15,8 @@ describe("SphericalController", () => {
       new Mesh(),
     );
     expect(controller).toBeTruthy();
+
+    controller.dispose();
   });
 
   test("clone", () => {
@@ -27,6 +27,8 @@ describe("SphericalController", () => {
     expect(controller.cloneSphericalPosition()).toStrictEqual(
       new Spherical(1, 0, 0),
     );
+
+    controller.dispose();
   });
 
   test("copy", () => {
@@ -37,6 +39,8 @@ describe("SphericalController", () => {
     const target = new Spherical();
     controller.copySphericalPosition(target);
     expect(target).toStrictEqual(new Spherical(1, 0, 0));
+
+    controller.dispose();
   });
 
   describe("addPosition", () => {
@@ -55,6 +59,8 @@ describe("SphericalController", () => {
       controller.addPosition("theta", 1.0);
       expect(onMovedCamera).toBeCalled();
       expect(controller.cloneSphericalPosition()).toMatchObject({ theta: 1.0 });
+
+      controller.dispose();
     });
 
     test("override tween", () => {
@@ -68,6 +74,8 @@ describe("SphericalController", () => {
       expect(controller.cloneSphericalPosition()).toMatchObject({
         radius: 1.0,
       });
+
+      controller.dispose();
     });
   });
 });

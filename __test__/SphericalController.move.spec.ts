@@ -5,12 +5,11 @@ import {
   TargetParam,
 } from "../src/index.js";
 import { PerspectiveCamera, Mesh } from "three";
-import TWEEN, { Easing } from "@tweenjs/tween.js";
+import { Easing } from "@tweenjs/tween.js";
 import { RAFTicker } from "@masatomakino/raf-ticker";
 
 describe("movePosition", () => {
   beforeEach(() => {
-    TWEEN.removeAll();
     RAFTicker.stop();
     RAFTicker.emitTickEvent(0);
   });
@@ -52,6 +51,8 @@ describe("movePosition", () => {
       startTime: 0,
     });
     testLinear(controller, "radius", 1.0, 2.0);
+
+    controller.dispose();
   });
 
   test("not normalize", () => {
@@ -68,6 +69,8 @@ describe("movePosition", () => {
       startTime: 0,
     });
     testLinear(controller, "theta", Math.PI * 10, Math.PI);
+
+    controller.dispose();
   });
 
   test("move", () => {
@@ -86,6 +89,8 @@ describe("movePosition", () => {
       startTime: 0,
     });
     testLinear(controller, "theta", from.theta, to.theta);
+
+    controller.dispose();
   });
 
   test("normalize", () => {
@@ -114,5 +119,7 @@ describe("movePosition", () => {
     expect(controller.cloneSphericalPosition()).toMatchObject({
       theta: Math.PI * 10 - Math.PI,
     });
+
+    controller.dispose();
   });
 });

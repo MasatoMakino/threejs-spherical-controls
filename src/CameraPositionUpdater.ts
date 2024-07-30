@@ -67,4 +67,9 @@ export class CameraPositionUpdater {
     });
     this.updateEvent = undefined;
   };
+
+  dispose() {
+    this.dispatcher.off("update", this.setNeedUpdate);
+    RAFTicker.off("onBeforeTick", this.updatePosition);
+  }
 }

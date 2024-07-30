@@ -1,12 +1,11 @@
 import { describe, expect, test, vi, beforeEach } from "vitest";
-import { SphericalController } from "../src/index.js";
+import { CameraUpdateEvent, SphericalController } from "../src/index.js";
 import { PerspectiveCamera, Mesh } from "three";
-import TWEEN, { Easing } from "@tweenjs/tween.js";
+import { Easing } from "@tweenjs/tween.js";
 import { RAFTicker } from "@masatomakino/raf-ticker";
 
 describe("loop", () => {
   beforeEach(() => {
-    TWEEN.removeAll();
     RAFTicker.stop();
     RAFTicker.emitTickEvent(0);
   });
@@ -27,7 +26,9 @@ describe("loop", () => {
     const testLoopPosition = (time: number, position: number) => {
       RAFTicker.emitTickEvent(time);
       expect(callback).toBeCalled();
-      const lastCallbackArgs = callback.mock.calls.at(-1)[0];
+      const lastCallbackArgs = (
+        callback.mock.calls.at(-1) as CameraUpdateEvent[]
+      )[0];
       expect(lastCallbackArgs.position["radius"]).toBeCloseTo(position);
       expect(controller.cloneSphericalPosition()["radius"]).toBeCloseTo(
         position,
