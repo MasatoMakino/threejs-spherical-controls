@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@masatomakino/gulptask-demo-page": "^0.10.0",
+    "@masatomakino/release-helper": "^0.2.0",
     "@tweenjs/tween.js": "^25.0.0",
     "@types/three": "^0.177.0",
     "@types/webxr": "^0.5.19",
@@ -55,8 +56,6 @@
     "test": "vitest --run",
     "test:watch": "vitest",
     "coverage": "npx vitest --coverage --run",
-    "preversion": "git checkout main && git pull && npm ci && npm run test && npm run build",
-    "postversion": "git add package.json package-lock.json && git checkout -b version/$(git describe --tags --abbrev=0)",
     "start:dev": "npm run server & npm run watch:tsc & npm run watch:demo",
     "build": "npm run typedocs & npm run demo",
     "demo": "npm run buildTS && npx @masatomakino/gulptask-demo-page --body '<canvas id=\"webgl-canvas\" width=\"1920\" height=\"1080\"></canvas>' --compileModule es2020",
@@ -64,7 +63,10 @@
     "typedocs": "npx typedoc --out ./docs/api src/index.ts",
     "server": "browser-sync ./docs/demo -w",
     "watch:demo": "npm run demo -- -W",
-    "watch:tsc": "tsc -W --incremental"
+    "watch:tsc": "tsc -W --incremental",
+    "preversion": "npx @masatomakino/release-helper preversion",
+    "postversion": "npx @masatomakino/release-helper postversion",
+    "release": "npx @masatomakino/release-helper release"
   },
   "description": "Spherical camera controller for Three.js",
   "bugs": {
