@@ -24,5 +24,5 @@ jobs:
       - run: npm ci
       - run: npx tsc --noEmit
       - name: Run Biome
-        run: biome ci .
+        run: npx @biomejs/biome ci .
       - run: npm test

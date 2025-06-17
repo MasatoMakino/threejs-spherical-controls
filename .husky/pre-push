@@ -1,2 +1,2 @@
-biome check --organize-imports-enabled=false --no-errors-on-unmatched
+npx @biomejs/biome ci .
 npm test
