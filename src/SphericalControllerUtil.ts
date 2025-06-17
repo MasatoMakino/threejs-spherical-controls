@@ -21,7 +21,6 @@ export function getTweenTheta(from: number, to: number): number {
  * Math.PIもしくは-Math.PIを入力すると正負が反転する。
  * @param {number} value
  * @return {number}
- * @constructor
  */
 export function PI2ToPI(value: number) {
   return Math.atan2(Math.sin(value), Math.cos(value));
