@@ -23,10 +23,7 @@ export class CameraPositionUpdater {
     this._camera = camera;
 
     this.dispatcher.on("update", this.setNeedUpdate);
-
-    RAFTicker.on("onBeforeTick", () => {
-      this.updatePosition();
-    });
+    RAFTicker.on("onBeforeTick", this.updatePosition);
   }
 
   /**
