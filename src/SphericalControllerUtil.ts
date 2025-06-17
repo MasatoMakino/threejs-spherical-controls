@@ -40,7 +40,9 @@ export function getFirstDuration(
   max: number,
   min: number,
 ): number {
-  return Math.abs(duration * ((current - min) / (max - min)));
+  const range = max - min;
+  if (range === 0) return 0;
+  return Math.abs(duration * ((current - min) / range));
 }
 
 export function generateCameraTarget(): Mesh {
