@@ -8,7 +8,11 @@ import {
   initCube,
   render,
 } from "./Common.js";
-import { SphericalController, SphericalControllerUtil } from "../esm/index.js";
+import {
+  SphericalController,
+  generateCameraTarget,
+  PI2ToPI,
+} from "../esm/index.js";
 import { Easing } from "@tweenjs/tween.js";
 
 const W = 1280;
@@ -29,7 +33,7 @@ const onDomContentsLoaded = () => {
 
   initHelper(scene);
   initCube(scene);
-  const target = SphericalControllerUtil.generateCameraTarget();
+  const target = generateCameraTarget();
   scene.add(target);
 
   const controller = initController(target, R);
@@ -40,17 +44,12 @@ const onDomContentsLoaded = () => {
 };
 
 const testPI2 = () => {
-  console.log(SphericalControllerUtil.PI2ToPI(0) === 0);
-  console.log(SphericalControllerUtil.PI2ToPI(Math.PI) === Math.PI);
-  console.log(SphericalControllerUtil.PI2ToPI(-Math.PI) === -Math.PI);
-  console.log(SphericalControllerUtil.PI2ToPI(Math.PI * 2));
-  console.log(
-    SphericalControllerUtil.PI2ToPI(Math.PI + 0.01) === -Math.PI + 0.01,
-  );
-  console.log(
-    Math.abs(SphericalControllerUtil.PI2ToPI(Math.PI * 200 + 0.01) - 0.01) <
-      0.000001,
-  );
+  console.log(PI2ToPI(0) === 0);
+  console.log(PI2ToPI(Math.PI) === Math.PI);
+  console.log(PI2ToPI(-Math.PI) === -Math.PI);
+  console.log(PI2ToPI(Math.PI * 2));
+  console.log(PI2ToPI(Math.PI + 0.01) === -Math.PI + 0.01);
+  console.log(Math.abs(PI2ToPI(Math.PI * 200 + 0.01) - 0.01) < 0.000001);
 };
 
 const initController = (cameraTarget, R) => {
