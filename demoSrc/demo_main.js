@@ -1,7 +1,18 @@
 import GUI from "lil-gui";
 import { Scene, Spherical, Vector3 } from "three";
-import { Common } from "./Common.js";
-import { SphericalController, SphericalControllerUtil } from "../esm/index.js";
+import {
+  initCamera,
+  initRenderer,
+  initLight,
+  initHelper,
+  initCube,
+  render,
+} from "./Common.js";
+import {
+  SphericalController,
+  generateCameraTarget,
+  PI2ToPI,
+} from "../esm/index.js";
 import { Easing } from "@tweenjs/tween.js";
 
 const W = 1280;
@@ -14,36 +25,31 @@ const R = 105;
 const onDomContentsLoaded = () => {
   // シーンを作成
   scene = new Scene();
-  camera = Common.initCamera(scene, W, H);
-  renderer = Common.initRenderer(W, H);
-  Common.initLight(scene);
+  camera = initCamera(scene, W, H);
+  renderer = initRenderer(W, H);
+  initLight(scene);
 
   testPI2();
 
-  Common.initHelper(scene);
-  Common.initCube(scene);
-  const target = SphericalControllerUtil.generateCameraTarget();
+  initHelper(scene);
+  initCube(scene);
+  const target = generateCameraTarget();
   scene.add(target);
 
   const controller = initController(target, R);
   checkPlaying(controller);
-  Common.render(renderer, scene, camera);
+  render(renderer, scene, camera);
 
   initGUI(controller);
 };
 
 const testPI2 = () => {
-  console.log(SphericalControllerUtil.PI2ToPI(0) === 0);
-  console.log(SphericalControllerUtil.PI2ToPI(Math.PI) === Math.PI);
-  console.log(SphericalControllerUtil.PI2ToPI(-Math.PI) === -Math.PI);
-  console.log(SphericalControllerUtil.PI2ToPI(Math.PI * 2));
-  console.log(
-    SphericalControllerUtil.PI2ToPI(Math.PI + 0.01) === -Math.PI + 0.01,
-  );
-  console.log(
-    Math.abs(SphericalControllerUtil.PI2ToPI(Math.PI * 200 + 0.01) - 0.01) <
-      0.000001,
-  );
+  console.log(PI2ToPI(0) === 0);
+  console.log(PI2ToPI(Math.PI) === Math.PI);
+  console.log(PI2ToPI(-Math.PI) === -Math.PI);
+  console.log(PI2ToPI(Math.PI * 2));
+  console.log(PI2ToPI(Math.PI + 0.01) === -Math.PI + 0.01);
+  console.log(Math.abs(PI2ToPI(Math.PI * 200 + 0.01) - 0.01) < 0.000001);
 };
 
 const initController = (cameraTarget, R) => {
@@ -132,7 +138,7 @@ const initAddGUI = (gui, controller) => {
 const addPositionGUI = (type, value, folder, controller) => {
   const prop = {};
   let valString = value.toString();
-  if (value > 0) valString = "+" + valString;
+  if (value > 0) valString = `+${valString}`;
   const functionName = type + valString;
   prop[functionName] = () => {
     controller.addPosition(type, value);
@@ -155,7 +161,7 @@ const addLoopGUI = (type, min, max, folder, controller) => {
     duration: 10 * 1000,
   };
 
-  const functionName = "loop_" + type;
+  const functionName = `loop_${type}`;
   const prop = {};
   prop[functionName] = () => {
     if (flag) {

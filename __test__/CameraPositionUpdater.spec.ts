@@ -2,9 +2,9 @@ import { describe, expect, test, vi } from "vitest";
 import { PerspectiveCamera, Mesh, Spherical, Vector3 } from "three";
 import {
   CameraPositionUpdater,
-  CameraUpdateEvent,
-  CameraUpdateEventMap,
-  SphericalControllerEventMap,
+  type CameraUpdateEvent,
+  type CameraUpdateEventMap,
+  type SphericalControllerEventMap,
 } from "../src/index.js";
 import { RAFTicker } from "@masatomakino/raf-ticker";
 import EventEmitter from "eventemitter3";

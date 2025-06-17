@@ -1,14 +1,13 @@
 import { describe, expect, test } from "vitest";
-import { CameraPositionLimiter, SphericalParamType } from "../src/index.js";
+import {
+  CameraPositionLimiter,
+  type SphericalParamType,
+} from "../src/index.js";
 import { Spherical } from "three";
 
 describe("CameraPositionLimiter", () => {
   test("clamp", () => {
-    const limit = (
-      type: SphericalParamType,
-      max: number = 1.0,
-      min: number = 0.0,
-    ) => {
+    const limit = (type: SphericalParamType, max = 1.0, min = 0.0) => {
       const limiter = new CameraPositionLimiter();
       const spherical = new Spherical();
       limiter.setLimit(type, max, min);

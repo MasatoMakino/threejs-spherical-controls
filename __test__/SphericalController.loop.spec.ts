@@ -1,5 +1,5 @@
 import { describe, expect, test, vi, beforeEach } from "vitest";
-import { CameraUpdateEvent, SphericalController } from "../src/index.js";
+import { type CameraUpdateEvent, SphericalController } from "../src/index.js";
 import { PerspectiveCamera, Mesh } from "three";
 import { Easing } from "@tweenjs/tween.js";
 import { RAFTicker } from "@masatomakino/raf-ticker";
@@ -29,10 +29,8 @@ describe("loop", () => {
       const lastCallbackArgs = (
         callback.mock.calls.at(-1) as CameraUpdateEvent[]
       )[0];
-      expect(lastCallbackArgs.position["radius"]).toBeCloseTo(position);
-      expect(controller.cloneSphericalPosition()["radius"]).toBeCloseTo(
-        position,
-      );
+      expect(lastCallbackArgs.position.radius).toBeCloseTo(position);
+      expect(controller.cloneSphericalPosition().radius).toBeCloseTo(position);
       callback.mockReset();
     };
 

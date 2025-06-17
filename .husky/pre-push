@@ -1,1 +1,2 @@
+npx @biomejs/biome check --write --organize-imports-enabled=false --no-errors-on-unmatched
 npm test

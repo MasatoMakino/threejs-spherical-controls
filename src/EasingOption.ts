@@ -1,4 +1,4 @@
-import { SphericalController } from "./SphericalController.js";
+import type { SphericalController } from "./SphericalController.js";
 
 export interface RequiredEasingOption {
   duration: number;
@@ -19,20 +19,18 @@ export class EasingOption {
   static init(
     option: EasingOption | undefined,
     controller: SphericalController,
-    isLoop: boolean = false,
+    isLoop = false,
   ): RequiredEasingOption {
-    if (option == null) {
-      option = {};
-    }
+    const result: EasingOption = { ...(option ?? {}) };
 
-    option.duration ??= controller.tweens.duration;
+    result.duration ??= controller.tweens.duration;
 
     const defaultEase = isLoop
       ? controller.tweens.loopEasing
       : controller.tweens.easing;
-    option.easing ??= defaultEase;
-    option.normalize ??= true;
+    result.easing ??= defaultEase;
+    result.normalize ??= true;
 
-    return option as RequiredEasingOption;
+    return result as RequiredEasingOption;
   }
 }

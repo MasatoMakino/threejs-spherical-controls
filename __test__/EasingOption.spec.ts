@@ -15,10 +15,16 @@ describe("EasingOption", () => {
       new Mesh(),
     );
     const option = new EasingOption();
-    EasingOption.init(option, controller);
-    expect(option.normalize).toBe(true);
-    expect(option.duration).toBe(controller.tweens.duration);
-    expect(option.easing).toBe(controller.tweens.easing);
+    const result = EasingOption.init(option, controller);
+    expect(result.normalize).toBe(true);
+    expect(result.duration).toBe(controller.tweens.duration);
+    expect(result.easing).toBe(controller.tweens.easing);
+
+    // ensure the original argument remains untouched
+    expect(option).not.toBe(result);
+    expect(option.normalize).toBeUndefined();
+    expect(option.duration).toBeUndefined();
+    expect(option.easing).toBeUndefined();
   });
 
   test("init : setting", () => {

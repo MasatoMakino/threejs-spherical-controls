@@ -1,7 +1,7 @@
-import { Easing, Tween } from "@tweenjs/tween.js";
-import { SphericalParamType, TargetParam } from "./index.js";
-import { Spherical, Vector3 } from "three";
-import { RAFTickerEventContext } from "@masatomakino/raf-ticker";
+import { Easing, type Tween } from "@tweenjs/tween.js";
+import type { SphericalParamType, TargetParam } from "./index.js";
+import type { Spherical, Vector3 } from "three";
+import type { RAFTickerEventContext } from "@masatomakino/raf-ticker";
 
 export type TweenMapKey = SphericalParamType | TargetParam;
 export type TweenType = Spherical | Vector3;
@@ -12,11 +12,9 @@ export type TweenType = Spherical | Vector3;
 export class SphericalControllerTween {
   private tweenMap: Map<TweenMapKey, Tween<TweenType>> = new Map();
 
-  public duration: number = 1333;
+  public duration = 1333;
   public easing = Easing.Cubic.Out;
   public loopEasing = Easing.Sinusoidal.InOut;
-
-  constructor() {}
 
   /**
    * 指定されたTweenを停止する。
@@ -46,9 +44,9 @@ export class SphericalControllerTween {
    */
   public isPlaying(): boolean {
     let isPlaying = false;
-    this.tweenMap.forEach((value) => {
+    for (const value of this.tweenMap.values()) {
       if (value?.isPlaying()) isPlaying = true;
-    });
+    }
 
     return isPlaying;
   }
@@ -77,8 +75,8 @@ export class SphericalControllerTween {
    * @param e RAFTickerEventContext
    */
   update(e: RAFTickerEventContext): void {
-    this.tweenMap.forEach((value) => {
+    for (const value of this.tweenMap.values()) {
       value.update(e.timestamp);
-    });
+    }
   }
 }

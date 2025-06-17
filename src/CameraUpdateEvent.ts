@@ -1,4 +1,4 @@
-import { Mesh, Spherical, Vector3 } from "three";
+import type { Mesh, Spherical, Vector3 } from "three";
 
 export interface CameraUpdateEventMap {
   update: (e: CameraUpdateEvent) => void;

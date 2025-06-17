@@ -1,14 +1,14 @@
-import { Camera, Vector3 } from "three";
-import {
+import { type Camera, Vector3 } from "three";
+import type {
   CameraUpdateEvent,
   SphericalControllerEventMap,
   CameraUpdateEventMap,
 } from "./index.js";
 import { RAFTicker } from "@masatomakino/raf-ticker";
-import EventEmitter from "eventemitter3";
+import type EventEmitter from "eventemitter3";
 
 export class CameraPositionUpdater {
-  private isUpdate: boolean = false;
+  private isUpdate = false;
   private dispatcher: EventEmitter<
     CameraUpdateEventMap | SphericalControllerEventMap
   >;
@@ -23,10 +23,7 @@ export class CameraPositionUpdater {
     this._camera = camera;
 
     this.dispatcher.on("update", this.setNeedUpdate);
-
-    RAFTicker.on("onBeforeTick", () => {
-      this.updatePosition();
-    });
+    RAFTicker.on("onBeforeTick", this.updatePosition);
   }
 
   /**
