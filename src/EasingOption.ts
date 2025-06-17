@@ -21,7 +21,7 @@ export class EasingOption {
     controller: SphericalController,
     isLoop = false,
   ): RequiredEasingOption {
-    const result: EasingOption = option ?? {};
+    const result: EasingOption = { ...(option ?? {}) };
 
     result.duration ??= controller.tweens.duration;
 
