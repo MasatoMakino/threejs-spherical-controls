@@ -1,4 +1,4 @@
-import { SphericalParamType, TargetParam } from "./index.js";
+import type { SphericalParamType, TargetParam } from "./index.js";
 
 export interface SphericalControllerEventMap {
   moved_camera: (e: SphericalControllerEvent) => void;

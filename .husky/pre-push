@@ -1,1 +1,2 @@
+biome check --organize-imports-enabled=false --no-errors-on-unmatched
 npm test

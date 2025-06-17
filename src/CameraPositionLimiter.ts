@@ -1,5 +1,5 @@
-import { Spherical } from "three";
-import { SphericalParamType } from "./TargetParam.js";
+import type { Spherical } from "three";
+import type { SphericalParamType } from "./TargetParam.js";
 
 export class CameraPositionLimiter {
   private static readonly EPS = 0.000001;
@@ -9,8 +9,6 @@ export class CameraPositionLimiter {
   public thetaMax: number | undefined = undefined;
   public rMax: number = Number.MAX_VALUE;
   public rMin: number = CameraPositionLimiter.EPS;
-
-  constructor() {}
 
   public setLimit(type: SphericalParamType, max: number, min: number) {
     switch (type) {
@@ -48,8 +46,7 @@ export class CameraPositionLimiter {
 
   private static clamp(value: number, max?: number, min?: number): number {
     if (min == null || max == null) return value;
-    value = Math.min(value, max);
-    value = Math.max(value, min);
-    return value;
+    const clampedValue = Math.min(value, max);
+    return Math.max(clampedValue, min);
   }
 }

@@ -1,8 +1,8 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import {
   SphericalController,
-  SphericalParamType,
-  TargetParam,
+  type SphericalParamType,
+  type TargetParam,
 } from "../src/index.js";
 import { PerspectiveCamera, Mesh } from "three";
 import { Easing } from "@tweenjs/tween.js";

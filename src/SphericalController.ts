@@ -1,18 +1,23 @@
-import { RAFTicker, RAFTickerEventContext } from "@masatomakino/raf-ticker";
+import {
+  RAFTicker,
+  type RAFTickerEventContext,
+} from "@masatomakino/raf-ticker";
 import { Tween } from "@tweenjs/tween.js";
 import EventEmitter from "eventemitter3";
-import { Camera, Mesh, Spherical, Vector3 } from "three";
+import { type Camera, type Mesh, Spherical, Vector3 } from "three";
 import {
   CameraPositionLimiter,
   CameraPositionUpdater,
-  CameraUpdateEvent,
-  CameraUpdateEventMap,
+  type CameraUpdateEvent,
+  type CameraUpdateEventMap,
   EasingOption,
-  SphericalControllerEventMap,
+  type SphericalControllerEventMap,
   SphericalControllerTween,
-  SphericalControllerUtil,
-  SphericalParamType,
-  TargetParam,
+  type SphericalParamType,
+  type TargetParam,
+  getTweenTheta,
+  PI2ToPI,
+  getFirstDuration,
 } from "./index.js";
 
 /**
@@ -108,11 +113,11 @@ export class SphericalController extends EventEmitter<
    * @param option
    */
   public move(pos: Spherical, option?: EasingOption): void {
-    option = EasingOption.init(option, this);
+    const requiredOption = EasingOption.init(option, this);
     this.tweens.stop();
-    this.movePosition("radius", pos.radius, option);
-    this.movePosition("phi", pos.phi, option);
-    this.movePosition("theta", pos.theta, option);
+    this.movePosition("radius", pos.radius, requiredOption);
+    this.movePosition("phi", pos.phi, requiredOption);
+    this.movePosition("theta", pos.theta, requiredOption);
   }
 
   /**
@@ -141,13 +146,17 @@ export class SphericalController extends EventEmitter<
     value: number,
     option?: EasingOption,
   ): void {
-    option = EasingOption.init(option, this);
+    const requiredOption = EasingOption.init(option, this);
 
-    if (type === "theta" && option.normalize) {
-      value = SphericalControllerUtil.getTweenTheta(this.pos.theta, value);
+    let adjustedValue = value;
+    if (type === "theta" && requiredOption.normalize) {
+      adjustedValue = getTweenTheta(this.pos.theta, value);
     }
-    const to = this.limiter.clampWithType(type, value);
-    this.tweens.overrideTween(type, this.getTweenPosition(type, to, option));
+    const to = this.limiter.clampWithType(type, adjustedValue);
+    this.tweens.overrideTween(
+      type,
+      this.getTweenPosition(type, to, requiredOption),
+    );
   }
 
   /**
@@ -193,13 +202,13 @@ export class SphericalController extends EventEmitter<
    * @param option
    */
   public moveTarget(value: Vector3, option?: EasingOption): void {
-    option = EasingOption.init(option, this);
+    const requiredOption = EasingOption.init(option, this);
 
     const tween = new Tween(this._cameraTarget.position)
-      .to({ x: value.x, y: value.y, z: value.z }, option.duration)
-      .easing(option.easing)
+      .to({ x: value.x, y: value.y, z: value.z }, requiredOption.duration)
+      .easing(requiredOption.easing)
       .onUpdate(this.dispatchUpdateEvent)
-      .start(option.startTime);
+      .start(requiredOption.startTime);
     this.tweens.overrideTween("camera_target", tween);
   }
 
@@ -222,7 +231,7 @@ export class SphericalController extends EventEmitter<
     option?: EasingOption,
   ): void {
     if (type === "theta") {
-      this.pos.theta = SphericalControllerUtil.PI2ToPI(this.pos.theta);
+      this.pos.theta = PI2ToPI(this.pos.theta);
     }
     const requiredOption = EasingOption.init(option, this, true);
 
@@ -251,7 +260,7 @@ export class SphericalController extends EventEmitter<
       this.tweens.overrideTween(type, tween);
     };
 
-    const firstDuration = SphericalControllerUtil.getFirstDuration(
+    const firstDuration = getFirstDuration(
       requiredOption.duration,
       this.pos[type],
       toMax,
@@ -280,13 +289,13 @@ export class SphericalController extends EventEmitter<
    * @param option
    */
   public moveCameraShift(value: Vector3, option?: EasingOption): void {
-    option = EasingOption.init(option, this);
+    const requiredOption = EasingOption.init(option, this);
 
     const tween = new Tween(this.cameraShift)
-      .easing(option.easing)
-      .to({ x: value.x, y: value.y, z: value.z }, option.duration)
+      .easing(requiredOption.easing)
+      .to({ x: value.x, y: value.y, z: value.z }, requiredOption.duration)
       .onUpdate(this.dispatchUpdateEvent)
-      .start(option.startTime);
+      .start(requiredOption.startTime);
     this.tweens.overrideTween("camera_shift", tween);
   }
 
@@ -296,7 +305,7 @@ export class SphericalController extends EventEmitter<
    * @param pos
    * @param overrideTween
    */
-  public addTargetPosition(pos: Vector3, overrideTween: boolean = false): void {
+  public addTargetPosition(pos: Vector3, overrideTween = false): void {
     if (!overrideTween && this.tweens.isPlaying()) return;
     if (overrideTween && this.tweens.isPlaying()) {
       this.tweens.stop();
@@ -316,8 +325,8 @@ export class SphericalController extends EventEmitter<
   public addPosition(
     type: SphericalParamType,
     value: number,
-    overrideTween: boolean = false,
-    addDuringTween: boolean = false,
+    overrideTween = false,
+    addDuringTween = false,
   ): void {
     if (!overrideTween) {
       if (!addDuringTween && this.tweens.isPlaying()) {

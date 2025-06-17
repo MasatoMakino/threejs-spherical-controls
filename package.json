@@ -15,18 +15,14 @@
     }
   },
   "types": "./esm/index.d.ts",
-  "files": [
-    "esm"
-  ],
+  "files": ["esm"],
   "repository": {
     "type": "git",
     "url": "git+https://MasatoMakino@github.com/MasatoMakino/threejs-spherical-controls.git"
   },
   "author": "MasatoMakino <unagiinu.g@gmail.com>",
   "license": "MIT",
-  "keywords": [
-    "threejs"
-  ],
+  "keywords": ["threejs"],
   "peerDependencies": {
     "@masatomakino/raf-ticker": "0.5.3 - 0.6.x",
     "@tweenjs/tween.js": "^25.0.0",
@@ -34,6 +30,7 @@
     "three": ">=0.126.0 <1.0.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@masatomakino/gulptask-demo-page": "^0.10.0",
     "@masatomakino/release-helper": "^0.2.0",
     "@tweenjs/tween.js": "^25.0.0",
@@ -46,7 +43,6 @@
     "jsdom": "^26.0.0",
     "lil-gui": "^0.20.0",
     "lint-staged": "^16.1.0",
-    "prettier": "^3.3.3",
     "three": "^0.177.0",
     "typedoc": "^0.28.0",
     "typescript": "^5.5.4"
@@ -78,6 +74,6 @@
     "lib": "esm"
   },
   "lint-staged": {
-    "*.{js,ts,css,md}": "prettier --write"
+    "*.{js,ts,css,md}": "biome check --write --organize-imports-enabled=false --no-errors-on-unmatched"
   }
 }
