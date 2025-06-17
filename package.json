@@ -74,6 +74,6 @@
     "lib": "esm"
   },
   "lint-staged": {
-    "*.{js,ts,css,md}": "biome check --write --organize-imports-enabled=false --no-errors-on-unmatched"
+    "*.{js,ts,css,md}": "npx @biomejs/biome check --write --organize-imports-enabled=false --no-errors-on-unmatched"
   }
 }
