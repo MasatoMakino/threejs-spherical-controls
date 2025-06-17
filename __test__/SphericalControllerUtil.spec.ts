@@ -20,7 +20,7 @@ describe("SphericalControllerUtil", () => {
     expect((target.material as MeshBasicMaterial).opacity).toBe(0.0);
   });
 
-  test("getFirstDuration", () => {
+  test("getFirstDuration (normal range)", () => {
     expect(getFirstDuration(1, 0, 1.0, 0)).toBe(0);
     expect(getFirstDuration(1, 0.5, 1.0, 0)).toBe(0.5);
     expect(getFirstDuration(1, 1.0, 1.0, 0)).toBe(1);
@@ -28,10 +28,12 @@ describe("SphericalControllerUtil", () => {
     expect(getFirstDuration(1, 0, 1.0, -1)).toBe(0.5);
     expect(getFirstDuration(1, 0.5, 1.0, -1)).toBe(0.75);
     expect(getFirstDuration(1, 1.0, 1.0, -1)).toBe(1);
+  });
 
-    // Test for division by zero case (when max equals min)
-    expect(getFirstDuration(1, 5, 10, 10)).toBe(0); // max equals min (10 === 10)
-    expect(getFirstDuration(2, -5, -3, -3)).toBe(0); // max equals min with negative values
+  test("getFirstDuration (max equals min)", () => {
+    // division-by-zero guard
+    expect(getFirstDuration(1, 5, 10, 10)).toBe(0);
+    expect(getFirstDuration(2, -5, -3, -3)).toBe(0);
   });
 
   test("getTweenTheta", () => {
