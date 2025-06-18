@@ -17,7 +17,7 @@ describe("CameraPositionUpdater", () => {
     >();
     const onUpdateCamera = vi.fn();
     parent.on("moved_camera", onUpdateCamera);
-    const updater = new CameraPositionUpdater(parent, camera);
+    new CameraPositionUpdater(parent, camera);
 
     return { parent, onUpdateCamera };
   };
