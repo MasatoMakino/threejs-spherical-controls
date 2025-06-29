@@ -6,6 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a TypeScript library for Three.js that provides spherical camera controls with smooth transitions and positioning constraints. The library uses an event-driven architecture and integrates with the RAF (RequestAnimationFrame) ticker system.
 
+### Runtime Environment
+This module is designed to be bundled with Three.js and executed in browser environments. Node.js execution is not supported and is outside the scope of this library. When installing dependencies for development or testing purposes, use `--save-dev` to install as development dependencies only.
+
 ## Development Commands
 
 ### Essential Commands
@@ -19,8 +22,8 @@ npm run buildTS      # Compile TypeScript to ES modules
 
 ### Code Quality
 ```bash
-npx biome check      # Check code formatting and linting
-npx biome check --write  # Fix code formatting and linting issues
+biome check --no-errors-on-unmatched      # Check code formatting and linting
+biome check --write --no-errors-on-unmatched  # Fix code formatting and linting issues
 ```
 
 ### Documentation & Demo
@@ -38,6 +41,9 @@ npm run build        # Build both docs and demo
 - Run `npm run coverage` to generate coverage reports
 
 ## Code Architecture
+
+### RequestAnimationFrame Handling
+This module automatically handles camera animation updates through the `@masatomakino/raf-ticker` system. Users do not need to manually call `requestAnimationFrame` - the camera animations are automatically updated by the RAF ticker integration.
 
 ### Core Classes
 
