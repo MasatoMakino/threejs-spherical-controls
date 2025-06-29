@@ -62,9 +62,9 @@ controller.on("moved_camera_complete", (event) => {
   console.log("Camera movement completed", event);
 });
 
-// Listen for animation start
-controller.on("moved_camera_start", (event) => {
-  console.log("Camera movement started", event);
+// Listen for animation updates
+controller.on("moved_camera", (event) => {
+  console.log("Camera movement", event);
 });
 ```
 
