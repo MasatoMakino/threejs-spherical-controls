@@ -78,6 +78,6 @@
     "lib": "esm"
   },
   "lint-staged": {
-    "*.{js,ts,css,md}": "biome check --write"
+    "*.{js,ts,css,md}": "biome check --write --no-errors-on-unmatched"
   }
 }
