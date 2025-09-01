@@ -93,3 +93,53 @@ This module automatically handles camera animation updates through the `@masatom
 ## Build Output
 
 The library is published as ES modules in the `esm/` directory with TypeScript declaration files. The package.json uses modern exports field for proper ES module resolution.
+
+## Testing Strategy
+
+### Test Structure
+- 9 test suites covering all major functionality
+- Tests use Vitest with jsdom environment for browser API simulation
+- Test files follow `*.spec.ts` naming convention
+- Key test areas:
+  - Core SphericalController functionality
+  - Position limiting and validation
+  - Animation tweening and looping
+  - Camera position updates
+  - Event emission and handling
+
+### Running Single Tests
+```bash
+# Run a specific test file
+npx vitest __test__/SphericalController.spec.ts
+
+# Run tests matching a pattern
+npx vitest --grep "addPosition"
+```
+
+## Spherical Coordinate System
+
+The library uses Three.js spherical coordinates with these conventions:
+- **Radius**: Distance from target (must be > 0)
+- **Phi**: Vertical angle (0 to π, where 0 = North Pole, π = South Pole)  
+- **Theta**: Horizontal angle (-π to π, where 0 = positive Z axis)
+
+**Important**: Phi values of exactly 0 or π are not supported due to coordinate singularities at the poles.
+
+## Key Implementation Details
+
+### Event System
+The SphericalController extends EventEmitter3 and emits:
+- `update` - Camera position changed
+- `moved_camera_complete` - Animation completed
+
+### Animation Integration
+- All animations automatically integrate with `@masatomakino/raf-ticker`
+- Uses `@tweenjs/tween.js` for smooth transitions
+- No manual `requestAnimationFrame` calls needed
+
+### Memory Management
+Always call `dispose()` on SphericalController instances to:
+- Remove RAF ticker listeners
+- Stop all active tweens
+- Clean up event listeners
+- Dispose camera updater
