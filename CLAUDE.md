@@ -128,9 +128,10 @@ The library uses Three.js spherical coordinates with these conventions:
 ## Key Implementation Details
 
 ### Event System
-The SphericalController extends EventEmitter3 and emits:
-- `update` - Camera position changed
-- `moved_camera_complete` - Animation completed
+The SphericalController extends EventEmitter3 and emits these events:
+- `update` - Camera position/target/shift changed (emitted by SphericalController)
+- `moved_camera` - Camera position updated during animation (emitted by CameraPositionUpdater)  
+- `moved_camera_complete` - Animation completed (emitted by SphericalController)
 
 ### Animation Integration
 - All animations automatically integrate with `@masatomakino/raf-ticker`
