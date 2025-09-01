@@ -8,7 +8,6 @@ import { RAFTicker } from "@masatomakino/raf-ticker";
 import type EventEmitter from "eventemitter3";
 
 export class CameraPositionUpdater {
-  private isUpdate = false;
   private dispatcher: EventEmitter<
     CameraUpdateEventMap | SphericalControllerEventMap
   >;
