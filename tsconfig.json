@@ -11,7 +11,8 @@
     /* Module Resolution Options */
     "moduleResolution": "Bundler",
     "esModuleInterop": true,
-    "strict": true
+    "strict": true,
+    "skipLibCheck": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "__test__"]
