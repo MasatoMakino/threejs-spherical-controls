@@ -37,7 +37,7 @@ npm run build        # Build both docs and demo
 
 - Framework: Vitest with jsdom environment
 - Test files are in `__test__/` directory
-- Good test coverage across 8 test suites
+- Good test coverage across multiple test suites
 - Run `npm run coverage` to generate coverage reports
 
 ## Code Architecture
@@ -97,7 +97,7 @@ The library is published as ES modules in the `esm/` directory with TypeScript d
 ## Testing Strategy
 
 ### Test Structure
-- 9 test suites covering all major functionality
+- Multiple test suites covering all major functionality
 - Tests use Vitest with jsdom environment for browser API simulation
 - Test files follow `*.spec.ts` naming convention
 - Key test areas:
