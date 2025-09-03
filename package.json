@@ -38,7 +38,7 @@
     "@masatomakino/gulptask-demo-page": "^0.10.0",
     "@masatomakino/release-helper": "^0.2.0",
     "@tweenjs/tween.js": "^25.0.0",
-    "@types/three": "^0.178.0",
+    "@types/three": "^0.179.0",
     "@vitest/coverage-istanbul": "^3.0.2",
     "browser-sync": "^3.0.2",
     "eventemitter3": "^5.0.1",
