@@ -36,7 +36,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.2.4",
     "@masatomakino/gulptask-demo-page": "^0.10.0",
-    "@masatomakino/release-helper": "^0.2.0",
+    "@masatomakino/release-helper": "^0.3.2",
     "@tweenjs/tween.js": "^25.0.0",
     "@types/three": "^0.178.0",
     "@vitest/coverage-istanbul": "^3.0.2",
