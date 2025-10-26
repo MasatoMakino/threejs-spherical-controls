@@ -1,0 +1,32 @@
+{
+  "name": "threejs-spherical-controls npm Runner (Node 22)",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,consistency=cached",
+  "remoteUser": "node",
+  "runArgs": ["--cap-drop=ALL", "--name=threejs-spherical-controls-npm-runner"],
+  "mounts": [
+    "source=${localWorkspaceFolderBasename}-npm-runner-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
+    "source=${localWorkspaceFolder}/.devcontainer,target=/workspaces/${localWorkspaceFolderBasename}/.devcontainer,type=bind,readonly"
+  ],
+  "forwardPorts": [3000, 3001],
+  "portsAttributes": {
+    "3000": {
+      "label": "Browser Sync",
+      "onAutoForward": "notify"
+    },
+    "3001": {
+      "label": "Browser Sync UI",
+      "onAutoForward": "ignore"
+    }
+  },
+  "postCreateCommand": "npm ci",
+  "postStartCommand": "npm audit --audit-level=moderate || true",
+  "containerEnv": {
+    "NODE_ENV": "development",
+    "NPM_CONFIG_AUDIT": "true"
+  }
+}
