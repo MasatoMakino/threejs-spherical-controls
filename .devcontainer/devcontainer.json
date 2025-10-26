@@ -7,7 +7,12 @@
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,consistency=cached",
   "remoteUser": "node",
-  "runArgs": ["--cap-drop=ALL", "--name=threejs-spherical-controls-npm-runner"],
+  "runArgs": [
+    "--cap-drop=ALL",
+    "--name=threejs-spherical-controls-npm-runner",
+    "-p", "3000:3000",
+    "-p", "3001:3001"
+  ],
   "mounts": [
     "source=${localWorkspaceFolderBasename}-npm-runner-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
     "source=${localWorkspaceFolder}/.devcontainer,target=/workspaces/${localWorkspaceFolderBasename}/.devcontainer,type=bind,readonly"

@@ -58,7 +58,7 @@
     "demo": "npm run buildTS && npx @masatomakino/gulptask-demo-page --body '<canvas id=\"webgl-canvas\" width=\"1920\" height=\"1080\"></canvas>' --compileModule es2020",
     "buildTS": "tsc",
     "typedocs": "npx typedoc --out ./docs/api src/index.ts",
-    "server": "browser-sync ./docs/demo -w",
+    "server": "browser-sync ./docs/demo -w --port 3000 --ui-port 3001",
     "watch:demo": "npm run demo -- -W",
     "watch:tsc": "tsc -W --incremental"
   },
