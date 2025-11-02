@@ -82,10 +82,97 @@ git push      # ❌ Not available (security isolation)
 6. **Access demo** at `http://localhost:3000` from host OS browser
 7. **Git operations** on host OS only
 
-### Pre-commit Quality Checks
-Since Git hooks cannot run in the isolated container, run these manually before committing:
+### Git Hooks Setup (Optional but Recommended)
+
+**Why Husky was removed:**
+- Husky relies on npm package scripts to install Git hooks
+- The npm isolation container does not have access to Git credentials
+- Git operations must run on the host OS, but npm-dependent hooks cannot execute there
+- This architectural conflict makes Husky incompatible with the isolation strategy
+
+**Manual Git Hooks Approach:**
+Each developer is responsible for setting up Git hooks on their local machine. This ensures:
+- Git operations remain on the host OS (where credentials exist)
+- Hook scripts delegate to isolated container for npm script execution
+- Quality checks run in the secure container environment
+
+**Setup Instructions:**
+1. Remove Husky's Git config (if migrating from Husky):
+   ```bash
+   git config --unset core.hooksPath
+   ```
+
+2. Create hook files in `.git/hooks/`:
+   ```bash
+   # Create pre-commit hook
+   cat > .git/hooks/pre-commit << 'EOF'
+   #!/bin/sh
+   # Redirect output to stderr.
+   exec 1>&2
+
+   echo "[pre-commit] Running code quality checks in DevContainer..."
+
+   # Check if DevContainer is running, start if needed
+   if ! docker ps --format '{{.Names}}' | grep -q 'threejs-spherical-controls-npm-runner'; then
+     echo "[pre-commit] DevContainer not running. Starting..."
+     devcontainer up --workspace-folder . || exit 1
+   fi
+
+   # Run pre-commit checks in container
+   if ! devcontainer exec --workspace-folder . npm run pre-commit; then
+     echo "[pre-commit] ERROR: Code quality checks failed"
+     exit 1
+   fi
+
+   echo "[pre-commit] ✓ All checks passed"
+   exit 0
+   EOF
+
+   # Create pre-push hook
+   cat > .git/hooks/pre-push << 'EOF'
+   #!/bin/sh
+   # Redirect output to stderr.
+   exec 1>&2
+
+   echo "[pre-push] Running tests and CI checks in DevContainer..."
+
+   # Check if DevContainer is running, start if needed
+   if ! docker ps --format '{{.Names}}' | grep -q 'threejs-spherical-controls-npm-runner'; then
+     echo "[pre-push] DevContainer not running. Starting..."
+     devcontainer up --workspace-folder . || exit 1
+   fi
+
+   # Run pre-push checks in container
+   if ! devcontainer exec --workspace-folder . npm run pre-push; then
+     echo "[pre-push] ERROR: Tests or CI checks failed"
+     exit 1
+   fi
+
+   echo "[pre-push] ✓ All checks passed"
+   exit 0
+   EOF
+
+   # Make hooks executable
+   chmod +x .git/hooks/pre-commit .git/hooks/pre-push
+   ```
+
+3. Verify hooks are working:
+   ```bash
+   # Test with empty commit
+   git commit --allow-empty -m "test: Verify hooks"
+   git reset --hard HEAD~1  # Remove test commit
+   ```
+
+**Important Notes:**
+- Git hooks are stored in `.git/hooks/` (not version controlled)
+- Each developer must set up hooks independently
+- Hooks automatically start the DevContainer if not running
+- All npm script execution happens in the isolated container
+- Git operations remain on the host OS with proper credentials
+
+**Manual Alternative:**
+If you prefer not to use Git hooks, run these commands manually before committing:
 ```bash
-# Run on host OS via DevContainer
 devcontainer exec --workspace-folder . npm run pre-commit  # Biome check + auto-fix
 devcontainer exec --workspace-folder . npm run pre-push    # Biome CI + tests
 ```
