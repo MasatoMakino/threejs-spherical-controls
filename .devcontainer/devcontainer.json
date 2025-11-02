@@ -10,8 +10,10 @@
   "runArgs": [
     "--cap-drop=ALL",
     "--name=threejs-spherical-controls-npm-runner",
-    "-p", "3000:3000",
-    "-p", "3001:3001"
+    "-p",
+    "3000:3000",
+    "-p",
+    "3001:3001"
   ],
   "mounts": [
     "source=${localWorkspaceFolderBasename}-npm-runner-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
