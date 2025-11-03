@@ -42,7 +42,7 @@
     "browser-sync": "^3.0.2",
     "eventemitter3": "^5.0.1",
     "jsdom": "^26.0.0",
-    "lil-gui": "^0.20.0",
+    "lil-gui": "^0.21.0",
     "three": "^0.179.1",
     "typedoc": "^0.28.0",
     "typescript": "^5.9.2"
