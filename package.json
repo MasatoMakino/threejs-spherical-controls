@@ -43,7 +43,7 @@
     "eventemitter3": "^5.0.1",
     "jsdom": "^27.0.0",
     "lil-gui": "^0.21.0",
-    "three": "^0.180.0",
+    "three": "^0.181.0",
     "typedoc": "^0.28.0",
     "typescript": "^5.9.2"
   },
