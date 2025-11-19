@@ -16,13 +16,12 @@ This module is designed to be bundled with Three.js and executed in browser envi
 ### Purpose
 - Isolate npm package execution from the host OS
 - Protect host system from potentially malicious packages
-- Use Docker named volumes to completely separate node_modules from host filesystem
 - Run all npm commands exclusively in a sandboxed Linux container
 
 ### Architecture
 - Base image: `mcr.microsoft.com/devcontainers/javascript-node:22`
 - Security: `--cap-drop=ALL` (removes all Linux capabilities)
-- Named volume: `threejs-spherical-controls-npm-runner-node_modules`
+- Non-root user: `node` (UID:1000, GID:1000)
 - Port forwarding: 3000 (browser-sync), 3001 (browser-sync UI)
 
 ### Commands on Host OS (SAFE)
@@ -179,10 +178,9 @@ devcontainer exec --workspace-folder . npm run pre-push    # Biome CI + tests
 
 ### Security Benefits
 - Host OS npm is never executed (protection from malicious package scripts)
-- Container runs with minimal Linux capabilities
-- node_modules isolated in Docker volume (not accessible from host filesystem)
+- Container runs with minimal Linux capabilities (`--cap-drop=ALL`)
+- Non-root user (node) execution in container
 - Automatic `npm audit` on container start
-- Non-root user (node) in container
 
 ## Development Commands
 
