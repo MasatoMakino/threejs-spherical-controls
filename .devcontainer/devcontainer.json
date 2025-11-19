@@ -1,9 +1,6 @@
 {
   "name": "threejs-spherical-controls npm Runner (Node 22)",
-  "build": {
-    "dockerfile": "Dockerfile",
-    "context": ".."
-  },
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,consistency=cached",
   "remoteUser": "node",
@@ -14,10 +11,6 @@
     "3000:3000",
     "-p",
     "3001:3001"
-  ],
-  "mounts": [
-    "source=${localWorkspaceFolderBasename}-npm-runner-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
-    "source=${localWorkspaceFolder}/.devcontainer,target=/workspaces/${localWorkspaceFolderBasename}/.devcontainer,type=bind,readonly"
   ],
   "forwardPorts": [3000, 3001],
   "portsAttributes": {

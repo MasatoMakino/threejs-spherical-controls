@@ -16,13 +16,12 @@ This module is designed to be bundled with Three.js and executed in browser envi
 ### Purpose
 - Isolate npm package execution from the host OS
 - Protect host system from potentially malicious packages
-- Use Docker named volumes to completely separate node_modules from host filesystem
 - Run all npm commands exclusively in a sandboxed Linux container
 
 ### Architecture
 - Base image: `mcr.microsoft.com/devcontainers/javascript-node:22`
 - Security: `--cap-drop=ALL` (removes all Linux capabilities)
-- Named volume: `threejs-spherical-controls-npm-runner-node_modules`
+- Non-root user: `node` (UID:1000, GID:1000)
 - Port forwarding: 3000 (browser-sync), 3001 (browser-sync UI)
 
 ### Commands on Host OS (SAFE)
@@ -64,13 +63,17 @@ npm run *     # DANGEROUS: Any npm script execution
 node script.js  # DANGEROUS: Uncontrolled code execution
 ```
 
-### Commands NOT Available in Container
+### Commands NOT Used in Container
 ```bash
-# Git operations are intentionally disabled in container
-git commit    # ❌ Not available (security isolation)
-git push      # ❌ Not available (security isolation)
+# Git operations cannot be performed in container
+# While Git is installed, the container lacks:
+# - Git authentication credentials
+# - Commit signing keys (GPG/SSH)
+# This is intentional: the container is designed for npm execution isolation only
+git commit    # ❌ No signing keys available
+git push      # ❌ No authentication credentials
 
-# These must be run on host OS
+# Run Git operations on host OS where credentials and keys are available
 ```
 
 ### Development Workflow
@@ -179,10 +182,12 @@ devcontainer exec --workspace-folder . npm run pre-push    # Biome CI + tests
 
 ### Security Benefits
 - Host OS npm is never executed (protection from malicious package scripts)
-- Container runs with minimal Linux capabilities
-- node_modules isolated in Docker volume (not accessible from host filesystem)
+- Container runs with minimal Linux capabilities (`--cap-drop=ALL`)
+- Non-root user (node) execution in container
 - Automatic `npm audit` on container start
-- Non-root user (node) in container
+
+**Note on Security Trade-off:**
+Volume-based node_modules isolation was removed to restore host IDE access to TypeScript type definitions. Security now relies on container user and capability restrictions rather than volume isolation. This trade-off prioritizes developer experience (IDE type support) while maintaining npm execution isolation.
 
 ## Development Commands
 
