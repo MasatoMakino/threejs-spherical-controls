@@ -63,13 +63,17 @@ npm run *     # DANGEROUS: Any npm script execution
 node script.js  # DANGEROUS: Uncontrolled code execution
 ```
 
-### Commands NOT Available in Container
+### Commands NOT Used in Container
 ```bash
-# Git operations are intentionally disabled in container
-git commit    # ❌ Not available (security isolation)
-git push      # ❌ Not available (security isolation)
+# Git operations cannot be performed in container
+# While Git is installed, the container lacks:
+# - Git authentication credentials
+# - Commit signing keys (GPG/SSH)
+# This is intentional: the container is designed for npm execution isolation only
+git commit    # ❌ No signing keys available
+git push      # ❌ No authentication credentials
 
-# These must be run on host OS
+# Run Git operations on host OS where credentials and keys are available
 ```
 
 ### Development Workflow
@@ -181,6 +185,9 @@ devcontainer exec --workspace-folder . npm run pre-push    # Biome CI + tests
 - Container runs with minimal Linux capabilities (`--cap-drop=ALL`)
 - Non-root user (node) execution in container
 - Automatic `npm audit` on container start
+
+**Note on Security Trade-off:**
+Volume-based node_modules isolation was removed to restore host IDE access to TypeScript type definitions. Security now relies on container user and capability restrictions rather than volume isolation. This trade-off prioritizes developer experience (IDE type support) while maintaining npm execution isolation.
 
 ## Development Commands
 
