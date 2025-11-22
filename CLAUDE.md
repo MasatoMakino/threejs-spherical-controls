@@ -19,10 +19,12 @@ This module is designed to be bundled with Three.js and executed in browser envi
 - Run all npm commands exclusively in a sandboxed Linux container
 
 ### Architecture
-- Base image: `mcr.microsoft.com/devcontainers/javascript-node:22`
+- Base image: `node:22-bookworm-slim` with Git
+- Image size: ~330 MB (79% reduction from Microsoft DevContainers image)
 - Security: `--cap-drop=ALL` (removes all Linux capabilities)
 - Non-root user: `node` (UID:1000, GID:1000)
 - Port forwarding: 3000 (browser-sync), 3001 (browser-sync UI)
+- Git support: Required for Biome `--staged` option in pre-commit hooks
 
 ### Commands on Host OS (SAFE)
 ```bash
@@ -63,18 +65,15 @@ npm run *     # DANGEROUS: Any npm script execution
 node script.js  # DANGEROUS: Uncontrolled code execution
 ```
 
-### Commands NOT Used in Container
-```bash
-# Git operations cannot be performed in container
-# While Git is installed, the container lacks:
-# - Git authentication credentials
-# - Commit signing keys (GPG/SSH)
-# This is intentional: the container is designed for npm execution isolation only
-git commit    # ❌ No signing keys available
-git push      # ❌ No authentication credentials
+### Git in Container
 
-# Run Git operations on host OS where credentials and keys are available
-```
+Git is installed in the container for the following purposes:
+- **Biome `--staged` option**: Pre-commit hooks use `biome check --staged` to check only staged files
+- **VCS integration**: Biome's VCS features require Git to be present
+
+**Important**: While Git is installed, the container lacks authentication credentials and signing keys. Therefore:
+- Git operations (commit, push) should be performed on the host OS
+- The container's Git is only used for file status checking by Biome
 
 ### Development Workflow
 1. **Start DevContainer**: `devcontainer up --workspace-folder .`
