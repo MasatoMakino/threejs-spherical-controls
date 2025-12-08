@@ -1,6 +1,9 @@
 {
   "name": "threejs-spherical-controls npm Runner (Node 22)",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,consistency=cached",
   "remoteUser": "node",
