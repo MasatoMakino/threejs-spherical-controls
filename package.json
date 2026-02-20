@@ -38,7 +38,7 @@
     "@masatomakino/gulptask-demo-page": "^0.10.0",
     "@tweenjs/tween.js": "^25.0.0",
     "@types/three": "^0.180.0",
-    "@vitest/coverage-istanbul": "^3.0.2",
+    "@vitest/coverage-istanbul": "^4.0.8",
     "browser-sync": "^3.0.2",
     "eventemitter3": "^5.0.1",
     "jsdom": "^27.0.0",
