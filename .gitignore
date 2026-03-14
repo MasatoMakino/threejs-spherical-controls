@@ -70,3 +70,6 @@ lib/
 
 # Local notes and temporary documents
 local-notes/
+
+# 1Password CLI directory scope config
+.op/
