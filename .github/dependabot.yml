@@ -10,7 +10,7 @@ updates:
     schedule:
       interval: "daily"
     cooldown:
-      default-days: 5 # 全体的な更新頻度の制御 semver制御はできない
+      default-days: 7 # 全体的な更新頻度の制御 semver制御はできない
 
   - package-ecosystem: "npm"
     directory: "/"
