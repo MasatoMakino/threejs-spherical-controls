@@ -11,19 +11,13 @@
     "--cap-drop=ALL",
     "--name=threejs-spherical-controls-npm-runner",
     "-p",
-    "3000:3000",
-    "-p",
-    "3001:3001"
+    "3000:3000"
   ],
-  "forwardPorts": [3000, 3001],
+  "forwardPorts": [3000],
   "portsAttributes": {
     "3000": {
-      "label": "Browser Sync",
+      "label": "Demo Showcase Dev Server",
       "onAutoForward": "notify"
-    },
-    "3001": {
-      "label": "Browser Sync UI",
-      "onAutoForward": "ignore"
     }
   },
   "postCreateCommand": "npm ci",
