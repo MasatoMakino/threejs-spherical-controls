@@ -23,7 +23,7 @@ This module is designed to be bundled with Three.js and executed in browser envi
 - Image size: ~330 MB (79% reduction from Microsoft DevContainers image)
 - Security: `--cap-drop=ALL` (removes all Linux capabilities)
 - Non-root user: `node` (UID:1000, GID:1000)
-- Port forwarding: 3000 (browser-sync), 3001 (browser-sync UI)
+- Port forwarding: 3000 (demo-showcase dev server)
 - Git support: Required for Biome `--staged` option in pre-commit hooks
 
 ### Commands on Host OS (SAFE)
@@ -192,7 +192,7 @@ Volume-based node_modules isolation was removed to restore host IDE access to Ty
 
 ### Essential Commands
 ```bash
-npm run start:dev    # Runs development server + TypeScript watch + demo watch
+npm run start:dev    # Runs TypeScript watch + demo-showcase Vite dev server with HMR
 npm run test         # Run tests once
 npm run test:watch   # Run tests in watch mode
 npm run coverage     # Generate test coverage report
