@@ -73,3 +73,6 @@ local-notes/
 
 # 1Password CLI directory scope config
 .op/
+
+# pnpm store created by the bind-mounted DevContainer
+.pnpm-store/
