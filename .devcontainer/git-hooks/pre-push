@@ -1,0 +1,32 @@
+#!/bin/bash
+# Git runs on the host; tests run in the DevContainer.
+exec 1>&2
+
+# Must match the --name suffix in .devcontainer/devcontainer.json.
+RUNNER_SUFFIX="npm-runner"
+# npm projects: RUN_SCRIPT=(npm run pre-push)
+RUN_SCRIPT=(npm run pre-push)
+
+MAIN_ROOT="$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")"
+MAIN_ROOT="$(cd "$MAIN_ROOT" && pwd -P)"
+WORK_ROOT="$(cd "$(git rev-parse --show-toplevel)" && pwd -P)"
+
+# The container runs against the main tree's checkout and node_modules,
+# so tests from a worktree would verify the wrong code.
+if [ "$WORK_ROOT" != "$MAIN_ROOT" ]; then
+  echo "[pre-push] ERROR: tests cannot run for a worktree; push from $MAIN_ROOT"
+  exit 1
+fi
+
+CONTAINER_NAME="$(basename "$MAIN_ROOT")-$RUNNER_SUFFIX"
+if ! docker ps --format '{{.Names}}' | grep -qx "$CONTAINER_NAME"; then
+  echo "[pre-push] DevContainer not running. Starting..."
+  devcontainer up --workspace-folder "$MAIN_ROOT" || exit 1
+fi
+
+if ! devcontainer exec --workspace-folder "$MAIN_ROOT" "${RUN_SCRIPT[@]}"; then
+  echo "[pre-push] ERROR: tests or CI checks failed"
+  exit 1
+fi
+
+exit 0
