@@ -21,3 +21,13 @@ updates:
       semver-major-days: 30
       semver-minor-days: 7
       semver-patch-days: 7
+    groups:
+      vitest:
+        patterns:
+          - "vite"
+          - "vitest"
+          - "@vitest/*"
+      three:
+        patterns:
+          - "three"
+          - "@types/three"
