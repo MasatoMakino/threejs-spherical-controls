@@ -4,8 +4,6 @@ exec 1>&2
 
 # Must match the --name suffix in .devcontainer/devcontainer.json.
 RUNNER_SUFFIX="npm-runner"
-# pnpm forwards arguments after the script name and passes `--` through literally.
-# npm projects: RUN_SCRIPT=(npm run pre-commit --)
 RUN_SCRIPT=(npm run pre-commit --)
 
 # The container mounts the main tree only; resolve it from the common git dir.

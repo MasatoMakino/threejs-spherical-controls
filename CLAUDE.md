@@ -63,7 +63,7 @@ npm run *     # DANGEROUS: Any npm script execution
 node script.js  # DANGEROUS: Uncontrolled code execution
 ```
 
-### Git and the Container
+### Git and the container
 
 The container has no Git. Git operations run on the host OS, where credentials and signing keys exist. The pre-commit hook collects staged file paths on the host and passes them to Biome in the container.
 
@@ -112,7 +112,7 @@ Each developer is responsible for setting up Git hooks on their local machine. T
 **Important Notes:**
 - Git hooks run from `.git/hooks/`, which is not version controlled. `.devcontainer/git-hooks/` holds the shared copies
 - Each developer must set up hooks independently
-- The pre-commit hook formats staged files with Biome in the container, then stages them again. Unstaged changes in a partially staged file are committed too
+- The pre-commit hook formats staged files with Biome in the container, then stages them again. Re-staging adds the whole file, including unstaged changes in a partially staged file
 - Hooks automatically start the DevContainer if not running
 - All npm script execution happens in the isolated container
 - Git operations remain on the host OS with proper credentials

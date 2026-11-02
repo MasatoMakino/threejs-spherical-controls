@@ -4,7 +4,6 @@ exec 1>&2
 
 # Must match the --name suffix in .devcontainer/devcontainer.json.
 RUNNER_SUFFIX="npm-runner"
-# npm projects: RUN_SCRIPT=(npm run pre-push)
 RUN_SCRIPT=(npm run pre-push)
 
 MAIN_ROOT="$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")"
