@@ -46,7 +46,7 @@
     "three": "^0.183.2",
     "typedoc": "^0.28.0",
     "typescript": "^5.9.2",
-    "vitest": "4.0.18"
+    "vitest": "4.1.11"
   },
   "scripts": {
     "test": "vitest --run",
