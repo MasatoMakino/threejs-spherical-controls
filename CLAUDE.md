@@ -19,12 +19,10 @@ This module is designed to be bundled with Three.js and executed in browser envi
 - Run all npm commands exclusively in a sandboxed Linux container
 
 ### Architecture
-- Base image: `node:22-bookworm-slim` with Git
-- Image size: ~330 MB (79% reduction from Microsoft DevContainers image)
+- Base image: `node:22-bookworm-slim` with pnpm installed by `.devcontainer/Dockerfile` (no Git)
 - Security: `--cap-drop=ALL` (removes all Linux capabilities)
 - Non-root user: `node` (UID:1000, GID:1000)
-- Port forwarding: 3000 (demo-showcase dev server)
-- Git support: Required for Biome `--staged` option in pre-commit hooks
+- Port mapping: container port 3000 (demo-showcase dev server) to an ephemeral host port on `127.0.0.1`
 
 ### Commands on Host OS (SAFE)
 ```bash
@@ -42,12 +40,12 @@ git push
 ls, cat, grep, find  # Read-only operations on host
 ```
 
-### Commands in Container (npm execution)
+### Commands in Container (pnpm execution)
 ```bash
-# Execute npm commands via devcontainer exec
-devcontainer exec --workspace-folder . npm install
-devcontainer exec --workspace-folder . npm test
-devcontainer exec --workspace-folder . npm run build
+# Execute pnpm commands via devcontainer exec
+devcontainer exec --workspace-folder . pnpm install --frozen-lockfile
+devcontainer exec --workspace-folder . pnpm test
+devcontainer exec --workspace-folder . pnpm run build
 
 # Or enter the container shell
 devcontainer exec --workspace-folder . /bin/bash
@@ -55,33 +53,29 @@ devcontainer exec --workspace-folder . /bin/bash
 
 ### Commands NEVER to Run on Host OS
 ```bash
-# ❌ NEVER run npm directly on host OS
+# ❌ NEVER run npm or pnpm directly on host OS
 npm install   # DANGEROUS: Executes package scripts on host
 npm ci        # DANGEROUS: Executes package scripts on host
 npm test      # DANGEROUS: May execute malicious code
 npm run *     # DANGEROUS: Any npm script execution
+pnpm install  # DANGEROUS: Same risks as npm
+pnpm run *    # DANGEROUS: Same risks as npm
 
 # ❌ NEVER run node directly on host OS
 node script.js  # DANGEROUS: Uncontrolled code execution
 ```
 
-### Git in Container
+### Git and the container
 
-Git is installed in the container for the following purposes:
-- **Biome `--staged` option**: Pre-commit hooks use `biome check --staged` to check only staged files
-- **VCS integration**: Biome's VCS features require Git to be present
-
-**Important**: While Git is installed, the container lacks authentication credentials and signing keys. Therefore:
-- Git operations (commit, push) should be performed on the host OS
-- The container's Git is only used for file status checking by Biome
+The container has no Git. Git operations run on the host OS, where credentials and signing keys exist. The pre-commit hook collects staged file paths on the host and passes them to Biome in the container.
 
 ### Development Workflow
 1. **Start DevContainer**: `devcontainer up --workspace-folder .`
-2. **Install dependencies** (in container): `devcontainer exec --workspace-folder . npm ci`
-3. **Run dev server** (in container): `devcontainer exec --workspace-folder . npm run start:dev`
+2. **Install dependencies** (in container): `devcontainer exec --workspace-folder . pnpm install --frozen-lockfile`
+3. **Run dev server** (in container): `devcontainer exec --workspace-folder . pnpm run start:dev`
 4. **Edit files** on host OS (your IDE/editor)
 5. **Hot reload** automatically detects changes and rebuilds
-6. **Access demo** at `http://localhost:3000` from host OS browser
+6. **Access demo** from the host OS browser at the port that `docker port threejs-spherical-controls-pnpm-runner 3000` prints. The host port changes on each container start
 7. **Git operations** on host OS only
 
 ### Git Hooks Setup (Optional but Recommended)
@@ -104,57 +98,9 @@ Each developer is responsible for setting up Git hooks on their local machine. T
    git config --unset core.hooksPath
    ```
 
-2. Create hook files in `.git/hooks/`:
+2. Copy the hook files from `.devcontainer/git-hooks/` to `.git/hooks/`:
    ```bash
-   # Create pre-commit hook
-   cat > .git/hooks/pre-commit << 'EOF'
-   #!/bin/sh
-   # Redirect output to stderr.
-   exec 1>&2
-
-   echo "[pre-commit] Running code quality checks in DevContainer..."
-
-   # Check if DevContainer is running, start if needed
-   if ! docker ps --format '{{.Names}}' | grep -q 'threejs-spherical-controls-npm-runner'; then
-     echo "[pre-commit] DevContainer not running. Starting..."
-     devcontainer up --workspace-folder . || exit 1
-   fi
-
-   # Run pre-commit checks in container
-   if ! devcontainer exec --workspace-folder . npm run pre-commit; then
-     echo "[pre-commit] ERROR: Code quality checks failed"
-     exit 1
-   fi
-
-   echo "[pre-commit] ✓ All checks passed"
-   exit 0
-   EOF
-
-   # Create pre-push hook
-   cat > .git/hooks/pre-push << 'EOF'
-   #!/bin/sh
-   # Redirect output to stderr.
-   exec 1>&2
-
-   echo "[pre-push] Running tests and CI checks in DevContainer..."
-
-   # Check if DevContainer is running, start if needed
-   if ! docker ps --format '{{.Names}}' | grep -q 'threejs-spherical-controls-npm-runner'; then
-     echo "[pre-push] DevContainer not running. Starting..."
-     devcontainer up --workspace-folder . || exit 1
-   fi
-
-   # Run pre-push checks in container
-   if ! devcontainer exec --workspace-folder . npm run pre-push; then
-     echo "[pre-push] ERROR: Tests or CI checks failed"
-     exit 1
-   fi
-
-   echo "[pre-push] ✓ All checks passed"
-   exit 0
-   EOF
-
-   # Make hooks executable
+   cp .devcontainer/git-hooks/pre-commit .devcontainer/git-hooks/pre-push .git/hooks/
    chmod +x .git/hooks/pre-commit .git/hooks/pre-push
    ```
 
@@ -166,8 +112,9 @@ Each developer is responsible for setting up Git hooks on their local machine. T
    ```
 
 **Important Notes:**
-- Git hooks are stored in `.git/hooks/` (not version controlled)
+- Git hooks run from `.git/hooks/`, which is not version controlled. `.devcontainer/git-hooks/` holds the shared copies
 - Each developer must set up hooks independently
+- The pre-commit hook formats staged files with Biome in the container, then stages them again. Re-staging adds the whole file, including unstaged changes in a partially staged file
 - Hooks automatically start the DevContainer if not running
 - All npm script execution happens in the isolated container
 - Git operations remain on the host OS with proper credentials
@@ -175,15 +122,15 @@ Each developer is responsible for setting up Git hooks on their local machine. T
 **Manual Alternative:**
 If you prefer not to use Git hooks, run these commands manually before committing:
 ```bash
-devcontainer exec --workspace-folder . npm run pre-commit  # Biome check + auto-fix
-devcontainer exec --workspace-folder . npm run pre-push    # Biome CI + tests
+devcontainer exec --workspace-folder . pnpm run pre-commit <files>  # Biome format
+devcontainer exec --workspace-folder . pnpm run pre-push    # Biome CI + tests
 ```
 
 ### Security Benefits
-- Host OS npm is never executed (protection from malicious package scripts)
+- Host OS npm and pnpm are never executed (protection from malicious package scripts)
 - Container runs with minimal Linux capabilities (`--cap-drop=ALL`)
 - Non-root user (node) execution in container
-- Automatic `npm audit` on container start
+- Automatic `pnpm audit` on container start
 
 **Note on Security Trade-off:**
 Volume-based node_modules isolation was removed to restore host IDE access to TypeScript type definitions. Security now relies on container user and capability restrictions rather than volume isolation. This trade-off prioritizes developer experience (IDE type support) while maintaining npm execution isolation.
@@ -192,11 +139,11 @@ Volume-based node_modules isolation was removed to restore host IDE access to Ty
 
 ### Essential Commands
 ```bash
-npm run start:dev    # Runs TypeScript watch + demo-showcase Vite dev server with HMR
-npm run test         # Run tests once
-npm run test:watch   # Run tests in watch mode
-npm run coverage     # Generate test coverage report
-npm run buildTS      # Compile TypeScript to ES modules
+pnpm run start:dev    # Runs TypeScript watch + demo-showcase Vite dev server with HMR
+pnpm run test         # Run tests once
+pnpm run test:watch   # Run tests in watch mode
+pnpm run coverage     # Generate test coverage report
+pnpm run buildTS      # Compile TypeScript to ES modules
 ```
 
 ### Code Quality
@@ -207,9 +154,9 @@ biome check --write --no-errors-on-unmatched  # Fix code formatting and linting 
 
 ### Documentation & Demo
 ```bash
-npm run demo         # Build demo page
-npm run typedocs     # Generate TypeDoc API documentation
-npm run build        # Build both docs and demo
+pnpm run demo         # Build demo page
+pnpm run typedocs     # Generate TypeDoc API documentation
+pnpm run build        # Build both docs and demo
 ```
 
 ## Testing
@@ -217,7 +164,7 @@ npm run build        # Build both docs and demo
 - Framework: Vitest with jsdom environment
 - Test files are in `__test__/` directory
 - Good test coverage across multiple test suites
-- Run `npm run coverage` to generate coverage reports
+- Run `pnpm run coverage` to generate coverage reports
 
 ## Code Architecture
 
@@ -289,10 +236,10 @@ The library is published as ES modules in the `esm/` directory with TypeScript d
 ### Running Single Tests
 ```bash
 # Run a specific test file
-npx vitest __test__/SphericalController.spec.ts
+pnpm exec vitest __test__/SphericalController.spec.ts
 
 # Run tests matching a pattern
-npx vitest --grep "addPosition"
+pnpm exec vitest --grep "addPosition"
 ```
 
 ## Spherical Coordinate System

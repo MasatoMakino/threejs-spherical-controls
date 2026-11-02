@@ -1,29 +1,20 @@
 {
-  "name": "threejs-spherical-controls npm Runner (Node 22)",
+  "name": "${localWorkspaceFolderBasename} pnpm Runner (Node 22)",
   "build": {
-    "dockerfile": "Dockerfile",
-    "context": "."
+    "dockerfile": "Dockerfile"
   },
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,consistency=cached",
   "remoteUser": "node",
   "runArgs": [
     "--cap-drop=ALL",
-    "--name=threejs-spherical-controls-npm-runner",
+    "--name=${localWorkspaceFolderBasename}-pnpm-runner",
     "-p",
-    "3000:3000"
+    "127.0.0.1:0:3000"
   ],
-  "forwardPorts": [3000],
-  "portsAttributes": {
-    "3000": {
-      "label": "Demo Showcase Dev Server",
-      "onAutoForward": "notify"
-    }
-  },
-  "postCreateCommand": "npm ci",
-  "postStartCommand": "npm audit --audit-level=moderate || true",
+  "postCreateCommand": "pnpm install --frozen-lockfile",
+  "postStartCommand": "pnpm audit --audit-level=moderate || true",
   "containerEnv": {
-    "NODE_ENV": "development",
-    "NPM_CONFIG_AUDIT": "true"
+    "NODE_ENV": "development"
   }
 }
