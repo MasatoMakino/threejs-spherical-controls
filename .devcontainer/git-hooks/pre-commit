@@ -1,0 +1,59 @@
+#!/bin/bash
+# Git runs on the host; the formatter runs in the DevContainer.
+exec 1>&2
+
+# Must match the --name suffix in .devcontainer/devcontainer.json.
+RUNNER_SUFFIX="npm-runner"
+RUN_SCRIPT=(npm run pre-commit --)
+
+# The container mounts the main tree only; resolve it from the common git dir.
+MAIN_ROOT="$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")"
+MAIN_ROOT="$(cd "$MAIN_ROOT" && pwd -P)"
+WORK_ROOT="$(cd "$(git rev-parse --show-toplevel)" && pwd -P)"
+
+PATH_PREFIX=""
+if [ "$WORK_ROOT" != "$MAIN_ROOT" ]; then
+  case "$WORK_ROOT" in
+    "$MAIN_ROOT"/*) PATH_PREFIX="${WORK_ROOT#$MAIN_ROOT/}/" ;;
+    *)
+      echo "[pre-commit] ERROR: worktree $WORK_ROOT is outside $MAIN_ROOT and invisible to the container"
+      exit 1
+      ;;
+  esac
+fi
+
+CONTAINER_NAME="$(basename "$MAIN_ROOT")-$RUNNER_SUFFIX"
+if ! docker ps --format '{{.Names}}' | grep -qx "$CONTAINER_NAME"; then
+  echo "[pre-commit] DevContainer not running. Starting..."
+  devcontainer up --workspace-folder "$MAIN_ROOT" || exit 1
+fi
+
+cd "$WORK_ROOT" || exit 1
+
+STAGED=()
+while IFS= read -r file; do
+  STAGED+=("$file")
+done < <(git diff --cached --name-only --diff-filter=ACMR)
+
+if [ ${#STAGED[@]} -eq 0 ]; then
+  exit 0
+fi
+
+# The container's working directory is the main tree.
+ARGS=()
+for file in "${STAGED[@]}"; do
+  ARGS+=("${PATH_PREFIX}${file}")
+done
+
+if ! devcontainer exec --workspace-folder "$MAIN_ROOT" "${RUN_SCRIPT[@]}" "${ARGS[@]}"; then
+  echo "[pre-commit] ERROR: code quality checks failed"
+  exit 1
+fi
+
+for file in "${STAGED[@]}"; do
+  if [ -f "$file" ]; then
+    git add -- "$file" || exit 1
+  fi
+done
+
+exit 0
