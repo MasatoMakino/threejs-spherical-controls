@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a TypeScript library for Three.js that provides spherical camera controls with smooth transitions and positioning constraints. The library uses an event-driven architecture and integrates with the RAF (RequestAnimationFrame) ticker system.
 
 ### Runtime Environment
+
 This module is designed to be bundled with Three.js and executed in browser environments. Node.js execution is not supported and is outside the scope of this library. When installing dependencies for development or testing purposes, use `--save-dev` to install as development dependencies only.
 
 ## DevContainer Isolated Environment
@@ -14,17 +15,20 @@ This module is designed to be bundled with Three.js and executed in browser envi
 **This project uses DevContainer for npm execution isolation to protect against supply chain attacks.**
 
 ### Purpose
+
 - Isolate npm package execution from the host OS
 - Protect host system from potentially malicious packages
 - Run all npm commands exclusively in a sandboxed Linux container
 
 ### Architecture
+
 - Base image: `node:22-bookworm-slim` with pnpm installed by `.devcontainer/Dockerfile` (no Git)
 - Security: `--cap-drop=ALL` (removes all Linux capabilities)
 - Non-root user: `node` (UID:1000, GID:1000)
 - Port mapping: container port 3000 (demo-showcase dev server) to an ephemeral host port on `127.0.0.1`
 
 ### Commands on Host OS (SAFE)
+
 ```bash
 # DevContainer operations
 devcontainer up --workspace-folder .
@@ -41,6 +45,7 @@ ls, cat, grep, find  # Read-only operations on host
 ```
 
 ### Commands in Container (pnpm execution)
+
 ```bash
 # Execute pnpm commands via devcontainer exec
 devcontainer exec --workspace-folder . pnpm install --frozen-lockfile
@@ -52,6 +57,7 @@ devcontainer exec --workspace-folder . /bin/bash
 ```
 
 ### Commands NEVER to Run on Host OS
+
 ```bash
 # ❌ NEVER run npm or pnpm directly on host OS
 npm install   # DANGEROUS: Executes package scripts on host
@@ -70,6 +76,7 @@ node script.js  # DANGEROUS: Uncontrolled code execution
 The container has no Git. Git operations run on the host OS, where credentials and signing keys exist. The pre-commit hook collects staged file paths on the host and passes them to Biome in the container.
 
 ### Development Workflow
+
 1. **Start DevContainer**: `devcontainer up --workspace-folder .`
 2. **Install dependencies** (in container): `devcontainer exec --workspace-folder . pnpm install --frozen-lockfile`
 3. **Run dev server** (in container): `devcontainer exec --workspace-folder . pnpm run start:dev`
@@ -94,17 +101,20 @@ Each developer is responsible for setting up Git hooks on their local machine. T
 
 **Setup Instructions:**
 1. Remove Husky's Git config (if migrating from Husky):
+
    ```bash
    git config --unset core.hooksPath
    ```
 
 2. Copy the hook files from `.devcontainer/git-hooks/` to `.git/hooks/`:
+
    ```bash
    cp .devcontainer/git-hooks/pre-commit .devcontainer/git-hooks/pre-push .git/hooks/
    chmod +x .git/hooks/pre-commit .git/hooks/pre-push
    ```
 
 3. Verify hooks are working:
+
    ```bash
    # Test with empty commit
    git commit --allow-empty -m "test: Verify hooks"
@@ -127,6 +137,7 @@ devcontainer exec --workspace-folder . pnpm run pre-push    # Biome CI + tests
 ```
 
 ### Security Benefits
+
 - Host OS npm and pnpm are never executed (protection from malicious package scripts)
 - Container runs with minimal Linux capabilities (`--cap-drop=ALL`)
 - Non-root user (node) execution in container
@@ -138,6 +149,7 @@ Volume-based node_modules isolation was removed to restore host IDE access to Ty
 ## Development Commands
 
 ### Essential Commands
+
 ```bash
 pnpm run start:dev    # Runs TypeScript watch + demo-showcase Vite dev server with HMR
 pnpm run test         # Run tests once
@@ -147,12 +159,14 @@ pnpm run buildTS      # Compile TypeScript to ES modules
 ```
 
 ### Code Quality
+
 ```bash
 biome check --no-errors-on-unmatched      # Check code formatting and linting
 biome check --write --no-errors-on-unmatched  # Fix code formatting and linting issues
 ```
 
 ### Documentation & Demo
+
 ```bash
 pnpm run demo         # Build demo page
 pnpm run typedocs     # Generate TypeDoc API documentation
@@ -169,6 +183,7 @@ pnpm run build        # Build both docs and demo
 ## Code Architecture
 
 ### RequestAnimationFrame Handling
+
 This module automatically handles camera animation updates through the `@masatomakino/raf-ticker` system. Users do not need to manually call `requestAnimationFrame` - the camera animations are automatically updated by the RAF ticker integration.
 
 ### Core Classes
@@ -190,12 +205,14 @@ This module automatically handles camera animation updates through the `@masatom
    - Integrates with @tweenjs/tween.js for easing
 
 ### Key Dependencies (Peer Dependencies)
+
 - `three` - Three.js library (>=0.126.0 <1.0.0)
 - `@tweenjs/tween.js` - Animation library
 - `eventemitter3` - Event emitter for event-driven architecture
 - `@masatomakino/raf-ticker` - RequestAnimationFrame ticker system
 
 ### Architecture Patterns
+
 - Event-driven design using EventEmitter3
 - Modular components with single responsibilities
 - TypeScript-first with strict typing
@@ -223,6 +240,7 @@ The library is published as ES modules in the `esm/` directory with TypeScript d
 ## Testing Strategy
 
 ### Test Structure
+
 - Multiple test suites covering all major functionality
 - Tests use Vitest with jsdom environment for browser API simulation
 - Test files follow `*.spec.ts` naming convention
@@ -234,6 +252,7 @@ The library is published as ES modules in the `esm/` directory with TypeScript d
   - Event emission and handling
 
 ### Running Single Tests
+
 ```bash
 # Run a specific test file
 pnpm exec vitest __test__/SphericalController.spec.ts
@@ -246,7 +265,7 @@ pnpm exec vitest --grep "addPosition"
 
 The library uses Three.js spherical coordinates with these conventions:
 - **Radius**: Distance from target (must be > 0)
-- **Phi**: Vertical angle (0 to π, where 0 = North Pole, π = South Pole)  
+- **Phi**: Vertical angle (0 to π, where 0 = North Pole, π = South Pole)
 - **Theta**: Horizontal angle (-π to π, where 0 = positive Z axis)
 
 **Important**: Phi values of exactly 0 or π are not supported due to coordinate singularities at the poles.
@@ -254,17 +273,20 @@ The library uses Three.js spherical coordinates with these conventions:
 ## Key Implementation Details
 
 ### Event System
+
 The SphericalController extends EventEmitter3 and emits these events:
 - `update` - Camera position/target/shift changed (emitted by SphericalController)
-- `moved_camera` - Camera position updated during animation (emitted by CameraPositionUpdater)  
+- `moved_camera` - Camera position updated during animation (emitted by CameraPositionUpdater)
 - `moved_camera_complete` - Animation completed (emitted by SphericalController)
 
 ### Animation Integration
+
 - All animations automatically integrate with `@masatomakino/raf-ticker`
 - Uses `@tweenjs/tween.js` for smooth transitions
 - No manual `requestAnimationFrame` calls needed
 
 ### Memory Management
+
 Always call `dispose()` on SphericalController instances to:
 - Remove RAF ticker listeners
 - Stop all active tweens
