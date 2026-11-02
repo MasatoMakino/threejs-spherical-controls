@@ -31,7 +31,10 @@ npm install @masatomakino/threejs-spherical-controls --save-dev
 ### Basic Usage
 
 ```js
-import { SphericalController, generateCameraTarget } from "@masatomakino/threejs-spherical-controls";
+import {
+  SphericalController,
+  generateCameraTarget,
+} from "@masatomakino/threejs-spherical-controls";
 import { Spherical, Vector3 } from "three";
 import { Easing } from "@tweenjs/tween.js";
 
@@ -48,7 +51,7 @@ controller.initCameraPosition(new Spherical(50, 0.0001, 0));
 // Move to new position with animation
 controller.move(new Spherical(50, Math.PI / 2, Math.PI / 4), {
   duration: 1500,
-  easing: Easing.Cubic.Out
+  easing: Easing.Cubic.Out,
 });
 ```
 
@@ -69,19 +72,21 @@ controller.on("moved_camera", (event) => {
 ### Advanced Features
 
 #### Incremental Movement
+
 ```js
 // Add to current position
-controller.addPosition("radius", -10);    // Move closer
-controller.addPosition("phi", 0.1);       // Rotate vertically
-controller.addPosition("theta", 0.2);     // Rotate horizontally
+controller.addPosition("radius", -10); // Move closer
+controller.addPosition("phi", 0.1); // Rotate vertically
+controller.addPosition("theta", 0.2); // Rotate horizontally
 ```
 
 #### Loop Animations
+
 ```js
 // Create continuous oscillation between two values
-controller.loop("theta", -Math.PI/4, Math.PI/4, {
+controller.loop("theta", -Math.PI / 4, Math.PI / 4, {
   duration: 5000,
-  easing: Easing.Sinusoidal.InOut
+  easing: Easing.Sinusoidal.InOut,
 });
 
 // Stop loop animation
@@ -89,14 +94,16 @@ controller.stopLoop("theta");
 ```
 
 #### Position Constraints
+
 ```js
 // Set movement limits
-controller.limiter.setLimit("phi", 0.1, Math.PI - 0.1);      // Vertical limits
-controller.limiter.setLimit("theta", -Math.PI, Math.PI);     // Horizontal limits
-controller.limiter.setLimit("radius", 10, 100);              // Distance limits
+controller.limiter.setLimit("phi", 0.1, Math.PI - 0.1); // Vertical limits
+controller.limiter.setLimit("theta", -Math.PI, Math.PI); // Horizontal limits
+controller.limiter.setLimit("radius", 10, 100); // Distance limits
 ```
 
 #### Camera Offset
+
 ```js
 // Shift camera position relative to target
 controller.initCameraShift(new Vector3(0, 10, 0));
@@ -106,12 +113,12 @@ controller.initCameraShift(new Vector3(0, 10, 0));
 
 ```js
 import {
-  SphericalController,        // Main controller class
-  generateCameraTarget,       // Utility to create camera target
-  EasingOption,              // Animation options interface
-  SphericalControllerUtil,   // Utility functions
-  CameraPositionUpdater,     // Camera positioning logic
-  CameraPositionLimiter,     // Position constraint logic
+  SphericalController, // Main controller class
+  generateCameraTarget, // Utility to create camera target
+  EasingOption, // Animation options interface
+  SphericalControllerUtil, // Utility functions
+  CameraPositionUpdater, // Camera positioning logic
+  CameraPositionLimiter, // Position constraint logic
   // ... and more
 } from "@masatomakino/threejs-spherical-controls";
 ```
