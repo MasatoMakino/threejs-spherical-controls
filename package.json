@@ -2,6 +2,7 @@
   "name": "@masatomakino/threejs-spherical-controls",
   "version": "0.10.1",
   "type": "module",
+  "packageManager": "pnpm@10.33.0",
   "exports": {
     ".": {
       "import": {
@@ -44,19 +45,20 @@
     "lil-gui": "^0.21.0",
     "three": "^0.183.2",
     "typedoc": "^0.28.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vitest": "4.0.18"
   },
   "scripts": {
     "test": "vitest --run",
     "test:watch": "vitest",
-    "coverage": "npx vitest --coverage --run",
+    "coverage": "vitest --coverage --run",
     "pre-commit": "biome format --write --no-errors-on-unmatched --files-ignore-unknown=true",
-    "pre-push": "biome ci . && npm test",
-    "start:dev": "npm run watch:tsc & npx demo-showcase dev --srcDir ./demoSrc --body '<canvas id=\"webgl-canvas\" width=\"1920\" height=\"1080\"></canvas>' --port 3000 --host 0.0.0.0",
-    "build": "npm run typedocs & npm run demo",
-    "demo": "npm run buildTS && npx demo-showcase build --srcDir ./demoSrc --body '<canvas id=\"webgl-canvas\" width=\"1920\" height=\"1080\"></canvas>'",
+    "pre-push": "biome ci . && pnpm test",
+    "start:dev": "pnpm run watch:tsc & demo-showcase dev --srcDir ./demoSrc --body '<canvas id=\"webgl-canvas\" width=\"1920\" height=\"1080\"></canvas>' --port 3000 --host 0.0.0.0",
+    "build": "pnpm run typedocs & pnpm run demo",
+    "demo": "pnpm run buildTS && demo-showcase build --srcDir ./demoSrc --body '<canvas id=\"webgl-canvas\" width=\"1920\" height=\"1080\"></canvas>'",
     "buildTS": "tsc",
-    "typedocs": "npx typedoc --out ./docs/api src/index.ts",
+    "typedocs": "typedoc --out ./docs/api src/index.ts",
     "watch:tsc": "tsc -W --incremental"
   },
   "description": "Spherical camera controller for Three.js",
