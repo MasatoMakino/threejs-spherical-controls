@@ -10,7 +10,7 @@ describe("loop", () => {
     RAFTicker.emitTickEvent(0);
   });
 
-  test("loop", () => {
+  test("loop moves from the current value to min, then oscillates between min and max every duration", () => {
     const controller = new SphericalController(
       new PerspectiveCamera(),
       new Mesh(),

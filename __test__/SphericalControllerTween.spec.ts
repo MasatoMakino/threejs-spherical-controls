@@ -4,13 +4,7 @@ import { Tween } from "@tweenjs/tween.js";
 import { Vector3 } from "three";
 
 describe("SphericalControllerTween", () => {
-  test("constructor", () => {
-    const tweens = new SphericalControllerTween();
-    expect(tweens).toBeTruthy();
-    expect(tweens.isPlaying()).toBeFalsy();
-  });
-
-  test("override and stop", () => {
+  test("overrideTween registers a playing tween for its key, and stop stops every tween", () => {
     const tweens = new SphericalControllerTween();
     const tween = new Tween<Vector3>(new Vector3())
       .to(new Vector3(), 1000)

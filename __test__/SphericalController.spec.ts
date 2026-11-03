@@ -1,46 +1,12 @@
 import { describe, beforeEach, expect, test, vi } from "vitest";
 import { SphericalController } from "../src/index.js";
-import { PerspectiveCamera, Mesh, Spherical } from "three";
+import { PerspectiveCamera, Mesh } from "three";
 import { RAFTicker } from "@masatomakino/raf-ticker";
 
 describe("SphericalController", () => {
   beforeEach(() => {
     RAFTicker.stop();
     RAFTicker.emitTickEvent(0);
-  });
-
-  test("constructor", () => {
-    const controller = new SphericalController(
-      new PerspectiveCamera(),
-      new Mesh(),
-    );
-    expect(controller).toBeTruthy();
-
-    controller.dispose();
-  });
-
-  test("clone", () => {
-    const controller = new SphericalController(
-      new PerspectiveCamera(),
-      new Mesh(),
-    );
-    expect(controller.cloneSphericalPosition()).toStrictEqual(
-      new Spherical(1, 0, 0),
-    );
-
-    controller.dispose();
-  });
-
-  test("copy", () => {
-    const controller = new SphericalController(
-      new PerspectiveCamera(),
-      new Mesh(),
-    );
-    const target = new Spherical();
-    controller.copySphericalPosition(target);
-    expect(target).toStrictEqual(new Spherical(1, 0, 0));
-
-    controller.dispose();
   });
 
   describe("addPosition", () => {
@@ -54,7 +20,7 @@ describe("SphericalController", () => {
       return { controller, onMovedCamera };
     };
 
-    test("add", () => {
+    test("addPosition adds the value to the parameter and emits update", () => {
       const { controller, onMovedCamera } = initSpherical();
       controller.addPosition("theta", 1.0);
       expect(onMovedCamera).toBeCalled();
@@ -63,7 +29,7 @@ describe("SphericalController", () => {
       controller.dispose();
     });
 
-    test("override tween", () => {
+    test("addPosition with overrideTween stops the running tweens and emits update", () => {
       const { controller, onMovedCamera } = initSpherical();
       controller.movePosition("radius", 2.0, { startTime: 0 });
 

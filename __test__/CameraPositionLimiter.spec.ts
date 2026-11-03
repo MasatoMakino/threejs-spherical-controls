@@ -6,7 +6,7 @@ import {
 import { Spherical } from "three";
 
 describe("CameraPositionLimiter", () => {
-  test("clamp", () => {
+  test("clampPosition clamps radius, theta, and phi to the range set by setLimit", () => {
     const limit = (type: SphericalParamType, max = 1.0, min = 0.0) => {
       const limiter = new CameraPositionLimiter();
       const spherical = new Spherical();

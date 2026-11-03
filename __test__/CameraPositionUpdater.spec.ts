@@ -33,19 +33,16 @@ describe("CameraPositionUpdater", () => {
     return e;
   };
 
-  test("update", () => {
+  test("an update event emits moved_camera once on the next tick, not before it and not again", () => {
     const { parent, onUpdateCamera } = initCameraPositionUpdater();
     const e = generateCameraUpdateEvent();
     parent.emit(e.type, e);
 
-    //rafが呼び出されるまでは、cameraの移動は発生しない。
     expect(onUpdateCamera).not.toBeCalled();
 
-    //rafが呼び出されたら、レンダリングの前にカメラが移動する。
     RAFTicker.emitTickEvent(0);
     expect(onUpdateCamera).toBeCalled();
 
-    //カメラ移動後に、rafが呼び出されても、カメラは移動しない。
     onUpdateCamera.mockClear();
     RAFTicker.emitTickEvent(1);
     expect(onUpdateCamera).not.toBeCalled();

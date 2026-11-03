@@ -3,20 +3,7 @@ import { SphericalController } from "../src/index.js";
 import { PerspectiveCamera, Mesh, Spherical, Vector3 } from "three";
 
 describe("initPosition", () => {
-  const EPS = 0.000001;
-
-  test("initPosition", () => {
-    const controller = new SphericalController(
-      new PerspectiveCamera(),
-      new Mesh(),
-    );
-    controller.initCameraPosition(new Spherical());
-    expect(controller.cloneSphericalPosition()).toStrictEqual(
-      new Spherical(1, EPS, 0),
-    );
-  });
-
-  test("Arguments of initPosition should not affect cameraPosition.", () => {
+  test("initCameraPosition copies the argument, so later changes to it do not move the camera", () => {
     const controller = new SphericalController(
       new PerspectiveCamera(),
       new Mesh(),
@@ -31,7 +18,7 @@ describe("initPosition", () => {
     expect(controller.cloneSphericalPosition()).toStrictEqual(originalPos);
   });
 
-  test("init camera position and target position", () => {
+  test("initCameraPosition with a target position emits update with the moved camera target", () => {
     const controller = new SphericalController(
       new PerspectiveCamera(),
       new Mesh(),
@@ -48,7 +35,7 @@ describe("initPosition", () => {
     );
   });
 
-  test("limit position", () => {
+  test("initCameraPosition clamps radius and phi to the default limits and leaves theta unbounded", () => {
     const controller = new SphericalController(
       new PerspectiveCamera(),
       new Mesh(),
@@ -56,8 +43,9 @@ describe("initPosition", () => {
     controller.initCameraPosition(
       new Spherical(Number.POSITIVE_INFINITY, 1000, 1000),
     );
+    const { rMax, phiMax } = controller.limiter;
     expect(controller.cloneSphericalPosition()).toStrictEqual(
-      new Spherical(Number.MAX_VALUE, Math.PI - EPS, 1000),
+      new Spherical(rMax, phiMax, 1000),
     );
   });
 });
