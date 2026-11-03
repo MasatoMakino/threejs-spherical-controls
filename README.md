@@ -129,10 +129,6 @@ The controller uses spherical coordinates:
 - **Phi**: Vertical rotation (0 to π, where 0 = North Pole, π = South Pole)
 - **Theta**: Horizontal rotation (-π to π, where 0 = positive Z axis)
 
-## API Documentation
-
-[API documents](https://masatomakino.github.io/threejs-spherical-controls/api/index.html)
-
 ## License
 
 [MIT license](LICENSE)
