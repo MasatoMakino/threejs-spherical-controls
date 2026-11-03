@@ -1,16 +1,11 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
-
 version: 2
 updates:
-  - package-ecosystem: "github-actions" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     cooldown:
-      default-days: 7 # 全体的な更新頻度の制御 semver制御はできない
+      default-days: 7
 
   - package-ecosystem: "npm"
     directory: "/"
@@ -18,9 +13,6 @@ updates:
       interval: "daily"
     cooldown:
       default-days: 7
-      semver-major-days: 30
-      semver-minor-days: 7
-      semver-patch-days: 7
     groups:
       vitest:
         patterns:
