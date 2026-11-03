@@ -108,6 +108,14 @@ controller.limiter.setLimit("radius", 10, 100); // Distance limits
 controller.initCameraShift(new Vector3(0, 10, 0));
 ```
 
+#### Disposal
+
+Always call `dispose()` when you discard a controller. The method stops all tweens. It also removes the RAF ticker listeners and all event listeners.
+
+```js
+controller.dispose();
+```
+
 ### Available Imports
 
 ```js
