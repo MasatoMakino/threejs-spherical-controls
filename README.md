@@ -3,9 +3,8 @@
 > Spherical camera controller for Three.js
 
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/@masatomakino/threejs-spherical-controls.svg?style=flat)](https://www.npmjs.com/package/@masatomakino/threejs-spherical-controls)
 [![build test](https://github.com/MasatoMakino/threejs-spherical-controls/actions/workflows/ci_main.yml/badge.svg)](https://github.com/MasatoMakino/threejs-spherical-controls/actions/workflows/ci_main.yml)
-
-[![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=MasatoMakino&repo=threejs-spherical-controls)](https://github.com/MasatoMakino/threejs-spherical-controls)
 
 ## Demo
 
