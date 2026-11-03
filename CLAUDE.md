@@ -165,12 +165,11 @@ biome check --no-errors-on-unmatched      # Check code formatting and linting
 biome check --write --no-errors-on-unmatched  # Fix code formatting and linting issues
 ```
 
-### Documentation & Demo
+### Demo
 
 ```bash
 pnpm run demo         # Build demo page
-pnpm run typedocs     # Generate TypeDoc API documentation
-pnpm run build        # Build both docs and demo
+pnpm run build        # Build demo page (used by the GitHub Pages workflow)
 ```
 
 ## Testing
@@ -224,7 +223,7 @@ This module automatically handles camera animation updates through the `@masatom
 - `esm/` - Compiled ES modules output with TypeScript declarations
 - `__test__/` - Vitest test files
 - `demoSrc/` - Demo application source
-- `docs/` - Generated documentation and demo
+- `docs/` - Generated demo
 
 ## Code Style & Tools
 
